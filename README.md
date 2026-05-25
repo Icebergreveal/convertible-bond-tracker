@@ -261,9 +261,7 @@ python pipeline_run.py --step all --limit 50
 python pipeline_run.py --step all
 ```
 
-### 查看运行结果
 
-运行完成后，结果保存在 `outputs/` 目录：
 
 ```bash
 # 查看抽取结果
