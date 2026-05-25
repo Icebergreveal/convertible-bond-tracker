@@ -227,18 +227,45 @@ python pipeline_run.py --step all --limit 10
 
 ---
 
-## 输出文件说明
+## 📁 输出文件说明
 
-| 文件路径 | 说明 |
-|---|---|
-| `data/metadata/metadata.csv` | 公告元数据清单 |
-| `data/pdf/*.pdf` | 下载的公告PDF |
-| `data/parsed/*.md` | MinerU解析结果 |
-| `outputs/extract_results/structured_data.json` | 结构化抽取结果 |
-| `outputs/event_chain/event_chains.csv` | 事件链匹配结果 |
-| `outputs/indicators/quantitative_indicators.csv` | 量化指标 |
-| `outputs/eval/eval_manual_sample.csv` | 人工评估模板 |
-| `outputs/logs/*.log` | 运行日志 |
+所有运行结果都保存在 `outputs/` 目录下：
+
+```
+outputs/
+├── extract_results/
+│   ├── structured_data.json              # 结构化抽取结果（原始格式）
+│   ├── structured_data_standardized.json # 标准化数据（统一格式）
+│   └── records_validated.csv             # 校验结果（Pydantic验证）
+├── event_chain/
+│   └── event_chains.csv                  # 事件链匹配结果
+├── indicators/
+│   └── quantitative_indicators.csv       # 量化指标（下修幅度、溢价率）
+├── eval/
+│   └── eval_manual_sample.csv            # 人工评估模板
+└── logs/
+    ├── crawl_download.log                # 爬虫下载日志
+    ├── parse_quality.log                 # 解析质量日志
+    ├── section_analysis.log              # 章节分析日志
+    ├── extract_quality.log               # 抽取质量日志
+    ├── validation_errors.jsonl           # 校验错误记录
+    └── dataset_quality.log               # 数据集质量报告
+```
+
+### 输出文件详情
+
+| 文件路径 | 说明 | 格式 |
+|---|---|---|
+| `data/metadata/metadata.csv` | 公告元数据清单 | CSV |
+| `data/pdf/*.pdf` | 下载的公告PDF | PDF |
+| `data/parsed/*.md` | MinerU解析结果（Markdown） | MD |
+| `outputs/extract_results/structured_data.json` | LLM抽取的原始结构化数据 | JSON |
+| `outputs/extract_results/structured_data_standardized.json` | 标准化后的数据（统一日期/价格格式） | JSON |
+| `outputs/extract_results/records_validated.csv` | 通过Pydantic校验的记录 | CSV |
+| `outputs/event_chain/event_chains.csv` | 事件链匹配结果（下修/强赎） | CSV |
+| `outputs/indicators/quantitative_indicators.csv` | 量化指标计算结果 | CSV |
+| `outputs/eval/eval_manual_sample.csv` | 人工评估样本模板 | CSV |
+| `outputs/logs/*.log` | 各模块运行日志 | LOG |
 
 ---
 
