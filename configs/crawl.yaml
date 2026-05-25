@@ -1,0 +1,22 @@
+project_name: "convertible_bond_events"
+source: "cninfo"
+keywords:
+  - "转股价向下修正"
+  - "转股价格修正"
+  - "转债赎回"
+  - "提前赎回"
+  - "强赎"
+  - "触发转股价格向下修正"
+  - "行使提前赎回权"
+markets:
+  - "sz"
+  - "sh"
+date_range:
+  start: "2023-01-01"
+  end: "2026-12-31"
+max_records: 200
+sleep_seconds: 1.5
+output:
+  metadata: "data/metadata/metadata.csv"
+  pdf_dir: "data/pdf"
+  failed_downloads: "outputs/logs/failed_downloads.csv"

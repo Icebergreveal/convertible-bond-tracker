@@ -1,0 +1,50 @@
+target_sections:
+  conversion_price:
+    include_keywords:
+      - "转股价格"
+      - "转股价"
+      - "修正转股价格"
+      - "向下修正"
+    exclude_keywords:
+      - "目录"
+      - "释义"
+      - "备查文件"
+    min_chars: 200
+    page_expansion: 1
+
+  redemption:
+    include_keywords:
+      - "提前赎回"
+      - "赎回条款"
+      - "赎回价格"
+      - "行使赎回权"
+    exclude_keywords:
+      - "目录"
+      - "释义"
+      - "备查文件"
+    min_chars: 200
+    page_expansion: 1
+
+  trigger_condition:
+    include_keywords:
+      - "触发条件"
+      - "触发规则"
+      - "满足条件"
+      - "提示性公告"
+    exclude_keywords:
+      - "目录"
+      - "释义"
+    min_chars: 100
+    page_expansion: 0
+
+  implementation:
+    include_keywords:
+      - "实施公告"
+      - "生效日期"
+      - "实施安排"
+      - "操作提示"
+    exclude_keywords:
+      - "目录"
+      - "释义"
+    min_chars: 150
+    page_expansion: 1
