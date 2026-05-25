@@ -174,55 +174,169 @@
 
 ### 环境要求
 - Python 3.10+
-- 巨潮资讯网访问权限
-- LLM API密钥（硅基流动/OpenAI等）
-- MinerU API密钥
+- 巨潮资讯网访问权限（无需登录）
+- LLM API密钥（推荐使用硅基流动）
+- MinerU API密钥（可选，用于PDF解析）
 
 ### 安装依赖
 ```bash
+# 安装基础依赖
 pip install -r requirements.txt
+
+# 安装LLM SDK（已包含在requirements.txt中）
+# pip install openai python-dotenv
 ```
 
 ### 配置环境变量
+
+1. **复制环境变量模板**：
 ```bash
 cp .env.example .env
-# 编辑 .env 文件，填入以下配置：
-# - LLM_API_KEY
-# - LLM_BASE_URL
-# - LLM_MODEL
-# - MINERU_API_KEY
+```
+
+2. **编辑 `.env` 文件**，填入以下配置：
+```env
+# LLM配置（硅基流动）
+LLM_PROVIDER=siliconflow
+LLM_BASE_URL=https://api.siliconflow.cn/v1
+LLM_API_KEY=your_api_key_here
+LLM_MODEL=Qwen/Qwen3-8B
+LLM_TEMPERATURE=0
+LLM_MAX_TOKENS=2048
+
+# MinerU配置（用于PDF解析）
+MINERU_API_KEY=your_mineru_key_here
+
+# 项目配置
+PROJECT_NAME=convertible_bond_events
+DATA_DIR=data
+OUTPUT_DIR=outputs
+LOG_DIR=logs
+LOG_LEVEL=INFO
 ```
 
 ### 运行项目
 
-#### 单步运行
+#### 命令参数说明
 ```bash
-# 抓取公告（限制10条）
+python pipeline_run.py --step <步骤名> [--limit <数量>] [--config <配置文件>]
+```
+
+| 参数 | 说明 | 可选值 |
+|------|------|--------|
+| `--step` | 要执行的步骤（必选） | crawl, parse, section, extract, process, indicator, eval, all |
+| `--limit` | 限制处理数量（可选） | 整数，如10、50 |
+| `--config` | 配置文件路径（可选） | 默认: configs/crawl.yaml |
+
+#### 单步运行（推荐调试使用）
+```bash
+# 1. 抓取公告（搜索巨潮公告并下载PDF）
 python pipeline_run.py --step crawl --limit 10
 
-# PDF解析
+# 2. PDF解析（将PDF转换为Markdown）
 python pipeline_run.py --step parse --limit 10
 
-# 章节定位
+# 3. 章节定位（识别公告中的关键章节）
 python pipeline_run.py --step section
 
-# LLM抽取
+# 4. LLM抽取（调用AI抽取结构化字段）
 python pipeline_run.py --step extract --limit 10
 
-# 事件链匹配
+# 5. 事件链匹配（构建下修/强赎事件时间线）
 python pipeline_run.py --step process
 
-# 指标计算
+# 6. 指标计算（计算下修幅度、溢价率等）
 python pipeline_run.py --step indicator
 
-# 生成评估模板
+# 7. 生成评估模板（创建人工评估样本）
 python pipeline_run.py --step eval
 ```
 
-#### 完整运行
+#### 完整运行（生产环境）
 ```bash
 # 一键运行全部流程
+python pipeline_run.py --step all --limit 50
+
+# 全量运行（不限制数量）
+python pipeline_run.py --step all
+```
+
+### 查看运行结果
+
+运行完成后，结果保存在 `outputs/` 目录：
+
+```bash
+# 查看抽取结果
+cat outputs/extract_results/records_validated.csv
+
+# 查看事件链
+cat outputs/event_chain/event_chains.csv
+
+# 查看量化指标
+cat outputs/indicators/quantitative_indicators.csv
+
+# 查看运行日志
+cat logs/app_20260525.log
+```
+
+### 常见问题排查
+
+#### Q1: LLM调用失败
+```bash
+# 检查API密钥是否正确
+cat .env | grep LLM_API_KEY
+
+# 测试LLM连接
+python -c "from src.extract.llm_extract import LLMClient; client = LLMClient(); response = client.call_llm('Hello')"
+```
+
+#### Q2: PDF解析失败
+```bash
+# 检查MinerU API密钥
+cat .env | grep MINERU_API_KEY
+
+# 检查PDF文件是否存在
+ls -la data/pdf/
+```
+
+#### Q3: 校验失败过多
+```bash
+# 查看错误详情
+cat outputs/logs/validation_errors.jsonl
+```
+
+#### Q4: 日志查看
+```bash
+# 查看今日日志
+cat logs/app_$(date +%Y%m%d).log
+
+# 查看错误日志
+grep -i "ERROR" logs/app_*.log
+```
+
+### 示例运行
+
+#### 示例1：快速测试（3条记录）
+```bash
+# 抓取3条公告
+python pipeline_run.py --step crawl --limit 3
+
+# 解析PDF
+python pipeline_run.py --step parse --limit 3
+
+# LLM抽取
+python pipeline_run.py --step extract --limit 3
+
+# 查看结果
+cat outputs/extract_results/records_validated.csv
+```
+
+#### 示例2：完整流程（10条记录）
+```bash
 python pipeline_run.py --step all --limit 10
+
+# 查看所有输出
+ls -la outputs/
 ```
 
 ---
@@ -325,10 +439,29 @@ outputs/
 
 ## 合规说明
 
-1. **数据来源**：仅使用巨潮资讯网公开可访问数据
-2. **API Key安全**：存储在.env文件，不提交版本控制
-3. **访问合规**：遵守robots.txt，设置合理请求间隔
-4. **日志保留**：完整记录抓取和处理日志
+### 数据爬取合规性
+1. **数据来源**：仅使用巨潮资讯网（www.cninfo.com.cn）公开可访问的信息披露数据
+2. **robots.txt遵守**：严格遵守巨潮资讯网robots.txt协议规定（https://www.cninfo.com.cn/robots.txt）
+3. **访问频率控制**：设置合理的请求间隔（默认1-2秒），避免对目标服务器造成压力
+4. **非商用声明**：本项目仅限学习和研究使用，不得用于商业用途
+
+### API安全
+1. **API Key安全**：所有API密钥存储在.env文件中，不提交到版本控制系统
+2. **访问限制**：不绕过任何登录、验证码或访问限制机制
+3. **敏感信息保护**：不记录、不存储任何敏感信息
+
+### 数据使用规范
+1. **数据完整性**：原始PDF文档不得修改，保持原样存储
+2. **证据可追溯**：每个字段值都能追溯到公告原文
+3. **版权声明**：所有数据版权归巨潮资讯网及相关上市公司所有
+
+### 日志保留
+1. **完整记录**：完整记录所有抓取、解析、抽取、校验步骤的日志
+2. **日志存储**：日志文件按日期分区存储，保留30天
+3. **审计追踪**：支持对数据处理过程的审计追踪
+
+### 法律声明
+本项目仅供学习和研究目的使用。使用者应自行确保其使用行为符合中国法律法规以及巨潮资讯网的使用条款。项目开发者不对任何违规使用行为承担责任。
 
 ---
 

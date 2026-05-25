@@ -138,11 +138,11 @@ def build_adjustment_chain(records: List[Dict], bond_code: str) -> Dict:
     
     for record in records:
         ann_type = record.get('ann_type', '')
-        if not trigger and '触发提示' in ann_type:
+        if not trigger and ('触发' in ann_type or '条件' in ann_type):
             trigger = record
-        elif not proposal and '提议' in ann_type:
+        elif not proposal and ('提议' in ann_type or '建议' in ann_type):
             proposal = record
-        elif not resolution and '决议' in ann_type:
+        elif not resolution and ('决议' in ann_type or '调整' in ann_type or '审议' in ann_type):
             resolution = record
         elif not implementation and '实施' in ann_type:
             implementation = record
@@ -271,11 +271,11 @@ def build_redemption_chain(records: List[Dict], bond_code: str) -> Dict:
     
     for record in records:
         ann_type = record.get('ann_type', '')
-        if not trigger and ('触发提示' in ann_type or '满足' in ann_type):
+        if not trigger and ('触发' in ann_type or '提示性公告' in ann_type):
             trigger = record
-        elif not resolution and '决议' in ann_type:
+        elif not resolution and ('决议' in ann_type or '行使' in ann_type or '审议' in ann_type):
             resolution = record
-        elif not implementation and '实施' in ann_type:
+        elif not implementation and ('实施' in ann_type or '提示' in ann_type):
             implementation = record
         elif not result and ('结果' in ann_type or '摘牌' in ann_type):
             result = record

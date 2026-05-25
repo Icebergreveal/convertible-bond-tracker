@@ -14,7 +14,7 @@ def parse_chinese_date(date_str: str, default_year: int = None) -> str:
     patterns = [
         r'(\d{4})[年/-](\d{1,2})[月/-](\d{1,2})[日号]?',
         r'(\d{4})[年/-](\d{1,2})[月/-](\d{1,2})',
-        r'(\d{1,2})[月/-](\d{1,2})[日号]?[，,至-到](\d{4})年',
+        r'(\d{1,2})[月/-](\d{1,2})[日号]?[，,至到](\d{4})年',
         r'(\d{4})年(\d{1,2})月',
         r'(\d{1,2})月(\d{1,2})日'
     ]
@@ -156,6 +156,7 @@ def standardize_data(input_path: str = "outputs/extract_results/structured_data.
             std_record[ratio_field] = clean_ratio(ratio_value)
         
         if std_record.get('evidence_text'):
+            std_record['evidence_text'] = str(std_record['evidence_text'])
             std_record['evidence_text'] = re.sub(r'\s+', ' ', std_record['evidence_text']).strip()
         
         if std_record.get('evidence_page'):
