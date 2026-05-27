@@ -392,27 +392,33 @@ outputs/
 | bond_code | string | 转债代码 |
 | bond_name | string | 转债名称 |
 | ann_type | string | 公告类型 |
-| publish_date | date | 公告日期 |
-| evidence_page | int | 证据页码 |
-| evidence_text | string | 证据原文 |
+| publish_date | date | 公告日期 (YYYY-MM-DD) |
+| evidence_page | int | 证据所在页码 |
+| evidence_text | string | 证据原文片段 |
+| notes | string | 备注信息 |
 
-### 下修专属字段（7个）
+### 下修类公告专属字段（9个）
 | 字段 | 类型 | 说明 |
 |---|---|---|
-| trigger_rule | string | 触发条件 |
-| original_conv_price | float | 修正前转股价 |
-| new_conv_price | float | 修正后转股价 |
-| effective_date | date | 生效日期 |
-| adjustment_ratio | float | 下修幅度(%) |
+| trigger_rule | string | 转股价下修触发条件 |
+| original_conv_price | float | 修正前转股价格 |
+| new_conv_price | float | 修正后转股价格 |
+| pricing_base_date | date | 定价基准日 |
+| avg_price_20d | float | 前20个交易日均价 |
+| avg_price_1d | float | 前1个交易日均价 |
+| effective_date | date | 调整生效日期 |
+| adjustment_ratio | float | 下修幅度百分比 |
+| adjustment_type | string | 调整类型（主动/被动） |
 
-### 强赎专属字段（7个）
+### 强赎类公告专属字段（6个）
 | 字段 | 类型 | 说明 |
 |---|---|---|
-| redemption_trigger | string | 强赎触发条件 |
-| redemption_price | float | 赎回价格 |
-| record_date | date | 登记日期 |
-| last_convert_date | date | 最后转股日 |
-| premium_rate | float | 赎回溢价率(%) |
+| redemption_trigger | string | 提前强赎触发规则 |
+| redemption_price | float | 赎回价格（含利息） |
+| record_date | date | 股权登记截止日期 |
+| last_convert_date | date | 最后转股操作日 |
+| delisting_date | date | 可转债摘牌日期 |
+| premium_rate | float | 赎回溢价率 |
 
 ---
 
