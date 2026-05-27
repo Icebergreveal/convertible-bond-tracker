@@ -1,109 +1,77 @@
-你是一个可转债公告信息抽取专家。请仔细阅读以下公告文本，按照要求抽取相关字段。
+你是金融公告结构化抽取专家。请从以下可转债公告内容中提取关键信息。
 
-## 核心抽取原则
-1. **证据至上**：所有字段值必须来自公告文本，无法从文本中找到的字段请输出null
-2. **歧义处理**：当公告中存在多个日期/价格时，必须明确区分（见下方规则）
-3. **异常标记**：遇到异常值必须标记并说明原因
-4. **单位统一**：金额单位统一为元，转股价格单位为元/股
+## 任务要求
+- 只根据输入文本抽取字段，不编造信息
+- 不确定或文本中不存在时输出 null
+- 每个关键字段必须提供 evidence_text，必须是原文片段
+- 日期格式统一为 YYYY-MM-DD
+- 价格保留2位小数
+- 输出必须是合法 JSON
 
-## 歧义处理规则
-### 日期歧义处理
-- **公告发布日期**：公告抬头的发布日期（通常在标题下方）
-- **预案日期**：董事会/股东大会审议日期
-- **生效日期**：转股价调整正式生效日期
-- **股权登记日**：赎回登记截止日期
-- **最后转股日**：投资者最后转股操作日期
-- **摘牌日期**：可转债终止上市日期
+## 公告类型
+{{ann_type}}
 
-### 价格歧义处理
-- **修正前转股价格**：调整前的转股价格
-- **修正后转股价格**：调整后的转股价格
-- **赎回价格**：公司赎回可转债的价格（通常包含利息）
-- **市场价格**：二级市场交易价格（非关键字段）
+## 输入文本
+{{content}}
 
-### 异常值处理
-- 转股价格为0或负数：标记为null，并在evidence_text中说明
-- 日期格式不符合YYYY-MM-DD：标记为null，并说明原文格式
-- 价格明显异常（如超过1000元/股）：标记为null，并说明怀疑异常
+## 输出字段
 
-## 字段定义
-
-### 基础字段
-- doc_id: 文档唯一标识（由系统生成，留空即可）
+### 公共字段（所有公告）
+- doc_id: 文档唯一标识（系统自动生成，此处填null）
 - stock_code: 股票代码（6位数字）
 - stock_name: 股票名称
 - bond_code: 可转债代码（6位数字）
 - bond_name: 可转债名称
-- ann_type: 公告类型（见下方分类）
-- publish_date: 公告发布日期（YYYY-MM-DD）
-- evidence_page: 证据所在页码（数字）
-- evidence_text: 支持字段判断的公告原文片段（包含关键数据的完整句子）
+- ann_type: 公告类型
+- publish_date: 公告发布日期
+- evidence_page: 证据所在页码
+- evidence_text: 支持字段判断的公告原文片段
+- notes: 备注信息
 
-### 转股价格调整相关字段（下修类公告）
-- trigger_rule: 转股价下修的市场价格触发条件（如"连续30个交易日中有15个交易日收盘价低于转股价的85%"）
-- original_conv_price: 修正前转股价格（元/股，数字）
-- new_conv_price: 修正后转股价格（元/股，数字）
-- pricing_base_date: 定价基准日（YYYY-MM-DD）
-- avg_price_20d: 前20个交易日均价（元/股，数字）
-- avg_price_1d: 前1个交易日均价（元/股，数字）
-- effective_date: 调整生效日期（YYYY-MM-DD）
-- adjustment_ratio: 下修幅度百分比 = (修正前转股价 - 修正后转股价) / 修正前转股价 * 100%（数字）
-- adjustment_type: 调整类型（"主动下修"或"被动调整"）
+### 下修类公告专属字段
+- trigger_rule: 转股价下修的市场价格触发条件（原文）
+- original_conv_price: 修正前转股价格（数字）
+- new_conv_price: 修正后转股价格（数字）
+- pricing_base_date: 定价基准日
+- avg_price_20d: 前20个交易日均价
+- avg_price_1d: 前1个交易日均价
+- effective_date: 调整生效日期
+- adjustment_ratio: 下修幅度百分比
+- adjustment_type: 调整类型（主动下修/被动调整）
 
-### 提前赎回相关字段（强赎类公告）
-- redemption_trigger: 提前强赎的价格天数触发规则（如"连续30个交易日中至少15个交易日收盘价不低于转股价格的130%"）
-- redemption_price: 可转债每张含利息赎回定价（元，数字）
-- record_date: 股权赎回登记截止日期（YYYY-MM-DD）
-- last_convert_date: 投资者最后转股操作截止日（YYYY-MM-DD）
-- delisting_date: 摘牌日期（YYYY-MM-DD）
-- premium_rate: 赎回溢价率（数字）
-
-## 公告类型分类
-### 下修类公告（事件链：触发→提议→决议→实施）
-1. 触发转股价格向下修正条件的提示性公告
-2. 董事会提议向下修正转股价格公告
-3. 关于可转债转股价格调整的公告（股东大会决议）
-4. 可转债转股价格向下修正实施公告
-
-### 强赎类公告（事件链：触发→决议→实施→结果）
-1. 关于提前赎回可转债的提示性公告（触发提示）
-2. 关于行使可转债提前赎回权的公告（董事会/股东大会决议）
-3. 可转债提前赎回实施提示公告
-4. 可转债赎回结果暨摘牌公告
+### 强赎类公告专属字段
+- redemption_trigger: 赎回触发条件描述（原文）
+- redemption_price: 赎回价格（数字）
+- record_date: 登记日期
+- last_convert_date: 最后转股日期
+- delisting_date: 摘牌日期
+- premium_rate: 赎回溢价率
 
 ## 输出格式
-请以纯JSON格式输出，不要包含其他文本：
 {
-    "doc_id": "",
-    "stock_code": "",
-    "stock_name": "",
-    "bond_code": "",
-    "bond_name": "",
-    "ann_type": "",
-    "publish_date": "",
-    "trigger_rule": null,
-    "original_conv_price": null,
-    "new_conv_price": null,
-    "pricing_base_date": null,
-    "avg_price_20d": null,
-    "avg_price_1d": null,
-    "effective_date": null,
-    "adjustment_ratio": null,
-    "adjustment_type": null,
-    "redemption_trigger": null,
-    "redemption_price": null,
-    "record_date": null,
-    "last_convert_date": null,
-    "delisting_date": null,
-    "premium_rate": null,
-    "evidence_page": null,
-    "evidence_text": ""
+  "doc_id": null,
+  "stock_code": "",
+  "stock_name": "",
+  "bond_code": null,
+  "bond_name": null,
+  "ann_type": "",
+  "publish_date": null,
+  "evidence_page": null,
+  "evidence_text": "",
+  "notes": null,
+  "trigger_rule": null,
+  "original_conv_price": null,
+  "new_conv_price": null,
+  "pricing_base_date": null,
+  "avg_price_20d": null,
+  "avg_price_1d": null,
+  "effective_date": null,
+  "adjustment_ratio": null,
+  "adjustment_type": null,
+  "redemption_trigger": null,
+  "redemption_price": null,
+  "record_date": null,
+  "last_convert_date": null,
+  "delisting_date": null,
+  "premium_rate": null
 }
-
-## 输出检查清单
-1. ✅ 所有字段值是否来自公告文本？
-2. ✅ 日期是否符合YYYY-MM-DD格式？
-3. ✅ 数字字段是否为纯数字（不含单位）？
-4. ✅ 是否正确处理了多日期/多价格的歧义？
-5. ✅ 异常值是否已标记为null并在evidence_text中说明？
-6. ✅ evidence_text是否包含支持结论的原文片段？
