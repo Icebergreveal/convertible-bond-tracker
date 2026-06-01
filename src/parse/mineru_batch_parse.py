@@ -312,7 +312,7 @@ if __name__ == '__main__':
             'pdf_dir': 'data/pdf'
         },
         'mineru': {
-            'api_key': 'eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFM1MTIifQ.eyJqdGkiOiIzMDUwMDc5MSIsInJvbCI6IlJPTEVfUkVHSVNURVIiLCJpc3MiOiJPcGVuWExhYiIsImlhdCI6MTc3OTY3NzA5NCwiY2xpZW50SWQiOiJsa3pkeDU3bnZ5MjJqa3BxOXgydyIsInBob25lIjoiIiwib3BlbklkIjpudWxsLCJ1dWlkIjoiZTYyYjMwYjUtMTYxZi00ZDJmLThlMjYtM2U1ODUwMWE0YmIxIiwiZW1haWwiOiIiLCJleHAiOjE3ODc0NTMwOTR9.S1FD2biZpChXqlhiTGNk5wXTIyXjoW2E74Jipt_VyWLmGGTiVbTsGWoHPO3zv1AgIpRDQdrmoYlATu8qDFCEng'
+            'api_key': os.getenv('MINERU_API_KEY', '')
         }
     }
     batch_parse_pdfs(config)

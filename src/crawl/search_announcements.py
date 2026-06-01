@@ -289,8 +289,7 @@ def search_announcements(
                 break
     
     if not api_success:
-        print("[Crawl] API请求失败，使用示例数据")
-        results = generate_sample_data(limit)
+        raise Exception("[Crawl] API请求失败，请检查网络连接或稍后重试")
     
     print(f"[Crawl] Found {len(results)} new announcements")
     return results

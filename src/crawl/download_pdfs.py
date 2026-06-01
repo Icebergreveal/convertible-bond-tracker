@@ -102,7 +102,7 @@ def download_pdfs(config: Dict, limit: int = None):
     
     with open(metadata_path, 'w', encoding='utf-8', newline='') as f:
         fieldnames = ['doc_id', 'stock_code', 'stock_name', 'bond_code', 'bond_name', 
-                      'ann_type', 'publish_date', 'announcement_url', 'pdf_url', 
+                      'ann_type', 'event_stage', 'publish_date', 'announcement_url', 'pdf_url', 
                       'download_status', 'crawl_time', 'notes']
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()

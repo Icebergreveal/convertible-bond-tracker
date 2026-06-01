@@ -86,9 +86,9 @@ class BondEventMatcher:
     def _determine_event_type(self, ann_type: str) -> str:
         """确定事件类型"""
         if '下修' in ann_type:
-            return '下修'
+            return 'adjustment'
         elif '强赎' in ann_type or '赎回' in ann_type:
-            return '强赎'
+            return 'redemption'
         return 'unknown'
     
     def _build_chain_for_bond(self, bond_info: Dict, events: List[Dict], event_type: str) -> Optional[Dict]:
@@ -214,14 +214,14 @@ class BondEventMatcher:
             print(f"  {status} {chain['bond_name']} ({chain['bond_code']}) - {chain['event_type']}")
             print(f"     阶段: {list(chain['stages'].keys())}")
             print(f"     周期: {chain['total_days']} 天")
-            if chain['event_type'] == '下修':
+            if chain['event_type'] == 'adjustment':
                 print(f"     转股价: {chain['original_conv_price']} → {chain['new_conv_price']}")
-            elif chain['event_type'] == '强赎':
+            elif chain['event_type'] == 'redemption':
                 print(f"     赎回价: {chain['redemption_price']}")
 
 def match_events(
     metadata_path: str = "data/metadata/metadata.csv",
-    extract_path: str = "outputs/extract_results/structured_data.json",
+    extract_path: str = "outputs/extract_results/structured_data_standardized.json",
     output_path: str = "outputs/event_chain/event_chains.csv"
 ):
     """事件链匹配入口函数"""

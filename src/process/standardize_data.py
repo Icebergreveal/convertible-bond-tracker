@@ -126,8 +126,7 @@ def standardize_data(input_path: str = "outputs/extract_results/structured_data.
         with open(input_path, 'r', encoding='utf-8') as f:
             data = json.load(f)
     else:
-        print(f"Warning: {input_path} not found. Generating sample standardized data.")
-        data = generate_sample_structured_data()
+        raise FileNotFoundError(f"Error: {input_path} not found. Please run extraction step first.")
     
     standardized = []
     current_year = datetime.now().year
