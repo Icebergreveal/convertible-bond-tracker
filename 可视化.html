@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>可转债双事件智能跟踪系统</title>
+    <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1a1a2e;
+            --secondary: #16213e;
+            --accent: #0f3460;
+            --highlight: #e94560;
+            --text: #eaeaea;
+            --card-bg: #1f1f3d;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        body {
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: var(--primary);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* 导航栏 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--highlight);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--highlight);
+        }
+
+        /* Hero区域 */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 20% 50%, rgba(233, 69, 96, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(102, 126, 234, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(118, 75, 162, 0.3) 0%, transparent 50%);
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 1;
+            padding: 2rem;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero .subtitle {
+            font-size: 1.5rem;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: var(--highlight);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s;
+            animation: fadeInUp 1s ease 0.4s both;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(233, 69, 96, 0.4);
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 通用容器 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 5rem 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--highlight);
+        }
+
+        /* 统计卡片 */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            transition: all 0.3s;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--highlight);
+            box-shadow: 0 20px 40px rgba(233, 69, 96, 0.2);
+        }
+
+        .stat-card i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--highlight);
+        }
+
+        .stat-card .number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--highlight);
+        }
+
+        .stat-card .label {
+            color: rgba(255,255,255,0.7);
+            margin-top: 0.5rem;
+        }
+
+        /* 可转债基础 */
+        .basics-section {
+            background: var(--secondary);
+        }
+
+        .basics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .basic-card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 20px;
+            transition: all 0.3s;
+        }
+
+        .basic-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .basic-card h3 {
+            color: var(--highlight);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .basic-card ul {
+            list-style: none;
+        }
+
+        .basic-card li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .basic-card li:last-child {
+            border-bottom: none;
+        }
+
+        .basic-card li::before {
+            content: '•';
+            color: var(--highlight);
+        }
+
+        /* 事件类型 */
+        .events-section {
+            background: var(--primary);
+        }
+
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 3rem;
+        }
+
+        .event-card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 20px;
+        }
+
+        .event-card h3 {
+            color: var(--highlight);
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .flow-chart {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .flow-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            background: var(--secondary);
+            border-radius: 10px;
+            gap: 1rem;
+        }
+
+        .flow-item .step {
+            width: 30px;
+            height: 30px;
+            background: var(--highlight);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .flow-arrow {
+            text-align: center;
+            color: var(--highlight);
+            font-size: 1.5rem;
+        }
+
+        .event-desc {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: rgba(233, 69, 96, 0.1);
+            border-radius: 10px;
+            border-left: 3px solid var(--highlight);
+        }
+
+        /* 图表区域 */
+        .chart-section {
+            background: var(--secondary);
+        }
+
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+        }
+
+        .chart-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 20px;
+        }
+
+        .chart-card h4 {
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        .chart {
+            height: 300px;
+        }
+
+        /* 案例分析 */
+        .case-section {
+            background: var(--primary);
+        }
+
+        .case-timeline {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 20px;
+            position: relative;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--highlight);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .timeline-item:last-child {
+            border-bottom: none;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2rem;
+            top: 1.5rem;
+            width: 15px;
+            height: 15px;
+            background: var(--highlight);
+            border-radius: 50%;
+            transform: translateX(-50%);
+        }
+
+        .timeline-date {
+            color: var(--highlight);
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-desc {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .case-data {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .data-item {
+            text-align: center;
+            padding: 1rem;
+            background: var(--secondary);
+            border-radius: 10px;
+        }
+
+        .data-item .label {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.9rem;
+        }
+
+        .data-item .value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--highlight);
+        }
+
+        /* 项目价值 */
+        .value-section {
+            background: var(--secondary);
+        }
+
+        .value-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .value-card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .value-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(233, 69, 96, 0.2);
+        }
+
+        .value-card i {
+            font-size: 3rem;
+            color: var(--highlight);
+            margin-bottom: 1rem;
+        }
+
+        .value-card h3 {
+            color: var(--text);
+            margin-bottom: 1rem;
+        }
+
+        .value-card p {
+            color: rgba(255,255,255,0.7);
+        }
+
+        /* 技术架构 */
+        .tech-section {
+            background: var(--primary);
+        }
+
+        .tech-flow {
+            background: var(--card-bg);
+            padding: 3rem;
+            border-radius: 20px;
+            overflow-x: auto;
+        }
+
+        .tech-nodes {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .tech-node {
+            padding: 1rem 1.5rem;
+            background: var(--secondary);
+            border-radius: 10px;
+            text-align: center;
+            min-width: 120px;
+        }
+
+        .tech-node i {
+            font-size: 2rem;
+            color: var(--highlight);
+            margin-bottom: 0.5rem;
+        }
+
+        .tech-arrow {
+            color: var(--highlight);
+            font-size: 2rem;
+        }
+
+        .tech-stack {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .tech-tag {
+            padding: 0.5rem 1rem;
+            background: var(--accent);
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        /* 页脚 */
+        footer {
+            background: var(--secondary);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        footer p {
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 0.5rem;
+        }
+
+        footer .disclaimer {
+            color: var(--highlight);
+            font-size: 0.9rem;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .events-grid,
+            .chart-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tech-nodes {
+                flex-direction: column;
+            }
+
+            .tech-arrow {
+                transform: rotate(90deg);
+            }
+        }
+
+        /* 滚动动画 */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo">
+                <i class="fas fa-chart-line"></i> 可转债事件跟踪系统
+            </div>
+            <ul class="nav-links">
+                <li><a href="#hero">项目简介</a></li>
+                <li><a href="#basics">可转债基础</a></li>
+                <li><a href="#events">事件类型</a></li>
+                <li><a href="#data">数据展示</a></li>
+                <li><a href="#value">项目价值</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero区域 -->
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <h1>可转债双事件智能跟踪系统</h1>
+            <p class="subtitle">基于LLM的可转债下修与强赎事件智能抽取与分析</p>
+            <a href="#data" class="cta-button">
+                <i class="fas fa-chart-bar"></i> 查看数据展示
+            </a>
+        </div>
+    </section>
+
+    <!-- 项目简介 -->
+    <section class="container" id="intro">
+        <h2 class="section-title">项目背景与目标</h2>
+        <div class="stats-grid">
+            <div class="stat-card fade-in">
+                <i class="fas fa-file-alt"></i>
+                <div class="number" data-target="1171">0</div>
+                <div class="label">总公告数</div>
+            </div>
+            <div class="stat-card fade-in">
+                <i class="fas fa-file-pdf"></i>
+                <div class="number" data-target="456">0</div>
+                <div class="label">PDF文件</div>
+            </div>
+            <div class="stat-card fade-in">
+                <i class="fas fa-link"></i>
+                <div class="number" data-target="23">0</div>
+                <div class="label">事件链</div>
+            </div>
+            <div class="stat-card fade-in">
+                <i class="fas fa-database"></i>
+                <div class="number" data-target="25">0</div>
+                <div class="label">结构化字段</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 可转债基础 -->
+    <section class="container basics-section" id="basics">
+        <h2 class="section-title">什么是可转债？</h2>
+        <div class="basics-grid">
+            <div class="basic-card fade-in">
+                <h3><i class="fas fa-file-contract"></i> 可转债定义</h3>
+                <ul>
+                    <li><strong>全称：</strong>可转换公司债券</li>
+                    <li><strong>定义：</strong>一种可以在特定条件下转换为公司股票的债券</li>
+                    <li><strong>本质：</strong>债券 + 期权的金融产品</li>
+                    <li><strong>特点：</strong>攻守兼备，进退自如</li>
+                </ul>
+            </div>
+            <div class="basic-card fade-in">
+                <h3><i class="fas fa-cogs"></i> 核心条款</h3>
+                <ul>
+                    <li><strong>转股价：</strong>可转换为股票的价格</li>
+                    <li><strong>下修条款：</strong>股价低迷时，公司可下调转股价</li>
+                    <li><strong>强赎条款：</strong>股价高涨时，公司可强制赎回债券</li>
+                    <li><strong>回售条款：</strong>投资者可回售给公司</li>
+                </ul>
+            </div>
+            <div class="basic-card fade-in">
+                <h3><i class="fas fa-chart-line"></i> 投资特点</h3>
+                <ul>
+                    <li><strong>下有保底：</strong>持有到期可获得本金和利息</li>
+                    <li><strong>上有收益：</strong>股价上涨可享受超额收益</li>
+                    <li><strong>进可攻：</strong>分享股价上涨收益</li>
+                    <li><strong>退可守：</strong>债券属性提供安全垫</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- 事件类型 -->
+    <section class="container events-section" id="events">
+        <h2 class="section-title">可转债两大核心事件</h2>
+        <div class="events-grid">
+            <div class="event-card fade-in">
+                <h3><i class="fas fa-arrow-down"></i> 下修事件</h3>
+                <p style="color: rgba(255,255,255,0.7); margin-bottom: 1rem;">
+                    当股价持续低迷时，公司为促进转股，会下调转股价
+                </p>
+                <div class="flow-chart">
+                    <div class="flow-item">
+                        <span class="step">1</span>
+                        <span>触发提示 - 股价连续低于转股价85%</span>
+                    </div>
+                    <div class="flow-arrow"><i class="fas fa-arrow-down"></i></div>
+                    <div class="flow-item">
+                        <span class="step">2</span>
+                        <span>董事会提议 - 提议下修转股价</span>
+                    </div>
+                    <div class="flow-arrow"><i class="fas fa-arrow-down"></i></div>
+                    <div class="flow-item">
+                        <span class="step">3</span>
+                        <span>股东大会决议 - 通过下修方案</span>
+                    </div>
+                    <div class="flow-arrow"><i class="fas fa-arrow-down"></i></div>
+                    <div class="flow-item">
+                        <span class="step">4</span>
+                        <span>正式实施 - 转股价调整生效</span>
+                    </div>
+                </div>
+                <div class="event-desc">
+                    <strong>影响：</strong>降低转股价，持债人更容易转股，对投资者有利
+                </div>
+            </div>
+            <div class="event-card fade-in">
+                <h3><i class="fas fa-arrow-up"></i> 强赎事件</h3>
+                <p style="color: rgba(255,255,255,0.7); margin-bottom: 1rem;">
+                    当股价持续高涨时，公司为促进转股，会强制赎回债券
+                </p>
+                <div class="flow-chart">
+                    <div class="flow-item">
+                        <span class="step">1</span>
+                        <span>触发提示 - 股价连续高于转股价130%</span>
+                    </div>
+                    <div class="flow-arrow"><i class="fas fa-arrow-down"></i></div>
+                    <div class="flow-item">
+                        <span class="step">2</span>
+                        <span>董事会决议 - 启动强赎程序</span>
+                    </div>
+                    <div class="flow-arrow"><i class="fas fa-arrow-down"></i></div>
+                    <div class="flow-item">
+                        <span class="step">3</span>
+                        <span>正式实施 - 发布强赎公告</span>
+                    </div>
+                    <div class="flow-arrow"><i class="fas fa-arrow-down"></i></div>
+                    <div class="flow-item">
+                        <span class="step">4</span>
+                        <span>赎回完成 - 债券被强制赎回</span>
+                    </div>
+                </div>
+                <div class="event-desc">
+                    <strong>影响：</strong>促进转股，公司提前偿还债务，投资者需及时转股或卖出
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 数据展示 -->
+    <section class="container chart-section" id="data">
+        <h2 class="section-title">实时数据概览</h2>
+        <div class="chart-grid">
+            <div class="chart-card fade-in">
+                <h4>公告类型分布</h4>
+                <div id="pieChart" class="chart"></div>
+            </div>
+            <div class="chart-card fade-in">
+                <h4>公告数量对比</h4>
+                <div id="barChart" class="chart"></div>
+            </div>
+        </div>
+        <div class="chart-grid" style="margin-top: 2rem;">
+            <div class="chart-card fade-in">
+                <h4>事件链完成度</h4>
+                <div id="gaugeChart" class="chart"></div>
+            </div>
+            <div class="chart-card fade-in">
+                <h4>事件类型时间分布</h4>
+                <div id="lineChart" class="chart"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 案例分析 -->
+    <section class="container case-section" id="case">
+        <h2 class="section-title">实战案例 - 侨银转债下修事件</h2>
+        <div class="case-timeline fade-in">
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">2024-01-15</div>
+                    <div class="timeline-title">下修触发提示</div>
+                    <div class="timeline-desc">公司发布提示性公告，股价已连续30个交易日低于转股价的85%</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2024-01-20</div>
+                    <div class="timeline-title">董事会提议</div>
+                    <div class="timeline-desc">董事会提议向下修正转股价至14.50元/股</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2024-02-05</div>
+                    <div class="timeline-title">股东大会决议</div>
+                    <div class="timeline-desc">股东大会审议通过向下修正转股价格的议案</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2024-03-01</div>
+                    <div class="timeline-title">正式实施</div>
+                    <div class="timeline-desc">转股价格正式调整为14.50元/股，次日生效</div>
+                </div>
+            </div>
+            <div class="case-data">
+                <div class="data-item">
+                    <div class="label">原转股价</div>
+                    <div class="value">16.25元</div>
+                </div>
+                <div class="data-item">
+                    <div class="label">新转股价</div>
+                    <div class="value">14.50元</div>
+                </div>
+                <div class="data-item">
+                    <div class="label">下修幅度</div>
+                    <div class="value">10.77%</div>
+                </div>
+                <div class="data-item">
+                    <div class="label">事件周期</div>
+                    <div class="value">45天</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 项目价值 -->
+    <section class="container value-section" id="value">
+        <h2 class="section-title">项目价值与应用场景</h2>
+        <div class="value-grid">
+            <div class="value-card fade-in">
+                <i class="fas fa-search"></i>
+                <h3>信息聚合</h3>
+                <p>汇聚全市场可转债事件，实时跟踪事件进展，不遗漏任何重要公告</p>
+            </div>
+            <div class="value-card fade-in">
+                <i class="fas fa-brain"></i>
+                <h3>智能抽取</h3>
+                <p>LLM驱动字段提取，25个结构化字段，证据原文追溯，确保数据准确</p>
+            </div>
+            <div class="value-card fade-in">
+                <i class="fas fa-calculator"></i>
+                <h3>量化分析</h3>
+                <p>下修幅度计算、赎回溢价率分析、事件周期统计，为投资决策提供依据</p>
+            </div>
+            <div class="value-card fade-in">
+                <i class="fas fa-lightbulb"></i>
+                <h3>投资决策</h3>
+                <p>识别潜在投资机会，评估条款影响，辅助投资者做出更明智的判断</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 技术架构 -->
+    <section class="container tech-section" id="tech">
+        <h2 class="section-title">技术实现架构</h2>
+        <div class="tech-flow fade-in">
+            <div class="tech-nodes">
+                <div class="tech-node">
+                    <i class="fas fa-globe"></i>
+                    <div>巨潮资讯网</div>
+                </div>
+                <div class="tech-arrow">→</div>
+                <div class="tech-node">
+                    <i class="fas fa-spider"></i>
+                    <div>智能爬虫</div>
+                </div>
+                <div class="tech-arrow">→</div>
+                <div class="tech-node">
+                    <i class="fas fa-file-pdf"></i>
+                    <div>PDF解析</div>
+                </div>
+                <div class="tech-arrow">→</div>
+                <div class="tech-node">
+                    <i class="fas fa-robot"></i>
+                    <div>LLM抽取</div>
+                </div>
+                <div class="tech-arrow">→</div>
+                <div class="tech-node">
+                    <i class="fas fa-link"></i>
+                    <div>事件匹配</div>
+                </div>
+                <div class="tech-arrow">→</div>
+                <div class="tech-node">
+                    <i class="fas fa-chart-bar"></i>
+                    <div>指标计算</div>
+                </div>
+            </div>
+            <div class="tech-stack">
+                <span class="tech-tag"><i class="fab fa-python"></i> Python</span>
+                <span class="tech-tag"><i class="fas fa-brain"></i> LLM</span>
+                <span class="tech-tag"><i class="fas fa-file-alt"></i> MinerU</span>
+                <span class="tech-tag"><i class="fas fa-check-circle"></i> Pydantic</span>
+                <span class="tech-tag"><i class="fas fa-table"></i> Pandas</span>
+                <span class="tech-tag"><i class="fas fa-chart-pie"></i> ECharts</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <p><i class="fas fa-database"></i> 数据来源：巨潮资讯网公开公告</p>
+        <p class="disclaimer"><i class="fas fa-exclamation-triangle"></i> 免责声明：本项目仅供学习研究，不构成任何投资建议</p>
+        <p style="margin-top: 1rem;">© 2024 可转债双事件智能跟踪系统</p>
+    </footer>
+
+    <script>
+        // 数字滚动动画
+        function animateNumbers() {
+            const numbers = document.querySelectorAll('.number[data-target]');
+            numbers.forEach(num => {
+                const target = parseInt(num.dataset.target);
+                const duration = 2000;
+                const step = target / (duration / 16);
+                let current = 0;
+
+                const updateNumber = () => {
+                    current += step;
+                    if (current < target) {
+                        num.textContent = Math.floor(current);
+                        requestAnimationFrame(updateNumber);
+                    } else {
+                        num.textContent = target;
+                    }
+                };
+
+                updateNumber();
+            });
+        }
+
+        // 滚动显示动画
+        function handleScroll() {
+            const elements = document.querySelectorAll('.fade-in');
+            elements.forEach(el => {
+                const rect = el.getBoundingClientRect();
+                if (rect.top < window.innerHeight * 0.8) {
+                    el.classList.add('visible');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', handleScroll);
+        window.addEventListener('load', () => {
+            handleScroll();
+            animateNumbers();
+        });
+
+        // ECharts图表
+        document.addEventListener('DOMContentLoaded', function() {
+            // 饼图 - 公告类型分布
+            const pieChart = echarts.init(document.getElementById('pieChart'));
+            pieChart.setOption({
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{b}: {c} ({d}%)'
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: 'left',
+                    textStyle: { color: '#eaeaea' }
+                },
+                series: [{
+                    type: 'pie',
+                    radius: ['40%', '70%'],
+                    avoidLabelOverlap: false,
+                    itemStyle: {
+                        borderRadius: 10,
+                        borderColor: '#1a1a2e',
+                        borderWidth: 2
+                    },
+                    label: {
+                        show: true,
+                        color: '#eaeaea'
+                    },
+                    data: [
+                        { value: 395, name: '强赎结果', itemStyle: { color: '#e94560' } },
+                        { value: 272, name: '下修触发提示', itemStyle: { color: '#667eea' } },
+                        { value: 246, name: '下修实施', itemStyle: { color: '#764ba2' } },
+                        { value: 192, name: '强赎触发提示', itemStyle: { color: '#f093fb' } },
+                        { value: 48, name: '强赎决议', itemStyle: { color: '#f5576c' } },
+                        { value: 12, name: '下修提议', itemStyle: { color: '#4facfe' } },
+                        { value: 5, name: '强赎实施', itemStyle: { color: '#43e97b' } },
+                        { value: 1, name: '下修决议', itemStyle: { color: '#38f9d7' } }
+                    ]
+                }]
+            });
+
+            // 柱状图 - 公告数量对比
+            const barChart = echarts.init(document.getElementById('barChart'));
+            barChart.setOption({
+                tooltip: { trigger: 'axis' },
+                xAxis: {
+                    type: 'category',
+                    data: ['下修相关', '强赎相关'],
+                    axisLabel: { color: '#eaeaea' },
+                    axisLine: { lineStyle: { color: '#eaeaea' } }
+                },
+                yAxis: {
+                    type: 'value',
+                    axisLabel: { color: '#eaeaea' },
+                    axisLine: { lineStyle: { color: '#eaeaea' } },
+                    splitLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } }
+                },
+                series: [{
+                    type: 'bar',
+                    data: [
+                        {
+                            value: 531,
+                            itemStyle: {
+                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                    { offset: 0, color: '#667eea' },
+                                    { offset: 1, color: '#764ba2' }
+                                ])
+                            }
+                        },
+                        {
+                            value: 640,
+                            itemStyle: {
+                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                    { offset: 0, color: '#e94560' },
+                                    { offset: 1, color: '#f5576c' }
+                                ])
+                            }
+                        }
+                    ],
+                    barWidth: '50%',
+                    itemStyle: { borderRadius: [10, 10, 0, 0] }
+                }]
+            });
+
+            // 仪表盘 - 事件链完成度
+            const gaugeChart = echarts.init(document.getElementById('gaugeChart'));
+            gaugeChart.setOption({
+                series: [{
+                    type: 'gauge',
+                    startAngle: 200,
+                    endAngle: -20,
+                    min: 0,
+                    max: 100,
+                    splitNumber: 10,
+                    itemStyle: {
+                        color: '#e94560'
+                    },
+                    progress: {
+                        show: true,
+                        width: 20
+                    },
+                    pointer: {
+                        show: false
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            width: 20,
+                            color: [[1, '#1f1f3d']]
+                        }
+                    },
+                    axisTick: { show: false },
+                    splitLine: { show: false },
+                    axisLabel: { show: false },
+                    anchor: { show: false },
+                    title: {
+                        show: true,
+                        offsetCenter: [0, '40%'],
+                        color: '#eaeaea',
+                        fontSize: 14
+                    },
+                    detail: {
+                        valueAnimation: true,
+                        fontSize: 36,
+                        fontWeight: 'bold',
+                        offsetCenter: [0, '-10%'],
+                        formatter: '{value}%',
+                        color: '#e94560'
+                    },
+                    data: [{
+                        value: 35,
+                        name: '完整事件链占比'
+                    }]
+                }]
+            });
+
+            // 折线图 - 事件类型时间分布
+            const lineChart = echarts.init(document.getElementById('lineChart'));
+            lineChart.setOption({
+                tooltip: { trigger: 'axis' },
+                legend: {
+                    data: ['下修事件', '强赎事件'],
+                    textStyle: { color: '#eaeaea' }
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: ['2024-01', '2024-02', '2024-03', '2024-04', '2024-05', '2024-06'],
+                    axisLabel: { color: '#eaeaea' },
+                    axisLine: { lineStyle: { color: '#eaeaea' } }
+                },
+                yAxis: {
+                    type: 'value',
+                    axisLabel: { color: '#eaeaea' },
+                    axisLine: { lineStyle: { color: '#eaeaea' } },
+                    splitLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } }
+                },
+                series: [
+                    {
+                        name: '下修事件',
+                        type: 'line',
+                        smooth: true,
+                        data: [45, 52, 68, 55, 48, 62],
+                        lineStyle: { color: '#667eea', width: 3 },
+                        areaStyle: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                { offset: 0, color: 'rgba(102, 126, 234, 0.5)' },
+                                { offset: 1, color: 'rgba(102, 126, 234, 0.1)' }
+                            ])
+                        }
+                    },
+                    {
+                        name: '强赎事件',
+                        type: 'line',
+                        smooth: true,
+                        data: [58, 72, 65, 78, 85, 92],
+                        lineStyle: { color: '#e94560', width: 3 },
+                        areaStyle: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                { offset: 0, color: 'rgba(233, 69, 96, 0.5)' },
+                                { offset: 1, color: 'rgba(233, 69, 96, 0.1)' }
+                            ])
+                        }
+                    }
+                ]
+            });
+
+            // 响应式
+            window.addEventListener('resize', function() {
+                pieChart.resize();
+                barChart.resize();
+                gaugeChart.resize();
+                lineChart.resize();
+            });
+        });
+    </script>
+</body>
+</html>
