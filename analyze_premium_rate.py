@@ -1,0 +1,77 @@
+import pandas as pd
+import os
+
+print("=" * 70)
+print("赎回溢价率计算分析")
+print("=" * 70)
+
+df = pd.read_csv('outputs/event_chain/event_chains.csv')
+
+print("\n1. 当前公式分析")
+print("-" * 50)
+print("当前代码公式（简化版）:")
+print("   premium_rate = (redemption_price - 100) / 100 * 100")
+print("   假设: 转股价值 = 100（可转债面值）")
+print()
+print("理论公式（精确版）:")
+print("   转股价值 = 当前股价 / 转股价格 * 100")
+print("   赎回溢价率 = (赎回价格 - 转股价值) / 转股价值 * 100%")
+print()
+
+print("\n2. 当前数据可用性")
+print("-" * 50)
+
+has_redemption_price = df['redemption_price'].notna().sum()
+has_conv_price = df['new_conv_price'].notna().sum()
+
+print(f"有赎回价格的记录: {has_redemption_price} 条")
+print(f"有转股价格的记录: {has_conv_price} 条")
+
+valid_for_calc = df[(df['redemption_price'].notna()) & (df['new_conv_price'].notna())]
+print(f"同时有两者的记录: {len(valid_for_calc)} 条")
+
+print("\n3. 缺失的数据")
+print("-" * 50)
+print("要精确计算赎回溢价率，还需要:")
+print("   ✅ 转股价格（已有）")
+print("   ❌ 当前股价（需要新增）")
+print("   ❌ 股票交易日期（需要新增）")
+print()
+print("当前数据缺失:")
+print("   - 股票行情数据接口/API")
+print("   - 股价字段（stock_price）")
+print("   - 股价获取日期（price_date）")
+
+print("\n4. 数据需求评估")
+print("-" * 50)
+print("如果要精确计算，需要补充:")
+print("   1. 股票行情数据（可通过tushare/akshare获取）")
+print("   2. 每个强赎公告对应的股价")
+print("   3. 股价获取时间（通常是公告发布前一交易日）")
+
+print("\n5. 建议方案")
+print("-" * 50)
+print("方案A: 使用简化公式（当前）")
+print("   优点: 无需额外数据，计算简单")
+print("   缺点: 不够精确")
+print()
+print("方案B: 获取真实股价")
+print("   优点: 计算精确，符合理论公式")
+print("   缺点: 需要接入股票数据API，增加复杂度")
+print()
+print("方案C: 混合方案")
+print("   有股价数据时用精确公式")
+print("   无股价数据时用简化公式")
+
+print("\n" + "=" * 70)
+print("结论")
+print("=" * 70)
+print("\n如果使用真实股价计算赎回溢价率，**需要补充数据**:")
+print("   1. 股票行情API（如tushare、akshare）")
+print("   2. 每个强赎公告对应的股票价格")
+print("   3. 股价对应的日期")
+print()
+print("当前可用数据:")
+print(f"   强赎相关记录: {len(df[df['event_type'] == 'redemption'])} 条")
+print(f"   有赎回价的记录: {has_redemption_price} 条")
+print(f"   有转股价的记录: {has_conv_price} 条")
