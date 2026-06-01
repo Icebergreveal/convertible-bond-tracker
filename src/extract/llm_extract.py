@@ -40,8 +40,13 @@ class LLMClient:
         return None
 
 def load_extract_prompt() -> str:
+    optimized_path = "src/extract/extract_prompt_optimized.txt"
     prompt_path = "src/extract/extract_prompt.txt"
-    if os.path.exists(prompt_path):
+    
+    if os.path.exists(optimized_path):
+        with open(optimized_path, 'r', encoding='utf-8') as f:
+            return f.read()
+    elif os.path.exists(prompt_path):
         with open(prompt_path, 'r', encoding='utf-8') as f:
             return f.read()
     return get_default_prompt()

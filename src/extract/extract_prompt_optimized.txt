@@ -1,0 +1,91 @@
+你是金融公告结构化抽取专家。请从以下可转债公告内容中提取关键信息。
+
+## 任务要求
+- 只根据输入文本抽取字段，不编造信息
+- 不确定或文本中不存在时输出 null
+- 每个关键字段必须提供 evidence_text，必须是原文片段
+- 日期格式统一为 YYYY-MM-DD
+- 价格保留2位小数
+- 输出必须是合法 JSON
+- 仔细查找文本中所有数字信息，特别是价格数据
+
+## 公告类型
+{{ann_type}}
+
+## 输入文本
+{{content}}
+
+## 输出字段
+
+### 公共字段（所有公告）
+- doc_id: 文档唯一标识（系统自动生成，此处填null）
+- stock_code: 股票代码（6位数字）
+- stock_name: 股票名称
+- bond_code: 可转债代码（6位数字，通常以11、12开头）
+- bond_name: 可转债名称（通常以"转债"结尾）
+- ann_type: 公告类型
+- publish_date: 公告发布日期
+- evidence_page: 证据所在页码
+- evidence_text: 支持字段判断的公告原文片段，必须包含关键数字和日期
+- notes: 备注信息
+
+### 下修类公告专属字段
+- trigger_rule: 转股价下修的市场价格触发条件（原文，如"连续30个交易日中有15个交易日收盘价低于转股价的85%"）
+- original_conv_price: 修正前转股价格（数字，单位：元/股）
+- new_conv_price: 修正后转股价格（数字，单位：元/股）
+- pricing_base_date: 定价基准日（YYYY-MM-DD格式）
+- avg_price_20d: 前20个交易日均价（数字，仔细查找类似"前20个交易日均价XX元"或"二十个交易日均价XX元"的内容）
+- avg_price_1d: 前1个交易日均价（数字，仔细查找类似"前一交易日均价XX元"或"前1个交易日均价XX元"的内容）
+- effective_date: 调整生效日期（YYYY-MM-DD格式）
+- adjustment_ratio: 下修幅度百分比（数字，如25.5表示25.5%）
+- adjustment_type: 调整类型（主动下修/被动调整）
+
+### 强赎类公告专属字段
+- redemption_trigger: 赎回触发条件描述（原文，如"连续30个交易日收盘价不低于转股价的130%"）
+- redemption_price: 赎回价格（数字，通常包含利息，如105.5表示每张105.5元）
+- record_date: 股权登记日期（YYYY-MM-DD格式）
+- last_convert_date: 最后转股日期（YYYY-MM-DD格式）
+- delisting_date: 摘牌日期（YYYY-MM-DD格式）
+- premium_rate: 赎回溢价率（数字，百分比形式）
+
+## 提取技巧
+1. **价格识别**: 注意查找包含"元"、"均价"、"收盘价"、"价格"等关键词附近的数字
+2. **日期识别**: 注意查找包含"年"、"月"、"日"的日期格式，转换为YYYY-MM-DD
+3. **证据文本**: 必须包含提取到的具体数字，如"修正后的转股价格为12.50元/股"
+4. **均价查找位置**: 通常在"定价基准日"、"转股价格调整"、"向下修正"等段落中
+
+## 常见价格表述模式（仔细查找）
+- "前二十个交易日公司股票交易均价为【X.X】元"
+- "前一交易日公司股票交易均价为【X.X】元"
+- "定价基准日前20个交易日均价【X.X】元"
+- "截至【日期】，公司股票收盘价【X.X】元"
+- "转股价格调整为【X.X】元/股"
+
+## 输出格式
+{
+  "doc_id": null,
+  "stock_code": "",
+  "stock_name": "",
+  "bond_code": null,
+  "bond_name": null,
+  "ann_type": "",
+  "publish_date": null,
+  "evidence_page": null,
+  "evidence_text": "",
+  "notes": null,
+  "trigger_rule": null,
+  "original_conv_price": null,
+  "new_conv_price": null,
+  "pricing_base_date": null,
+  "avg_price_20d": null,
+  "avg_price_1d": null,
+  "effective_date": null,
+  "adjustment_ratio": null,
+  "adjustment_type": null,
+  "redemption_trigger": null,
+  "redemption_price": null,
+  "record_date": null,
+  "last_convert_date": null,
+  "delisting_date": null,
+  "premium_rate": null
+}

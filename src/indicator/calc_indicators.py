@@ -55,8 +55,26 @@ def calculate_indicators(input_path: str = "outputs/event_chain/event_chains.csv
             result['adjustment_ratio_check'] = ''
         
         if redemption_price is not None and redemption_price > 0:
-            premium_rate = round((redemption_price - 100) / 100 * 100, 2)
-            result['premium_rate_calc'] = premium_rate
+            try:
+                avg_price_1d = float(record.get('avg_price_1d')) if record.get('avg_price_1d') else None
+                conv_price = float(record.get('new_conv_price')) if record.get('new_conv_price') else None
+                
+                if avg_price_1d is not None and avg_price_1d > 0 and conv_price is not None and conv_price > 0:
+                    conversion_value = round(avg_price_1d / conv_price * 100, 2)
+                    premium_rate = round((redemption_price - conversion_value) / conversion_value * 100, 2)
+                    result['premium_rate_calc'] = premium_rate
+                    result['conversion_value'] = conversion_value
+                    result['calc_method'] = '精确计算(使用avg_price_1d)'
+                else:
+                    premium_rate = round((redemption_price - 100) / 100 * 100, 2)
+                    result['premium_rate_calc'] = premium_rate
+                    result['conversion_value'] = 100
+                    result['calc_method'] = '简化计算(假设转股价值=100)'
+            except (ValueError, TypeError):
+                premium_rate = round((redemption_price - 100) / 100 * 100, 2)
+                result['premium_rate_calc'] = premium_rate
+                result['conversion_value'] = 100
+                result['calc_method'] = '简化计算(假设转股价值=100)'
             
             existing_premium = float(record.get('premium_rate')) if record.get('premium_rate') else None
             if existing_premium is not None:
@@ -65,6 +83,8 @@ def calculate_indicators(input_path: str = "outputs/event_chain/event_chains.csv
                 result['premium_rate_check'] = 'NO_EXISTING'
         else:
             result['premium_rate_calc'] = ''
+            result['conversion_value'] = ''
+            result['calc_method'] = ''
             result['premium_rate_check'] = ''
         
         try:
