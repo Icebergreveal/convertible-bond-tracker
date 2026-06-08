@@ -13,7 +13,6 @@ __pycache__/
 # 数据文件（大文件不提交）
 data/pdf/
 data/parsed/
-outputs/
 
 # 日志文件
 logs/

@@ -1,0 +1,93 @@
+{
+  "report_time": "2026-05-25T16:26:45.533708",
+  "summary": {
+    "total_records": 3,
+    "total_errors": 0,
+    "error_rate": 0.0,
+    "data_source": "outputs/extract_results/structured_data.json"
+  },
+  "field_completeness": {
+    "doc_id": {
+      "filled": 3,
+      "total": 3,
+      "rate": 100.0
+    },
+    "stock_code": {
+      "filled": 3,
+      "total": 3,
+      "rate": 100.0
+    },
+    "stock_name": {
+      "filled": 3,
+      "total": 3,
+      "rate": 100.0
+    },
+    "bond_code": {
+      "filled": 3,
+      "total": 3,
+      "rate": 100.0
+    },
+    "bond_name": {
+      "filled": 3,
+      "total": 3,
+      "rate": 100.0
+    },
+    "ann_type": {
+      "filled": 3,
+      "total": 3,
+      "rate": 100.0
+    },
+    "publish_date": {
+      "filled": 3,
+      "total": 3,
+      "rate": 100.0
+    },
+    "original_conv_price": {
+      "filled": 3,
+      "total": 3,
+      "rate": 100.0
+    },
+    "new_conv_price": {
+      "filled": 0,
+      "total": 3,
+      "rate": 0.0
+    },
+    "redemption_price": {
+      "filled": 0,
+      "total": 3,
+      "rate": 0.0
+    },
+    "effective_date": {
+      "filled": 0,
+      "total": 3,
+      "rate": 0.0
+    },
+    "evidence_page": {
+      "filled": 3,
+      "total": 3,
+      "rate": 100.0
+    },
+    "evidence_text": {
+      "filled": 3,
+      "total": 3,
+      "rate": 100.0
+    }
+  },
+  "data_quality": {
+    "valid_date_format": 3,
+    "invalid_date_format": 0,
+    "valid_numeric": 3,
+    "invalid_numeric": 0,
+    "abnormal_prices": 0
+  },
+  "event_coverage": {
+    "董事会提议向下修正转股价格公告": 1,
+    "触发转股价格向下修正条件的提示性公告": 2
+  },
+  "validation_errors": [],
+  "recommendations": [
+    "字段 new_conv_price 填充率仅 0.0%，建议优化抽取prompt或增加样本",
+    "字段 redemption_price 填充率仅 0.0%，建议优化抽取prompt或增加样本",
+    "字段 effective_date 填充率仅 0.0%，建议优化抽取prompt或增加样本"
+  ]
+}

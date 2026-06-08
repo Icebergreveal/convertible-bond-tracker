@@ -1,0 +1,2 @@
+bond_code,bond_name,event_type,complete,nodes,missing_nodes,trigger_date,proposal_date,resolution_date,implementation_date,total_days,cycle_status,original_conv_price,new_conv_price,adjustment_ratio,redemption_price,premium_rate,notes,adjustment_ratio_calc,adjustment_ratio_check,premium_rate_calc,premium_rate_check,cycle_check
+128130,龙大转债,adjustment,False,proposal,"trigger,resolution,implementation",,2026-05-07,,,,NORMAL,12.34,9.87,20.02,,,,20.02,OK,,,
