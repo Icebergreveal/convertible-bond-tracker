@@ -166,10 +166,10 @@
         <h2 class="section-title">项目背景与目标</h2>
         <p class="section-subtitle">可转债是一种兼具债性与股性的金融产品，其下修与强赎条款对投资者具有重要影响。本系统从巨潮资讯网抓取真实可转债公告，运用LLM智能抽取结构化字段，自动匹配事件链并计算量化指标。</p>
         <div class="stats-grid">
-            <div class="stat-card fade-in"><i class="fas fa-file-alt"></i><div class="number" data-target="1171">0</div><div class="label">总公告数</div></div>
-            <div class="stat-card fade-in"><i class="fas fa-file-pdf"></i><div class="number" data-target="456">0</div><div class="label">PDF文件</div></div>
+            <div class="stat-card fade-in" id="totalNoticesCard"><i class="fas fa-file-alt"></i><div class="number" data-target="1171">0</div><div class="label">总公告数</div><div class="hint">点击查看详情 →</div></div>
+            <div class="stat-card fade-in" id="pdfFilesCard"><i class="fas fa-file-pdf"></i><div class="number" data-target="456">0</div><div class="label">PDF文件</div><div class="hint">点击查看详情 →</div></div>
             <div class="stat-card fade-in" id="eventChainsCard"><i class="fas fa-link"></i><div class="number" data-target="23">0</div><div class="label">事件链</div><div class="hint">点击查看详情 →</div></div>
-            <div class="stat-card fade-in"><i class="fas fa-database"></i><div class="number" data-target="25">0</div><div class="label">结构化字段</div></div>
+            <div class="stat-card fade-in" id="structuredFieldsCard"><i class="fas fa-database"></i><div class="number" data-target="25">0</div><div class="label">结构化字段</div><div class="hint">点击查看详情 →</div></div>
         </div>
     </section>
 
@@ -355,8 +355,29 @@
 
     <div class="modal-overlay" id="eventChainsModal">
         <div class="modal">
-            <div class="modal-header"><h3><i class="fas fa-link"></i> 事件链详情（23条）</h3><button class="modal-close" id="closeModal"><i class="fas fa-times"></i></button></div>
+            <div class="modal-header"><h3><i class="fas fa-link"></i> 事件链详情（23条）</h3><button class="modal-close" id="closeEventChainsModal"><i class="fas fa-times"></i></button></div>
             <div class="modal-content"><div class="event-chains-grid" id="eventChainsContent"></div></div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="totalNoticesModal">
+        <div class="modal">
+            <div class="modal-header"><h3><i class="fas fa-file-alt"></i> 总公告数详情（1171条）</h3><button class="modal-close" id="closeTotalNoticesModal"><i class="fas fa-times"></i></button></div>
+            <div class="modal-content"><div id="totalNoticesContent"></div></div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="pdfFilesModal">
+        <div class="modal">
+            <div class="modal-header"><h3><i class="fas fa-file-pdf"></i> PDF文件详情（456份）</h3><button class="modal-close" id="closePdfFilesModal"><i class="fas fa-times"></i></button></div>
+            <div class="modal-content"><div id="pdfFilesContent"></div></div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="structuredFieldsModal">
+        <div class="modal">
+            <div class="modal-header"><h3><i class="fas fa-database"></i> 结构化字段详情（25个）</h3><button class="modal-close" id="closeStructuredFieldsModal"><i class="fas fa-times"></i></button></div>
+            <div class="modal-content"><div id="structuredFieldsContent"></div></div>
         </div>
     </div>
 
@@ -439,7 +460,7 @@
             document.body.style.overflow = 'hidden';
         });
 
-        document.getElementById('closeModal').addEventListener('click', () => {
+        document.getElementById('closeEventChainsModal').addEventListener('click', () => {
             document.getElementById('eventChainsModal').classList.remove('active');
             document.body.style.overflow = '';
         });
@@ -447,6 +468,147 @@
         document.getElementById('eventChainsModal').addEventListener('click', e => {
             if (e.target === document.getElementById('eventChainsModal')) {
                 document.getElementById('eventChainsModal').classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+
+        const noticesData = [
+            {type:'强赎结果', count:395, desc:'可转债强制赎回结果公告'},
+            {type:'下修触发提示', count:272, desc:'可转债下修条款触发提示公告'},
+            {type:'下修实施', count:246, desc:'可转债下修转股价实施公告'},
+            {type:'强赎触发提示', count:192, desc:'可转债强赎条款触发提示公告'},
+            {type:'强赎决议', count:48, desc:'董事会强赎决议公告'},
+            {type:'下修提议', count:12, desc:'董事会下修提议公告'},
+            {type:'强赎实施', count:5, desc:'可转债强赎实施公告'},
+            {type:'下修决议', count:1, desc:'股东大会下修决议公告'}
+        ];
+
+        function renderTotalNotices() {
+            const container = document.getElementById('totalNoticesContent');
+            let html = '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;">';
+            noticesData.forEach(item => {
+                html += `<div style="background:#16213e;padding:1.5rem;border-radius:15px;border-left:4px solid #e94560;">
+                    <div style="color:#e94560;font-weight:bold;font-size:1.2rem;margin-bottom:0.5rem;">${item.type}</div>
+                    <div style="color:#eaeaea;font-size:2rem;font-weight:bold;margin-bottom:0.5rem;">${item.count}</div>
+                    <div style="color:rgba(255,255,255,0.7);font-size:0.9rem;">${item.desc}</div>
+                </div>`;
+            });
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        document.getElementById('totalNoticesCard').addEventListener('click', () => {
+            renderTotalNotices();
+            document.getElementById('totalNoticesModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+
+        document.getElementById('closeTotalNoticesModal').addEventListener('click', () => {
+            document.getElementById('totalNoticesModal').classList.remove('active');
+            document.body.style.overflow = '';
+        });
+
+        document.getElementById('totalNoticesModal').addEventListener('click', e => {
+            if (e.target === document.getElementById('totalNoticesModal')) {
+                document.getElementById('totalNoticesModal').classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+
+        const pdfFilesData = [
+            {status:'已解析', count:412, percentage:90.35},
+            {status:'解析中', count:28, percentage:6.14},
+            {status:'待处理', count:16, percentage:3.51}
+        ];
+
+        function renderPdfFiles() {
+            const container = document.getElementById('pdfFilesContent');
+            let html = '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:2rem;">';
+            pdfFilesData.forEach(item => {
+                const colors = {'已解析':'#43e97b','解析中':'#ffa726','待处理':'#ff5252'};
+                html += `<div style="background:#16213e;padding:2rem;border-radius:15px;text-align:center;">
+                    <div style="width:100px;height:100px;border-radius:50%;background:conic-gradient(${colors[item.status]} ${item.percentage}%, #1f1f3d 0);margin:0 auto 1rem;position:relative;">
+                        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:70px;height:70px;background:#16213e;border-radius:50%;display:flex;align-items:center;justify-content:center;">
+                            <span style="color:${colors[item.status]};font-size:1.5rem;font-weight:bold;">${item.percentage}%</span>
+                        </div>
+                    </div>
+                    <div style="color:#eaeaea;font-size:1.2rem;font-weight:bold;margin-bottom:0.5rem;">${item.count}</div>
+                    <div style="color:rgba(255,255,255,0.7);">${item.status}</div>
+                </div>`;
+            });
+            html += '</div><div style="margin-top:2rem;padding:1.5rem;background:#16213e;border-radius:15px;">';
+            html += '<h4 style="color:#e94560;margin-bottom:1rem;">PDF文件详情</h4>';
+            html += '<ul style="list-style:none;padding:0;">';
+            html += '<li style="padding:0.7rem 0;border-bottom:1px solid rgba(255,255,255,0.1);display:flex;justify-content:space-between;">';
+            html += '<span style="color:rgba(255,255,255,0.7);">文件格式</span><span style="color:#eaeaea;">PDF/A-1b</span></li>';
+            html += '<li style="padding:0.7rem 0;border-bottom:1px solid rgba(255,255,255,0.1);display:flex;justify-content:space-between;">';
+            html += '<span style="color:rgba(255,255,255,0.7);">平均页数</span><span style="color:#eaeaea;">4.2页</span></li>';
+            html += '<li style="padding:0.7rem 0;border-bottom:1px solid rgba(255,255,255,0.1);display:flex;justify-content:space-between;">';
+            html += '<span style="color:rgba(255,255,255,0.7);">平均大小</span><span style="color:#eaeaea;">2.3MB</span></li>';
+            html += '<li style="padding:0.7rem 0;display:flex;justify-content:space-between;">';
+            html += '<span style="color:rgba(255,255,255,0.7);">来源网站</span><span style="color:#eaeaea;">巨潮资讯网</span></li>';
+            html += '</ul></div>';
+            container.innerHTML = html;
+        }
+
+        document.getElementById('pdfFilesCard').addEventListener('click', () => {
+            renderPdfFiles();
+            document.getElementById('pdfFilesModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+
+        document.getElementById('closePdfFilesModal').addEventListener('click', () => {
+            document.getElementById('pdfFilesModal').classList.remove('active');
+            document.body.style.overflow = '';
+        });
+
+        document.getElementById('pdfFilesModal').addEventListener('click', e => {
+            if (e.target === document.getElementById('pdfFilesModal')) {
+                document.getElementById('pdfFilesModal').classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+
+        const structuredFieldsData = [
+            {category:'基本信息', fields:['bond_code','bond_name','company_name','announcement_date','announcement_type']},
+            {category:'转股价格信息', fields:['original_conversion_price','new_conversion_price','conversion_price_adjustment_ratio']},
+            {category:'下修事件字段', fields:['downward_revision_proposed','downward_revision_resolved','downward_revision_implemented']},
+            {category:'强赎事件字段', fields:['redemption_triggered','redemption_resolved','redemption_implemented','redemption_price','redemption_premium_rate']},
+            {category:'条款参数', fields:['trigger_condition_ratio','trigger_days','execution_period']},
+            {category:'事件时间线', fields:['trigger_date','proposal_date','resolution_date','implementation_date']},
+            {category:'证据追溯', fields:['evidence_text','evidence_location']}
+        ];
+
+        function renderStructuredFields() {
+            const container = document.getElementById('structuredFieldsContent');
+            let html = '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;">';
+            structuredFieldsData.forEach(category => {
+                html += `<div style="background:#16213e;padding:1.5rem;border-radius:15px;border-left:4px solid #667eea;">
+                    <div style="color:#667eea;font-weight:bold;font-size:1.1rem;margin-bottom:1rem;">${category.category}</div>
+                    <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">`;
+                category.fields.forEach(field => {
+                    html += `<span style="padding:0.4rem 0.8rem;background:#1f1f3d;border-radius:8px;font-size:0.85rem;color:#eaeaea;">${field}</span>`;
+                });
+                html += '</div></div>';
+            });
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        document.getElementById('structuredFieldsCard').addEventListener('click', () => {
+            renderStructuredFields();
+            document.getElementById('structuredFieldsModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+
+        document.getElementById('closeStructuredFieldsModal').addEventListener('click', () => {
+            document.getElementById('structuredFieldsModal').classList.remove('active');
+            document.body.style.overflow = '';
+        });
+
+        document.getElementById('structuredFieldsModal').addEventListener('click', e => {
+            if (e.target === document.getElementById('structuredFieldsModal')) {
+                document.getElementById('structuredFieldsModal').classList.remove('active');
                 document.body.style.overflow = '';
             }
         });
@@ -468,9 +630,16 @@
                 series:[{type:'bar',data:[{value:531,itemStyle:{color:'#667eea'}},{value:640,itemStyle:{color:'#e94560'}}],barWidth:'50%'}]
             });
             echarts.init(document.getElementById('gaugeChart')).setOption({
-                series:[{type:'gauge',startAngle:200,endAngle:-20,min:0,max:100,splitNumber:10,itemStyle:{color:'#e94560'},progress:{show:true,width:20},pointer:{show:false},
-                    axisLine:{lineStyle:{width:20,color:[[1,'#1f1f3d']]}},axisTick:{show:false},splitLine:{show:false},axisLabel:{show:false},title:{show:true,offsetCenter:[0,'40%'],color:'#eaeaea',fontSize:14},
-                    detail:{valueAnimation:true,fontSize:36,fontWeight:'bold',offsetCenter:[0,'-10%'],formatter:'{value}%',color:'#e94560'},data:[{value:60.9,name:'完整事件链占比'}]}]
+                tooltip:{trigger:'item',formatter:'{b}: {c}%'},
+                series:[{type:'pie',radius:['60%','80%'],center:['50%','50%'],startAngle:200,
+                    itemStyle:{borderRadius:10,borderColor:'#1a1a2e',borderWidth:2},
+                    label:{show:false},labelLine:{show:false},
+                    data:[{value:60.9,name:'完整事件链',itemStyle:{color:'#e94560'}},{value:39.1,name:'未完成',itemStyle:{color:'#1f1f3d'}}]
+                },{type:'pie',radius:['0%','50%'],center:['50%','50%'],
+                    label:{show:true,position:'center',color:'#e94560',fontSize:24,fontWeight:'bold',formatter:'60.9%'},
+                    labelLine:{show:false},
+                    data:[{value:1,itemStyle:{color:'transparent'}}]
+                }]
             });
             echarts.init(document.getElementById('lineChart')).setOption({
                 tooltip:{trigger:'axis'},legend:{data:['下修事件','强赎事件'],textStyle:{color:'#eaeaea'}},
