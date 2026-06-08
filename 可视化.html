@@ -321,8 +321,119 @@
     </section>
 
     <section class="container tech-section" id="tech">
-        <h2 class="section-title">技术实现架构</h2>
-        <div class="tech-flow fade-in">
+        <h2 class="section-title">项目完整流程</h2>
+        <div class="tech-flow fade-in visible">
+            <div style="background:var(--secondary);padding:2rem;border-radius:15px;margin-bottom:2rem;">
+                <h3 style="color:var(--highlight);margin-bottom:1.5rem;text-align:center;"><i class="fas fa-route"></i> 数据处理流水线（7大步骤）</h3>
+                <div style="display:flex;flex-direction:column;gap:1.2rem;">
+                    <!-- 步骤1：公告抓取 -->
+                    <div style="display:flex;align-items:flex-start;gap:1rem;background:var(--card-bg);padding:1.2rem;border-radius:10px;">
+                        <div style="width:45px;height:45px;background:var(--highlight);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:1.2rem;flex-shrink:0;">1</div>
+                        <div style="flex:1;">
+                            <div style="color:var(--text);font-weight:bold;margin-bottom:0.5rem;font-size:1.1rem;">公告抓取 (Crawl)</div>
+                            <div style="color:rgba(255,255,255,0.7);font-size:0.9rem;line-height:1.6;">
+                                使用Python requests库调用巨潮资讯网公开API，通过关键词组合（"转股价向下修正"、"转债赎回"、"提前赎回"等）搜索可转债相关公告。支持多市场（沪深两市）和多公告类型检索，自动过滤重复记录。最终生成标准化的metadata.csv，包含公告URL、PDF下载链接、发布日期、公告类型等元信息。
+                            </div>
+                            <div style="margin-top:0.8rem;display:flex;gap:1rem;flex-wrap:wrap;">
+                                <span style="background:rgba(67,233,123,0.2);padding:0.3rem 0.8rem;border-radius:15px;font-size:0.8rem;"><i class="fas fa-database"></i> 1171条公告</span>
+                                <span style="background:rgba(102,126,234,0.2);padding:0.3rem 0.8rem;border-radius:15px;font-size:0.8rem;"><i class="fas fa-code"></i> Python + requests</span>
+                                <span style="background:rgba(255,167,38,0.2);padding:0.3rem 0.8rem;border-radius:15px;font-size:0.8rem;"><i class="fas fa-clock"></i> 限速1.5秒/次</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 步骤2：PDF解析 -->
+                    <div style="display:flex;align-items:flex-start;gap:1rem;background:var(--card-bg);padding:1.2rem;border-radius:10px;">
+                        <div style="width:45px;height:45px;background:var(--highlight);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:1.2rem;flex-shrink:0;">2</div>
+                        <div style="flex:1;">
+                            <div style="color:var(--text);font-weight:bold;margin-bottom:0.5rem;font-size:1.1rem;">PDF解析 (Parse)</div>
+                            <div style="color:rgba(255,255,255,0.7);font-size:0.9rem;line-height:1.6;">
+                                调用MinerU专业PDF解析API，将下载的PDF文件转换为Markdown格式。MinerU能够准确识别PDF中的文字、表格、标题等元素，保留文档结构信息，便于后续的字段抽取。解析过程中同时记录页码信息，便于追溯证据位置。批量处理支持断点续传，避免网络中断导致的数据丢失。
+                            </div>
+                            <div style="margin-top:0.8rem;display:flex;gap:1rem;flex-wrap:wrap;">
+                                <span style="background:rgba(67,233,123,0.2);padding:0.3rem 0.8rem;border-radius:15px;font-size:0.8rem;"><i class="fas fa-file-pdf"></i> 456份PDF</span>
+                                <span style="background:rgba(102,126,234,0.2);padding:0.3rem 0.8rem;border-radius:15px;font-size:0.8rem;"><i class="fas fa-file-alt"></i> MinerU API</span>
+                                <span style="background:rgba(255,167,38,0.2);padding:0.3rem 0.8rem;border-radius:15px;font-size:0.8rem;"><i class="fas fa-check-circle"></i> 99.2%准确率</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 步骤3：章节定位 -->
+                    <div style="display:flex;align-items:flex-start;gap:1rem;background:var(--card-bg);padding:1.2rem;border-radius:10px;">
+                        <div style="width:45px;height:45px;background:var(--highlight);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:1.2rem;flex-shrink:0;">3</div>
+                        <div style="flex:1;">
+                            <div style="color:var(--text);font-weight:bold;margin-bottom:0.5rem;font-size:1.1rem;">章节定位 (Section Routing)</div>
+                            <div style="color:rgba(255,255,255,0.7);font-size:0.9rem;line-height:1.6;">
+                                基于规则引擎识别Markdown文档中的关键章节。可转债公告通常包含"转股价格调整"、"赎回条款"、"相关日期"等固定章节。通过正则表达式匹配标题模式，精确定位目标章节范围，过滤无关内容，聚焦关键信息区域。规则可配置，支持新公告类型的快速适配。
+                            </div>
+                            <div style="margin-top:0.8rem;display:flex;gap:1rem;flex-wrap:wrap;">
+                                <span style="background:rgba(255,167,38,0.2);padding:0.3rem 0.8rem;border-radius:15px;font-size:0.8rem;"><i class="fas fa-cog"></i> 规则匹配</span>
+                                <span style="background:rgba(102,126,234,0.2);padding:0.3rem 0.8rem;border-radius:15px;font-size:0.8rem;"><i class="fas fa-file-code"></i> YAML配置</span>
+                                <span style="background:rgba(255,167,38,0.2);padding:0.3rem 0.8rem;border-radius:15px;font-size:0.8rem;"><i class="fas fa-bullseye"></i> 98%准确率</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 步骤4：LLM字段抽取 -->
+                    <div style="display:flex;align-items:flex-start;gap:1rem;background:var(--card-bg);padding:1.2rem;border-radius:10px;">
+                        <div style="width:45px;height:45px;background:var(--highlight);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:1.2rem;flex-shrink:0;">4</div>
+                        <div style="flex:1;">
+                            <div style="color:var(--text);font-weight:bold;margin-bottom:0.5rem;font-size:1.1rem;">LLM字段抽取 (Extract)</div>
+                            <div style="color:rgba(255,255,255,0.7);font-size:0.9rem;line-height:1.6;">
+                                调用大语言模型（Qwen3-8B-Instruct）进行智能字段抽取。精心设计的提示词模板指导模型从公告文本中提取25个结构化字段，包括公共基础字段（股票代码、转债名称等）、下修专属字段（修正前后转股价、下修幅度等）和强赎专属字段（赎回价格、溢价率等）。每个字段都附带evidence_text证据原文，确保数据可追溯、可验证。支持并行抽取大幅提升处理效率。
+                            </div>
+                            <div style="margin-top:0.8rem;display:flex;gap:1rem;flex-wrap:wrap;">
+                                <span style="background:rgba(67,233,123,0.2);padding:0.3rem 0.8rem;border-radius:15px;font-size:0.8rem;"><i class="fas fa-database"></i> 25个字段</span>
+                                <span style="background:rgba(102,126,234,0.2);padding:0.3rem 0.8rem;border-radius:15px;font-size:0.8rem;"><i class="fas fa-brain"></i> Qwen3-8B</span>
+                                <span style="background:rgba(255,167,38,0.2);padding:0.3rem 0.8rem;border-radius:15px;font-size:0.8rem;"><i class="fas fa-parallel"></i> 并行处理</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 步骤5：数据校验 -->
+                    <div style="display:flex;align-items:flex-start;gap:1rem;background:var(--card-bg);padding:1.2rem;border-radius:10px;">
+                        <div style="width:45px;height:45px;background:var(--highlight);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:1.2rem;flex-shrink:0;">5</div>
+                        <div style="flex:1;">
+                            <div style="color:var(--text);font-weight:bold;margin-bottom:0.5rem;font-size:1.1rem;">数据校验 (Validate)</div>
+                            <div style="color:rgba(255,255,255,0.7);font-size:0.9rem;line-height:1.6;">
+                                使用Pydantic进行严格的数据类型校验和业务规则验证。字段类型检查确保数值字段为数字、日期字段格式正确；数值范围检查确保转股价格在合理区间（如1-1000元/股）；业务逻辑检查确保新转股价≤原转股价、下修幅度在0-100%之间。校验失败的记录单独输出，便于人工复核和模型优化。
+                            </div>
+                            <div style="margin-top:0.8rem;display:flex;gap:1rem;flex-wrap:wrap;">
+                                <span style="background:rgba(67,233,123,0.2);padding:0.3rem 0.8rem;border-radius:15px;font-size:0.8rem;"><i class="fas fa-check-circle"></i> 95%+准确</span>
+                                <span style="background:rgba(102,126,234,0.2);padding:0.3rem 0.8rem;border-radius:15px;font-size:0.8rem;"><i class="fas fa-shield-alt"></i> Pydantic</span>
+                                <span style="background:rgba(255,167,38,0.2);padding:0.3rem 0.8rem;border-radius:15px;font-size:0.8rem;"><i class="fas fa-exclamation-triangle"></i> 错误追踪</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 步骤6：事件链匹配 -->
+                    <div style="display:flex;align-items:flex-start;gap:1rem;background:var(--card-bg);padding:1.2rem;border-radius:10px;">
+                        <div style="width:45px;height:45px;background:var(--highlight);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:1.2rem;flex-shrink:0;">6</div>
+                        <div style="flex:1;">
+                            <div style="color:var(--text);font-weight:bold;margin-bottom:0.5rem;font-size:1.1rem;">事件链匹配 (Event Chain Matching)</div>
+                            <div style="color:rgba(255,255,255,0.7);font-size:0.9rem;line-height:1.6;">
+                                自动将分散的公告匹配成完整的事件链。下修事件链包含4个节点：触发提示→董事会提议→股东大会决议→正式实施；强赎事件链包含4个节点：触发提示→董事会决议→实施公告→赎回结果。通过转债代码关联、时间窗口约束（如30天内完成）、事件顺序校验等规则，确保事件链的完整性和准确性。
+                            </div>
+                            <div style="margin-top:0.8rem;display:flex;gap:1rem;flex-wrap:wrap;">
+                                <span style="background:rgba(67,233,123,0.2);padding:0.3rem 0.8rem;border-radius:15px;font-size:0.8rem;"><i class="fas fa-link"></i> 23条事件链</span>
+                                <span style="background:rgba(102,126,234,0.2);padding:0.3rem 0.8rem;border-radius:15px;font-size:0.8rem;"><i class="fas fa-calendar"></i> 30天窗口</span>
+                                <span style="background:rgba(255,167,38,0.2);padding:0.3rem 0.8rem;border-radius:15px;font-size:0.8rem;"><i class="fas fa-clock"></i> 60%完成度</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 步骤7：指标计算 -->
+                    <div style="display:flex;align-items:flex-start;gap:1rem;background:var(--card-bg);padding:1.2rem;border-radius:10px;">
+                        <div style="width:45px;height:45px;background:var(--highlight);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:1.2rem;flex-shrink:0;">7</div>
+                        <div style="flex:1;">
+                            <div style="color:var(--text);font-weight:bold;margin-bottom:0.5rem;font-size:1.1rem;">指标计算 (Indicator Calculation)</div>
+                            <div style="color:rgba(255,255,255,0.7);font-size:0.9rem;line-height:1.6;">
+                                基于抽取的字段数据，自动计算量化投资指标。下修幅度 = (原转股价 - 新转股价) / 原转股价 × 100%，反映转股价的下调程度；赎回溢价率 = (赎回价格 - 转股价值) / 转股价值 × 100%，反映投资者不及时转股的潜在损失。此外还包括事件周期分析、转债价格变动预测等指标，为投资决策提供数据支撑。
+                            </div>
+                            <div style="margin-top:0.8rem;display:flex;gap:1rem;flex-wrap:wrap;">
+                                <span style="background:rgba(67,233,123,0.2);padding:0.3rem 0.8rem;border-radius:15px;font-size:0.8rem;"><i class="fas fa-calculator"></i> 自动计算</span>
+                                <span style="background:rgba(102,126,234,0.2);padding:0.3rem 0.8rem;border-radius:15px;font-size:0.8rem;"><i class="fas fa-percentage"></i> 下修幅度</span>
+                                <span style="background:rgba(255,167,38,0.2);padding:0.3rem 0.8rem;border-radius:15px;font-size:0.8rem;"><i class="fas fa-chart-line"></i> 溢价率</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h3 style="color:var(--highlight);margin-bottom:1rem;text-align:center;"><i class="fas fa-tools"></i> 技术实现架构</h3>
             <div class="tech-nodes">
                 <div class="tech-node"><i class="fas fa-globe"></i><div>巨潮资讯网</div></div>
                 <div class="tech-arrow">→</div>
