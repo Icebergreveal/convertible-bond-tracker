@@ -175,18 +175,18 @@ def extract_fields(config: Dict, limit: int = None) -> List[Dict]:
                     result['doc_id'] = doc_id
                     results.append(result)
                     success_count += 1
-                    print(f"✅ 成功抽取: {doc_id}")
+                    print(f"[OK] 成功抽取: {doc_id}")
                 except json.JSONDecodeError:
-                    print(f"❌ JSON解析失败: {doc_id}")
+                    print(f"[FAIL] JSON解析失败: {doc_id}")
                     fail_count += 1
             else:
-                print(f"❌ LLM调用失败: {doc_id}")
+                print(f"[FAIL] LLM调用失败: {doc_id}")
                 fail_count += 1
             
             time.sleep(1)
             
         except Exception as e:
-            print(f"❌ 处理文件失败 {md_file}: {str(e)}")
+            print(f"[ERROR] 处理文件失败 {md_file}: {str(e)}")
             fail_count += 1
     
     output_dir = "outputs/extract_results"
