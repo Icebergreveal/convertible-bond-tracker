@@ -1,0 +1,317 @@
+[
+  {
+    "doc_id": "439abcf1d9c4b65c"
+  },
+  {
+    "doc_id": "4ae6c42f280d44e6"
+  },
+  {
+    "doc_id": "50570422b1cfa27e"
+  },
+  {
+    "stock_code": "001269",
+    "stock_name": "欧晶科技",
+    "bond_code": "127098",
+    "bond_name": "欧晶转债",
+    "ann_type": "下修类公告",
+    "publish_date": "2026-04-23",
+    "trigger_rule": "在本次可转债存续期间，当公司股票在任意连续三十个交易日中至少有十五个交易日的收盘价低于当期转股价格的85%时",
+    "original_conv_price": 42.0,
+    "new_conv_price": null,
+    "effective_date": null,
+    "redemption_price": null,
+    "evidence_text": "自2026年4月2日至2026年4月23日，公司股票已有十五个交易日的收盘价格低于当期转股价格42.00元/股的85%，已触发“欧晶转债”转股价格向下修正条款。2026年4月23日，经公司第四届董事会第十七次会议审议，董事会决定本次不向下修正转股价格，同时在本次董事会审议通过次一交易日2026年4月24日起至2026年6月1日如果再次触发“欧晶转债”转股价格向下修正条款，亦不提出向下修正方案。",
+    "doc_id": "5bf56f963ab3be0e"
+  },
+  {
+    "stock_code": "300569",
+    "stock_name": "天能重工",
+    "bond_code": "123071",
+    "bond_name": "天能转债",
+    "ann_type": "下修类公告",
+    "publish_date": "2025-12-24",
+    "trigger_rule": "股票收盘价格低于当期转股价格的90%",
+    "original_conv_price": "7.47",
+    "new_conv_price": "6.70",
+    "effective_date": null,
+    "redemption_price": null,
+    "evidence_text": "转股价格：6.70元/股；股票自2025年12月18日至2025年12月24日已有5个交易日的收盘价格低于当期转股价格的90%；根据2025年12月17日公司2025年第二次临时股东会及第五届董事会第十六次会议决议，转股价格向下修正为6.70元/股；2024年6月18日，公司实施2023年度权益分派，天能转债的转股价格将由7.54元/股调整为7.47元/股。",
+    "doc_id": "5c1850408d069479"
+  },
+  {
+    "doc_id": "5c9132a2ede398f3"
+  },
+  {
+    "doc_id": "5ca86503fa47689f",
+    "stock_code": "",
+    "stock_name": "",
+    "bond_code": null,
+    "bond_name": null,
+    "ann_type": "",
+    "publish_date": null,
+    "evidence_page": "7",
+    "evidence_text": "2026 225",
+    "notes": null,
+    "trigger_rule": null,
+    "original_conv_price": null,
+    "new_conv_price": null,
+    "pricing_base_date": null,
+    "avg_price_20d": null,
+    "avg_price_1d": null,
+    "effective_date": null,
+    "adjustment_ratio": null,
+    "adjustment_type": null,
+    "redemption_trigger": null,
+    "redemption_price": null,
+    "record_date": null,
+    "last_convert_date": null,
+    "delisting_date": null,
+    "premium_rate": null
+  },
+  {
+    "stock_code": null,
+    "stock_name": null,
+    "bond_code": "148064",
+    "bond_name": "22越控02",
+    "ann_type": "赎回类公告",
+    "publish_date": null,
+    "trigger_rule": "根据《广州越秀金融控股集团股份有限公司 2022年面向专业投资者公开发行公司债券（第二期）募集说明书》中有关“22越控02”票面利率调整选择权和赎回选择权的条款约定",
+    "original_conv_price": null,
+    "new_conv_price": null,
+    "effective_date": "2025-09-16",
+    "redemption_price": "102.67元/张",
+    "evidence_text": "公司决定放弃行使发行人调整票面利率选择权，并行使本期债券的发行人赎回选择权，对赎回登记日登记在册的“22越控02”进行全额赎回。赎回价格：人民币102.67元/张（含当期利息，且当期利息含税）。赎回资金到账日：2025年9月16日。",
+    "doc_id": "5cf11a9f52cca5be"
+  },
+  {
+    "stock_code": null,
+    "stock_name": "广州越秀资本控股集团股份有限公司",
+    "bond_code": "148064",
+    "bond_name": "22越控02",
+    "ann_type": "强赎类公告",
+    "publish_date": null,
+    "trigger_rule": "发行人有权决定在本期债券品种一存续期的第3年末赎回本期债券品种一全部或部分未偿份额",
+    "original_conv_price": null,
+    "new_conv_price": null,
+    "effective_date": null,
+    "redemption_price": "102.67元/张",
+    "evidence_text": "根据《广州越秀金融控股集团股份有限公司 2022年面向专业投资者公开发行公司债券（第二期）募集说明书 》中有关 “22越控 02”票面利率调整选择权和赎回选择权 的条款约定，以及公司实际情况、当前市场环境，公司决定放弃行使发行人调整票面利率选择权，并行使本期债券的发行人赎回选择权，对赎回登记日登记在册的“ 22越控 02”进行全额赎回。赎回价格：人民币 102.67元/张（含当期利息，且当期利息含税）。",
+    "doc_id": "5d0b04981709fc5e"
+  },
+  {
+    "stock_code": "002850",
+    "stock_name": "科达利",
+    "bond_code": "127066",
+    "bond_name": "科利转债",
+    "ann_type": "强赎类公告",
+    "publish_date": null,
+    "trigger_rule": "连续三十个交易日中至少有十五个交易日的收盘价格不低于当期转股价格的130%",
+    "original_conv_price": null,
+    "new_conv_price": null,
+    "effective_date": null,
+    "redemption_price": "101.405",
+    "evidence_text": "证券代码：002850 证券简称：科达利 债券代码：127066 债券简称：科利转债；可转债赎回价格：101.405元/张（含当期应计利息，当期年利率为1.5%，且当期利息含税）；自2026年4月16日至2026年5月18日，公司股票已满足连续三十个交易日中至少有十五个交易日的收盘价格不低于“科利转债”当期转股价格的130%（即193.31元/股）",
+    "doc_id": "5d5d8c33a88cd422"
+  },
+  {
+    "stock_code": "605189",
+    "stock_name": "富春染织",
+    "bond_code": "111005",
+    "bond_name": "富春转债",
+    "ann_type": "强赎类公告",
+    "publish_date": null,
+    "trigger_rule": "在本次发行的可转债转股期内，如果公司股票连续三十个交易日中至少有十五个交易日的收盘价格不低于当期转股价格的130%（含130%）",
+    "original_conv_price": null,
+    "new_conv_price": null,
+    "effective_date": null,
+    "redemption_price": "101.3973",
+    "evidence_text": "赎回价格：101.3973元/张；公司股票自2026年4月9日至2026年4月29日期间，已满足连续三十个交易日中至少有十五个交易日的收盘价不低于本公司“富春转债”当期转股价格的11.98元/股的130%（即15.574元/股），已触发“富春转债”的有条件赎回条款。",
+    "doc_id": "5db595b5e2269cac"
+  },
+  {
+    "stock_code": null,
+    "stock_name": null,
+    "bond_code": "148300",
+    "bond_name": "23广资01",
+    "ann_type": "赎回类公告",
+    "publish_date": null,
+    "trigger_rule": "发行人赎回选择权",
+    "original_conv_price": null,
+    "new_conv_price": null,
+    "effective_date": "2026-05-25",
+    "redemption_price": "103.18",
+    "evidence_text": "根据公司实际情况、当前市场环境，公司决定放弃行使发行人调整票面利率选择权，并行使本期债券的发行人赎回选择权，对赎回登记日登记在册的“23广资01”进行全额赎回。赎回价格：人民币103.18元/张（含当期利息，且当期利息含税）。",
+    "doc_id": "5f720786eac4275f"
+  },
+  {
+    "stock_code": "603730",
+    "stock_name": "上海岱美汽车内饰件股份有限公司",
+    "bond_code": "113673",
+    "bond_name": "岱美转债",
+    "ann_type": "强赎类公告",
+    "publish_date": "2026-05-21",
+    "trigger_rule": "公司股票连续三十个交易日中至少有十五个交易日的收盘价不低于当期转股价格的130%（含130%）",
+    "original_conv_price": null,
+    "new_conv_price": null,
+    "effective_date": null,
+    "redemption_price": "债券面值加当期应计利息",
+    "evidence_text": "自2026年5月7日至2026年5月20日，公司股票价格已有十个交易日的收盘价不低于“岱美转债”当期转股价格的130%（即9.581元/股）。若公司股票连续三十个交易日中至少有十五个交易日的收盘价格不低于“岱美转债”当期转股价格的130%（含130%），将触发“岱美转债”的有条件赎回条款。在本次发行的可转换公司债券转股期内，如果下述两种情形的任意一种出现时，公司有权按照债券面值加当期应计利息的价格赎回全部或部分未转股的可转债：1、公司股票连续三十个交易日中至少有十五个交易日的收盘价不低于当期转股价格的130%（含130%）；2、本次发行的可转债未转股余额不足人民币3,000万元时。",
+    "doc_id": "5fee231de3fbecf2"
+  },
+  {
+    "stock_code": "688533",
+    "stock_name": "苏州上声电子股份有限公司",
+    "bond_code": "118067",
+    "bond_name": "上26转债",
+    "ann_type": "下修类公告",
+    "publish_date": "2026-04-10",
+    "trigger_rule": "在本次发行的可转换公司债券存续期内，当公司股票在任意连续三十个交易日中至少十五个交易日的收盘价低于当期转股价格85%时",
+    "original_conv_price": 32.6,
+    "new_conv_price": null,
+    "effective_date": null,
+    "redemption_price": null,
+    "evidence_text": "截至2026年4月9日，公司股票已出现连续三十个交易日中有十五个交易日的收盘价格低于当期转股价格的85%（即27.71元/股）的情形，已触发“上26转债”转股价格向下修正条款。公司董事会决定本次不向下修正“上26转债”转股价格，同时在未来三个月内（即2026年4月10日至2026年7月9日），如再次触发“上26转债”转股价格向下修正条款，亦不提出向下修正方案。",
+    "doc_id": "6075f01064448041"
+  },
+  {
+    "stock_code": "002937",
+    "stock_name": "兴瑞科技",
+    "bond_code": "127090",
+    "bond_name": "兴瑞转债",
+    "ann_type": "强赎类公告",
+    "publish_date": null,
+    "trigger_rule": "在本次发行的可转债转股期内，如果公司股票在任意连续三十个交易日中至少有十五个交易日的收盘价格不低于当期转股价格的130%（含130%）",
+    "original_conv_price": null,
+    "new_conv_price": null,
+    "effective_date": null,
+    "redemption_price": "100.717元/张（含息税）",
+    "evidence_text": "可转债赎回价格：100.717元/张（含息税）。自2026年4月24日至2026年5月22日，公司股票已满足连续三十个交易日中至少有十五个交易日的收盘价格不低于“兴瑞转债”当期转股价格（25.50元/股）的130%（即33.15元/股）。已触发“兴瑞转债”的有条件赎回条款。",
+    "doc_id": "6099488bf39d476e"
+  },
+  {
+    "stock_code": "600521",
+    "stock_name": "华海药业",
+    "bond_code": "110076",
+    "bond_name": "华海转债",
+    "ann_type": "下修类公告",
+    "publish_date": null,
+    "trigger_rule": "连续30个交易日中至少有15个交易日的收盘价低于当期转股价格的80%",
+    "original_conv_price": null,
+    "new_conv_price": null,
+    "effective_date": null,
+    "redemption_price": null,
+    "evidence_text": "自2026年3月27日至2026年4月17日期间，公司股票在连续30个交易日中已有15个交易日的收盘价低于当期转股价格的80%（即26.45元/股），触发转股价格向下修正条件。公司于2026年4月17日召开第九届董事会第十次临时会议，审议通过《关于提议向下修正“华海转债”转股价格的议案》，公司董事会提议向下修正“华海转债”转股价格。",
+    "doc_id": "6560c9ee54448a23"
+  },
+  {
+    "doc_id": "6e96f198ce39988b"
+  },
+  {
+    "doc_id": "73fd4c888fe473d9",
+    "stock_code": "",
+    "stock_name": "",
+    "bond_code": null,
+    "bond_name": null,
+    "ann_type": "",
+    "publish_date": null,
+    "evidence_page": null,
+    "evidence_text": "",
+    "notes": null,
+    "trigger_rule": null,
+    "original_conv_price": null,
+    "new_conv_price": null,
+    "pricing_base_date": null,
+    "avg_price_20d": null,
+    "avg_price_1d": null,
+    "effective_date": null,
+    "adjustment_ratio": null,
+    "adjustment_type": null,
+    "redemption_trigger": null,
+    "redemption_price": null,
+    "record_date": null,
+    "last_convert_date": null,
+    "delisting_date": null,
+    "premium_rate": null
+  },
+  {
+    "doc_id": "80982595913719bd"
+  },
+  {
+    "doc_id": "81470f5f0846a288"
+  },
+  {
+    "doc_id": "827db706ca4d984e"
+  },
+  {
+    "doc_id": "83725696c75873cf"
+  },
+  {
+    "doc_id": "8620c03e73eedd84"
+  },
+  {
+    "doc_id": "86fd50fb9afe8422"
+  },
+  {
+    "doc_id": "9060feeced3e0404"
+  },
+  {
+    "doc_id": "90740b5c61c63bc3"
+  },
+  {
+    "doc_id": "928c2f89bb901959"
+  },
+  {
+    "doc_id": "9293dfb73f5fe6bb"
+  },
+  {
+    "doc_id": "95cd1d19e36ae90a"
+  },
+  {
+    "doc_id": "9ed26cda1f1671c6",
+    "stock_code": "",
+    "stock_name": "",
+    "bond_code": null,
+    "bond_name": null,
+    "ann_type": "",
+    "publish_date": null,
+    "evidence_page": null,
+    "evidence_text": "",
+    "notes": null,
+    "trigger_rule": null,
+    "original_conv_price": null,
+    "new_conv_price": null,
+    "pricing_base_date": null,
+    "avg_price_20d": null,
+    "avg_price_1d": null,
+    "effective_date": null,
+    "adjustment_ratio": null,
+    "adjustment_type": null,
+    "redemption_trigger": null,
+    "redemption_price": null,
+    "record_date": null,
+    "last_convert_date": null,
+    "delisting_date": null,
+    "premium_rate": null
+  },
+  {
+    "doc_id": "a56107e1b1865e92"
+  },
+  {
+    "doc_id": "a8d294ef0125dccd"
+  },
+  {
+    "doc_id": "ba2494dc69191b0c"
+  },
+  {
+    "doc_id": "bb8f4d4bb2ba499d"
+  },
+  {
+    "doc_id": "c8a9b43a80382d56"
+  },
+  {
+    "doc_id": "ca2de1492624c042"
+  },
+  {
+    "doc_id": "d067469f9afccbb1"
+  }
+]

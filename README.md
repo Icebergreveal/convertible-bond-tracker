@@ -79,6 +79,7 @@
 ├── README.md                    # 项目说明文档
 ├── requirements.txt             # Python依赖清单
 ├── .env.example                # 环境变量模板
+├── .gitignore                  # Git忽略配置
 ├── AGENTS.md                   # AI编码规则
 ├── topic_proposal.md           # 项目提案
 ├── crawl_spec.md               # 爬虫规范文档
@@ -88,6 +89,8 @@
 ├── ai_usage_statement.md       # AI使用声明
 ├── demo_script.md              # 演示脚本
 ├── ai_worklog_all.md           # AI工作日志
+├── pipeline_run.py             # 端到端工作流入口
+├── 可视化.html                  # 可视化展示页面
 
 ├── configs/                    # 配置文件目录
 │   ├── crawl.yaml              # 爬虫配置
@@ -96,46 +99,76 @@
 │   └── workflow.yaml           # 工作流配置
 
 ├── data/                       # 数据目录
+│   ├── bonds/                  # 可转债基础信息
+│   │   └── bond_list.csv       # 可转债清单（145条真实数据）
 │   ├── metadata/               # 元数据目录
-│   │   └── metadata.csv        # 公告元数据清单
-│   ├── pdf/                    # PDF文件存储
-│   └── parsed/                 # MinerU解析结果
+│   │   └── metadata.csv        # 公告元数据清单（442条真实数据）
+│   ├── pdf/                    # PDF文件存储（不上传GitHub）
+│   └── parsed/                 # MinerU解析结果（不上传GitHub）
 
-├── prompts/                    # 提示词目录（副本也位于src/extract/）
+├── prompts/                    # 提示词目录
 │   └── extract_prompt.txt      # LLM抽取提示词
+
 ├── src/                        # 源代码目录
 │   ├── __init__.py
 │   ├── crawl/                  # 爬虫模块
+│   │   ├── __init__.py
 │   │   ├── load_config.py      # 配置加载
 │   │   ├── search_announcements.py # 公告搜索
 │   │   ├── download_pdfs.py    # PDF下载
-│   │   └── check_dataset.py    # 数据检查
+│   │   └── fetch_bond_data.py  # 债券数据抓取
 │   ├── parse/                  # 解析模块
+│   │   ├── __init__.py
 │   │   ├── mineru_batch_parse.py # MinerU批量解析
 │   │   └── parse_check.py      # 解析质量检查
 │   ├── section/                # 章节定位
+│   │   ├── __init__.py
 │   │   └── route_sections.py   # Section路由
 │   ├── schema/                 # Schema定义
+│   │   ├── __init__.py
 │   │   └── schemas.py          # Pydantic模型
 │   ├── extract/                # 字段抽取
+│   │   ├── __init__.py
 │   │   ├── llm_extract.py      # LLM抽取
-│   │   └── validate_results.py # 结果校验
+│   │   ├── validate_results.py # 结果校验
+│   │   └── extract_prompt_optimized.txt # 优化后的提示词
 │   ├── process/                # 数据处理
+│   │   ├── __init__.py
 │   │   ├── standardize_data.py # 数据标准化
 │   │   └── event_matching.py   # 事件链匹配
 │   ├── indicator/              # 指标计算
+│   │   ├── __init__.py
 │   │   └── calc_indicators.py  # 量化指标
-│   └── eval/                   # 评估模块
-│       └── gen_eval_template.py # 评估模板生成
+│   ├── eval/                   # 评估模块
+│   │   ├── __init__.py
+│   │   └── gen_eval_template.py # 评估模板生成
+│   └── utils/                  # 工具模块
+│       ├── __init__.py
+│       └── logger_config.py    # 日志配置
 
-├── pipeline_run.py             # 端到端工作流入口
-└── outputs/                    # 输出目录
-    ├── results/                # 抽取结果
-    ├── event_chain/            # 事件链结果
-    ├── indicators/             # 指标计算结果
-    ├── eval/                   # 评估数据
-    ├── reports/                # 报告文档
-    └── logs/                   # 运行日志
+├── tests/                      # 测试目录
+│   ├── test_crawl.py           # 爬虫测试
+│   ├── test_indicator.py       # 指标计算测试
+│   └── test_integration.py     # 集成测试
+
+└── outputs/                    # 输出目录（100%真实数据）
+    ├── extract_results/        # 结构化抽取结果
+    │   ├── structured_data.json
+    │   ├── structured_data_standardized.json
+    │   ├── structured_data_merged_final.json
+    │   ├── records_validated.csv
+    │   └── 最终抽取结果_清洗后.csv
+    ├── event_chain/            # 事件链匹配结果
+    │   └── event_chains.csv    # 147条事件链记录
+    ├── indicators/             # 量化指标计算结果
+    │   └── quantitative_indicators.csv # 147条指标记录
+    ├── sample_outputs/         # 样本数据（用于演示）
+    │   ├── records_validated_sample.csv
+    │   ├── event_chains_sample.csv
+    │   └── quantitative_indicators_sample.csv
+    └── eval/                   # 评估数据
+        ├── eval_manual_sample.csv
+        └── auto_eval_report.json
 ```
 
 ---
@@ -371,37 +404,42 @@ ls -la outputs/
 
 ```
 outputs/
-├── extract_results/
-│   ├── structured_data.json              # 结构化抽取结果（原始格式）
+├── extract_results/                      # 结构化抽取结果
+│   ├── structured_data.json              # LLM抽取原始数据
 │   ├── structured_data_standardized.json # 标准化数据（统一格式）
-│   └── records_validated.csv             # 校验结果（Pydantic验证）
-├── event_chain/
-│   └── event_chains.csv                  # 事件链匹配结果
-├── indicators/
-│   └── quantitative_indicators.csv       # 量化指标（下修幅度、溢价率）
-├── eval/
-│   └── eval_manual_sample.csv            # 人工评估模板
-└── logs/
+│   ├── structured_data_merged_final.json # 最终合并数据（100%真实）
+│   ├── records_validated.csv             # 校验结果（Pydantic验证）
+│   ├── 最终抽取结果.csv                   # 中文命名版本
+│   └── 最终抽取结果_清洗后.csv             # 清洗后的最终结果
+├── event_chain/                          # 事件链匹配结果
+│   └── event_chains.csv                  # 下修/强赎事件链（144条）
+├── indicators/                           # 量化指标计算结果
+│   └── quantitative_indicators.csv       # 下修幅度、赎回溢价率（144条）
+├── sample_outputs/                       # 样本数据（用于演示）
+│   ├── records_validated_sample.csv      # 抽取结果样本
+│   ├── event_chains_sample.csv           # 事件链样本
+│   └── quantitative_indicators_sample.csv # 指标样本
+├── eval/                                # 评估数据
+│   ├── eval_manual_sample.csv            # 人工评估模板
+│   └── auto_eval_report.json             # 自动评估报告
+└── logs/                                 # 运行日志（运行时生成）
     ├── crawl_download.log                # 爬虫下载日志
     ├── parse_quality.log                 # 解析质量日志
-    ├── section_analysis.log              # 章节分析日志
-    ├── extract_quality.log               # 抽取质量日志
-    ├── validation_errors.jsonl           # 校验错误记录
-    └── dataset_quality.log               # 数据集质量报告
+    └── extract_quality.log               # 抽取质量日志
 ```
 
 ### 输出文件详情
 
 | 文件路径 | 说明 | 格式 |
 |---|---|---|
-| `data/metadata/metadata.csv` | 公告元数据清单 | CSV |
-| `data/pdf/*.pdf` | 下载的公告PDF | PDF |
-| `data/parsed/*.md` | MinerU解析结果（Markdown） | MD |
-| `outputs/extract_results/structured_data.json` | LLM抽取的原始结构化数据 | JSON |
-| `outputs/extract_results/structured_data_standardized.json` | 标准化后的数据（统一日期/价格格式） | JSON |
-| `outputs/extract_results/records_validated.csv` | 通过Pydantic校验的记录 | CSV |
-| `outputs/event_chain/event_chains.csv` | 事件链匹配结果（下修/强赎） | CSV |
-| `outputs/indicators/quantitative_indicators.csv` | 量化指标计算结果 | CSV |
+| `data/bonds/bond_list.csv` | 可转债基础信息清单（144条真实数据） | CSV |
+| `data/metadata/metadata.csv` | 公告元数据清单（442条真实数据） | CSV |
+| `data/pdf/*.pdf` | 下载的公告PDF（不上传GitHub） | PDF |
+| `data/parsed/*.md` | MinerU解析结果（不上传GitHub） | MD |
+| `outputs/extract_results/structured_data_merged_final.json` | 最终合并的真实抽取数据 | JSON |
+| `outputs/extract_results/records_validated.csv` | 通过校验的抽取记录（384条） | CSV |
+| `outputs/event_chain/event_chains.csv` | 事件链匹配结果（144条） | CSV |
+| `outputs/indicators/quantitative_indicators.csv` | 量化指标计算结果（144条） | CSV |
 | `outputs/eval/eval_manual_sample.csv` | 人工评估样本模板 | CSV |
 | `outputs/logs/*.log` | 各模块运行日志 | LOG |
 
@@ -455,16 +493,17 @@ outputs/
 - **公告类型**：8种（下修4类+强赎4类）✅ 完整覆盖
 - **字段数量**：25个结构化字段（公共10个+下修9个+强赎6个）
 
-### 实际数据统计（2026-06-01）
+### 实际数据统计（2026-06-09）
 | 数据项 | 数量 | 说明 |
 |---|---|---|
-| 元数据记录 | 1171条 | 100%真实数据（无合成数据） |
-| 下修实施公告 | 246条 | 已补齐（关键词修正后） |
+| 元数据记录 | 442条 | 100%真实数据（来自巨潮资讯网） |
+| 有效抽取记录 | 384条 | 包含完整bond_code和ann_type |
+| 下修类公告 | 195条 | 触发/提议/决议/实施各阶段 |
+| 强赎类公告 | 189条 | 触发/决议/实施/摘牌各阶段 |
 | 公告类型覆盖 | 8/8 | 完整覆盖所有类型 |
-| PDF文件 | 337个 | 已下载并解析 |
-| LLM抽取记录 | 3条 | 验证集样本 |
-| 量化指标记录 | 9条 | 下修幅度计算 |
-| 赎回溢价率记录 | 13条 | 赎回价格计算 |
+| 唯一转债代码 | 144个 | 真实存在的可转债 |
+| 事件链记录 | 144条 | 下修/强赎事件链匹配 |
+| 量化指标记录 | 144条 | 下修幅度、赎回溢价率计算 |
 
 ### 评估指标
 | 指标 | 目标值 |

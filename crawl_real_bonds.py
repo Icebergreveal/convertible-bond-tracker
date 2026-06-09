@@ -115,6 +115,11 @@ def search_by_bond_name(bond_name: str, stock_code: str = None) -> list:
                     else:
                         publish_date = str(announcement_time)[:10]
                     
+                    bond_code, bond_name = extract_bond_info(title)
+                    
+                    if not bond_name or not bond_name.endswith('转债'):
+                        continue
+                    
                     announcement_url = f"https://www.cninfo.com.cn/new/disclosure/detail?orgId={item.get('orgId', '')}&announcementId={item.get('announcementId', '')}"
                     pdf_url = f"https://static.cninfo.com.cn/{item.get('adjunctUrl', '')}" if item.get('adjunctUrl') else None
                     

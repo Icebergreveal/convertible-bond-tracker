@@ -239,6 +239,10 @@ def search_announcements(
                         seen_ids.add(doc_id)
                         
                         bond_code, bond_name = extract_bond_info(title)
+                        
+                        if not bond_name or not bond_name.endswith('转债'):
+                            continue
+                        
                         ann_type, stage = classify_announcement(title)
                         
                         record = {

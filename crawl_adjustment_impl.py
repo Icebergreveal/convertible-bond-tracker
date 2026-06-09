@@ -103,6 +103,9 @@ def search_announcements(keyword: str) -> list:
                 
                 bond_code, bond_name = extract_bond_info(title)
                 
+                if not bond_name or not bond_name.endswith('转债'):
+                    continue
+                
                 if '实施' not in title:
                     continue
                 

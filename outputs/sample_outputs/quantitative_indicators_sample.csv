@@ -1,2 +1,11 @@
-bond_code,bond_name,event_type,complete,nodes,missing_nodes,trigger_date,proposal_date,resolution_date,implementation_date,total_days,cycle_status,original_conv_price,new_conv_price,adjustment_ratio,redemption_price,premium_rate,notes,adjustment_ratio_calc,adjustment_ratio_check,premium_rate_calc,premium_rate_check,cycle_check
-128130,龙大转债,adjustment,False,proposal,"trigger,resolution,implementation",,2026-05-07,,,,NORMAL,12.34,9.87,20.02,,,,20.02,OK,,,
+adjustment_ratio,adjustment_ratio_calc,adjustment_ratio_check,bond_code,bond_name,calc_method,complete,conversion_value,cycle_check,cycle_status,event_type,implementation_date,missing_nodes,new_conv_price,nodes,notes,original_conv_price,premium_rate,premium_rate_calc,premium_rate_check,proposal_date,redemption_price,resolution_date,stock_code,stock_name,total_days,trigger_date
+,,,149975,22万科 05,简化计算(假设转股价值=100),False,100,NORMAL,NORMAL,redemption,,"trigger,resolution,implementation,result",,,,,3.21,3.21,OK,,103.21,,000002,万科 A,0,
+,,,148205,23重发 01,简化计算(假设转股价值=100),False,100,NORMAL,NORMAL,redemption,,"trigger,resolution,implementation,result",,,,,3.2,3.2,OK,,103.2,,,,0,
+,,,123117,健帆转债,,False,,NORMAL,NORMAL,adjustment,,"trigger,proposal,resolution,implementation",,,,38.65,,,,,,,300529,健帆生物科技集团股份有限公司,0,
+,,,111005,富春转债,简化计算(假设转股价值=100),False,100,NORMAL,NORMAL,redemption,,"trigger,resolution,implementation,result",,,,,1.4,1.4,OK,,101.3973,,605189,芜湖富春染织股份有限公司,0,
+,,,123236,家联转债,简化计算(假设转股价值=100),False,100,NORMAL,NORMAL,redemption,,"trigger,resolution,implementation,result",,,,,0.34,0.34,OK,,100.344,,301193,家联科技,0,
+,,,123109,昌红转债,,False,,NORMAL,NORMAL,adjustment,,"trigger,proposal,resolution,implementation",,,,26.72,,,,,,,300151,昌红科技,0,
+15.0,,,123264,双乐转债,,False,,NORMAL,NORMAL,adjustment,,"trigger,proposal,resolution,implementation",,,,36.7,,,,,,,301036,双乐股份,0,
+54.84,54.84,OK,128119,龙大转债,,False,,NORMAL,NORMAL,adjustment,,"trigger,proposal,resolution,implementation",4.2,,,9.30,,,,,,,002726,ST龙大,0,
+,,,127024.SZ,盈峰转债,简化计算(假设转股价值=100),False,100,NORMAL,NORMAL,redemption,,"trigger,resolution,implementation,result",,,,,1.13,1.13,OK,,101.13,,000967,盈峰环境科技集团股份有限公司,0,
+,45.52,OK,123104,卫宁转债,,False,,NORMAL,NORMAL,adjustment,,"trigger,proposal,resolution,implementation",9.43,,,17.31,,,,,,,300253,卫宁健康,0,

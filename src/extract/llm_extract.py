@@ -30,7 +30,8 @@ class LLMClient:
                     ],
                     temperature=self.temperature,
                     max_tokens=self.max_tokens,
-                    response_format={"type": "json_object"}
+                    response_format={"type": "json_object"},
+                    timeout=120  # 增加超时时间到120秒
                 )
                 return response.choices[0].message.content
             except Exception as e:
@@ -183,7 +184,7 @@ def extract_fields(config: Dict, limit: int = None) -> List[Dict]:
                 print(f"[FAIL] LLM调用失败: {doc_id}")
                 fail_count += 1
             
-            time.sleep(1)
+            time.sleep(1)  # 恢复等待时间
             
         except Exception as e:
             print(f"[ERROR] 处理文件失败 {md_file}: {str(e)}")
