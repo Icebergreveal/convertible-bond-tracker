@@ -3,7 +3,7 @@ import json
 import csv
 import requests
 from datetime import datetime
-from typing import List, Dict
+from typing import List, Dict, Optional
 
 def parse_pdf_with_pypdf2(pdf_path: str, output_dir: str) -> dict:
     try:
@@ -47,6 +47,16 @@ def parse_pdf_with_pypdf2(pdf_path: str, output_dir: str) -> dict:
         
     except Exception as e:
         return {"status": "failed", "parser": "PyPDF2", "error": str(e)}
+
+def resolve_mineru_api_key(config: Dict) -> Optional[str]:
+    mineru_config = config.get('mineru', {})
+    env_name = mineru_config.get('api_key_env', 'MINERU_API_KEY')
+    env_key = os.getenv(env_name)
+    if env_key:
+        return env_key
+
+    config_env = config.get('env', {})
+    return config_env.get(env_name)
 
 def parse_pdf_with_mineru_api(pdf_path: str, output_dir: str, api_key: str) -> dict:
     try:
@@ -126,7 +136,7 @@ def batch_parse_pdfs(config: Dict, limit: int = None):
     failed_records_path = "outputs/logs/parse_failed_records.csv"
     review_queue_path = "outputs/logs/manual_review_queue.csv"
     
-    api_key = config.get('mineru', {}).get('api_key')
+    api_key = resolve_mineru_api_key(config)
     
     os.makedirs(parsed_dir, exist_ok=True)
     os.makedirs(os.path.dirname(log_path), exist_ok=True)
@@ -148,7 +158,7 @@ def batch_parse_pdfs(config: Dict, limit: int = None):
     with open(log_path, 'w', encoding='utf-8') as log_file:
         log_file.write(f"Parse started at {datetime.now()}\n")
         log_file.write(f"Total PDFs to parse: {len(records)}\n")
-        log_file.write(f"Using MinerU API: {api_key is not None}\n\n")
+        log_file.write(f"Using MinerU API: {bool(api_key)}\n\n")
         
         for i, record in enumerate(records, 1):
             doc_id = record['doc_id']
@@ -261,7 +271,7 @@ def retry_failed_parses(config: Dict):
         print("No failed records found to retry")
         return
     
-    api_key = config.get('mineru', {}).get('api_key')
+    api_key = resolve_mineru_api_key(config)
     parsed_dir = "data/parsed"
     
     with open(failed_records_path, 'r', encoding='utf-8') as f:
@@ -312,7 +322,7 @@ if __name__ == '__main__':
             'pdf_dir': 'data/pdf'
         },
         'mineru': {
-            'api_key': os.getenv('MINERU_API_KEY', '')
+            'api_key_env': 'MINERU_API_KEY'
         }
     }
     batch_parse_pdfs(config)

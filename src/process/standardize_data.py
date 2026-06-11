@@ -2,7 +2,7 @@ import os
 import json
 import csv
 import re
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import List, Dict
 
 def parse_chinese_date(date_str: str, default_year: int = None) -> str:
@@ -117,9 +117,10 @@ def parse_relative_date(base_date: str, offset_days: int) -> str:
     except:
         return None
 
-def standardize_data(input_path: str = "outputs/extract_results/structured_data.json") -> List[Dict]:
-    output_path = "outputs/extract_results/structured_data_standardized.json"
-    
+def standardize_data(
+    input_path: str = "outputs/extract_results/structured_data.json",
+    output_path: str = "outputs/extract_results/structured_data_standardized.json"
+) -> List[Dict]:
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     
     if os.path.exists(input_path):

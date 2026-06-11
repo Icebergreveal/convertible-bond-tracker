@@ -1,0 +1,141 @@
+﻿sample_id,doc_id,bond_code,bond_name,review_dimension,model_value,manual_value,is_correct,error_type,evidence_source,review_comment
+1,02279a1b64687f35,149975,22万科 05,sample_scope,included_in_sample,out_of_scope_company_bond,FALSE,scope_mismatch,data/pdf/02279a1b64687f35.pdf,公司债发行人赎回选择权，不属于可转债强赎样本。
+1,02279a1b64687f35,149975,22万科 05,ann_type,强赎类公告,强赎类公司债赎回公告,TRUE,,data/pdf/02279a1b64687f35.pdf,大类为赎回公告，但不是可转债。
+1,02279a1b64687f35,149975,22万科 05,stock_code,000002,000002,TRUE,,data/pdf/02279a1b64687f35.pdf,证券代码行包含万科A 000002。
+1,02279a1b64687f35,149975,22万科 05,bond_code,149975,149975,TRUE,,data/pdf/02279a1b64687f35.pdf,债券代码为149975。
+1,02279a1b64687f35,149975,22万科 05,date_fields,record_date=2025-07-07; last_convert_date=2025-07-07; delisting_date=2025-07-08,record_date=2025-07-07; last_convert_date=null; delisting_date=2025-07-08,PARTIAL,not_applicable_field_filled,data/pdf/02279a1b64687f35.pdf,公司债没有最后转股日，模型将赎回登记日填入last_convert_date。
+1,02279a1b64687f35,149975,22万科 05,price_fields,redemption_price=103.21; premium_rate=3.21,redemption_price=103.21; premium_rate=null/not_applicable,PARTIAL,not_applicable_metric,data/pdf/02279a1b64687f35.pdf,赎回价正确；公司债不适用可转债赎回溢价率。
+1,02279a1b64687f35,149975,22万科 05,evidence_text,二〇二五年六月十七日；赎回价格：人民币 103.21元/张（含当期利息，且当期利息含税）,包含赎回价格核心证据,TRUE,,data/pdf/02279a1b64687f35.pdf,证据与赎回价格相关。
+2,00d8ff93ff716bce,148205,23重发 01,sample_scope,included_in_sample,out_of_scope_company_bond,FALSE,scope_mismatch,data/pdf/00d8ff93ff716bce.pdf,公司债发行人赎回选择权，不属于可转债强赎样本。
+2,00d8ff93ff716bce,148205,23重发 01,ann_type,强赎类公告,强赎类公司债赎回公告,TRUE,,data/pdf/00d8ff93ff716bce.pdf,大类为赎回公告，但不是可转债。
+2,00d8ff93ff716bce,148205,23重发 01,stock_code,,null,TRUE,,data/pdf/00d8ff93ff716bce.pdf,公告未披露股票代码，留空合理。
+2,00d8ff93ff716bce,148205,23重发 01,bond_code,148205,148205,TRUE,,data/pdf/00d8ff93ff716bce.pdf,债券代码为148205。
+2,00d8ff93ff716bce,148205,23重发 01,date_fields,record_date=2026-03-13; delisting_date=2026-03-16,record_date=2026-03-13; delisting_date=2026-03-16,TRUE,,data/pdf/00d8ff93ff716bce.pdf,赎回登记日和摘牌日正确。
+2,00d8ff93ff716bce,148205,23重发 01,price_fields,redemption_price=103.2; premium_rate=3.2,redemption_price=103.20; premium_rate=null/not_applicable,PARTIAL,not_applicable_metric,data/pdf/00d8ff93ff716bce.pdf,赎回价正确；公司债不适用可转债赎回溢价率。
+2,00d8ff93ff716bce,148205,23重发 01,evidence_text,赎回登记日：2026年3月13日 赎回价格：人民币103.20元/张,包含赎回登记日和赎回价格核心证据,TRUE,,data/pdf/00d8ff93ff716bce.pdf,证据相关。
+3,033306497d0154b5,123117,健帆转债,sample_scope,included_in_sample,convertible_bond,TRUE,,data/pdf/033306497d0154b5.pdf,健帆转债为可转债。
+3,033306497d0154b5,123117,健帆转债,ann_type,下修类公告,不向下修正转股价格公告,TRUE,,data/pdf/033306497d0154b5.pdf,下修类分类正确。
+3,033306497d0154b5,123117,健帆转债,stock_code,300529,300529,TRUE,,data/pdf/033306497d0154b5.pdf,证券代码正确。
+3,033306497d0154b5,123117,健帆转债,bond_code,123117,123117,TRUE,,data/pdf/033306497d0154b5.pdf,债券代码正确；Markdown OCR曾误读，PDF文本为123117。
+3,033306497d0154b5,123117,健帆转债,date_fields,publish_date=2026-05-08,publish_date=2026-05-08; no_effective_date,TRUE,,data/pdf/033306497d0154b5.pdf,发布日期正确，未发生实施生效日。
+3,033306497d0154b5,123117,健帆转债,price_fields,original_conv_price=38.65,current_conv_price=38.65; new_conv_price=null,TRUE,,data/pdf/033306497d0154b5.pdf,当前转股价38.65元/股正确。
+3,033306497d0154b5,123117,健帆转债,evidence_text,截至2026年5月8日...最新有效的转股价格为38.65元/股,包含触发事实和当前转股价格,TRUE,,data/pdf/033306497d0154b5.pdf,证据完整相关。
+4,057f3ee963b3eb52,111005,富春转债,sample_scope,included_in_sample,convertible_bond,TRUE,,data/pdf/057f3ee963b3eb52.pdf,富春转债为可转债。
+4,057f3ee963b3eb52,111005,富春转债,ann_type,强赎类公告,可转债强赎实施/摘牌提示,TRUE,,data/pdf/057f3ee963b3eb52.pdf,强赎类分类正确。
+4,057f3ee963b3eb52,111005,富春转债,stock_code,605189,605189,TRUE,,data/pdf/057f3ee963b3eb52.pdf,证券代码正确。
+4,057f3ee963b3eb52,111005,富春转债,bond_code,111005,111005,TRUE,,data/pdf/057f3ee963b3eb52.pdf,转债代码正确。
+4,057f3ee963b3eb52,111005,富春转债,date_fields,record_date=2026-05-28; last_convert_date=2026-05-28; delisting_date=2026-05-29,record_date=2026-05-28; last_convert_date=2026-05-28; delisting_date=2026-05-29,TRUE,,data/pdf/057f3ee963b3eb52.pdf,关键日期正确。
+4,057f3ee963b3eb52,111005,富春转债,price_fields,redemption_price=101.4; premium_rate=1.4,redemption_price=101.3973; premium_rate=1.3973 if simplified by face value,PARTIAL,precision_loss,data/pdf/057f3ee963b3eb52.pdf,赎回价主值正确但保留精度不足。
+4,057f3ee963b3eb52,111005,富春转债,evidence_text,赎回登记日：2026年5月28日；赎回价格：101.3973元/张...,包含赎回价、登记日、最后转股日和摘牌日,TRUE,,data/pdf/057f3ee963b3eb52.pdf,证据完整相关。
+5,03f93945dfe5ccba,123236,家联转债,sample_scope,included_in_sample,convertible_bond,TRUE,,data/pdf/03f93945dfe5ccba.pdf,家联转债为可转债。
+5,03f93945dfe5ccba,123236,家联转债,ann_type,强赎类公告,可转债强赎实施提示,TRUE,,data/pdf/03f93945dfe5ccba.pdf,强赎类分类正确。
+5,03f93945dfe5ccba,123236,家联转债,stock_code,301193,301193,TRUE,,data/pdf/03f93945dfe5ccba.pdf,证券代码正确。
+5,03f93945dfe5ccba,123236,家联转债,bond_code,123236,123236,TRUE,,data/pdf/03f93945dfe5ccba.pdf,债券代码正确。
+5,03f93945dfe5ccba,123236,家联转债,date_fields,record_date=2026-05-27; last_convert_date=2026-05-28; delisting_date=2026-05-28,record_date=2026-05-27; last_convert_date=2026-05-27; redemption_date=2026-05-28,FALSE,date_value_error,data/pdf/03f93945dfe5ccba.pdf,最后转股日应为2026-05-27，模型误填为赎回日2026-05-28。
+5,03f93945dfe5ccba,123236,家联转债,price_fields,redemption_price=100.34; premium_rate=0.34,redemption_price=100.344; premium_rate=0.344 if simplified by face value,PARTIAL,precision_loss,data/pdf/03f93945dfe5ccba.pdf,赎回价主值正确但精度被截断/四舍五入。
+5,03f93945dfe5ccba,123236,家联转债,evidence_text,截至2026年5月27日收市后仍未转股...100.344元/张...,包含赎回价和强制赎回事实,TRUE,,data/pdf/03f93945dfe5ccba.pdf,证据相关。
+6,05e842f296bf08a9,123109,昌红转债,sample_scope,included_in_sample,convertible_bond,TRUE,,data/pdf/05e842f296bf08a9.pdf,昌红转债为可转债。
+6,05e842f296bf08a9,123109,昌红转债,ann_type,下修类公告,不向下修正转股价格公告,TRUE,,data/pdf/05e842f296bf08a9.pdf,下修类分类正确。
+6,05e842f296bf08a9,123109,昌红转债,stock_code,300151,300151,TRUE,,data/pdf/05e842f296bf08a9.pdf,证券代码正确。
+6,05e842f296bf08a9,123109,昌红转债,bond_code,123109,123109,TRUE,,data/pdf/05e842f296bf08a9.pdf,债券代码正确。
+6,05e842f296bf08a9,123109,昌红转债,date_fields,publish_date=2026-04-28,publish_date=2026-04-28; no_effective_date,TRUE,,data/pdf/05e842f296bf08a9.pdf,发布日期正确。
+6,05e842f296bf08a9,123109,昌红转债,price_fields,original_conv_price=26.72,current_conv_price=26.72; new_conv_price=null,TRUE,,data/pdf/05e842f296bf08a9.pdf,当前转股价26.72元/股正确。
+6,05e842f296bf08a9,123109,昌红转债,evidence_text,公司股价自2026年4月7日至2026年4月27日...,包含触发事实和85%阈值,TRUE,,data/pdf/05e842f296bf08a9.pdf,证据相关。
+7,07ef28c71632845f,123264,双乐转债,sample_scope,included_in_sample,convertible_bond,TRUE,,data/pdf/07ef28c71632845f.pdf,双乐转债为可转债。
+7,07ef28c71632845f,123264,双乐转债,ann_type,下修类公告,预计触发下修条件提示,TRUE,,data/pdf/07ef28c71632845f.pdf,下修类分类正确。
+7,07ef28c71632845f,123264,双乐转债,stock_code,301036,301036,TRUE,,data/pdf/07ef28c71632845f.pdf,证券代码正确。
+7,07ef28c71632845f,123264,双乐转债,bond_code,123264,123264,TRUE,,data/pdf/07ef28c71632845f.pdf,债券代码正确。
+7,07ef28c71632845f,123264,双乐转债,date_fields,publish_date=2026-03-16,publish_date=2026-03-16,TRUE,,data/pdf/07ef28c71632845f.pdf,发布日期正确。
+7,07ef28c71632845f,123264,双乐转债,price_fields,original_conv_price=36.7; adjustment_ratio=15.0,current_conv_price=36.70; adjustment_ratio=null,PARTIAL,metric_misuse,data/pdf/07ef28c71632845f.pdf,公告仅为预计触发提示，未给修正后价格，adjustment_ratio不应填15.0。
+7,07ef28c71632845f,123264,双乐转债,evidence_text,自2026年3月3日至2026年3月16日...36.70元/股的85%,包含触发事实和当前转股价,TRUE,,data/pdf/07ef28c71632845f.pdf,证据相关。
+8,09d83a9026b8effd,128119,龙大转债,sample_scope,included_in_sample,convertible_bond,TRUE,,data/pdf/09d83a9026b8effd.pdf,龙大转债为可转债。
+8,09d83a9026b8effd,128119,龙大转债,ann_type,下修类公告,董事会提议向下修正公告,TRUE,,data/pdf/09d83a9026b8effd.pdf,下修类分类正确。
+8,09d83a9026b8effd,128119,龙大转债,stock_code,002726,002726,TRUE,,data/pdf/09d83a9026b8effd.pdf,证券代码正确。
+8,09d83a9026b8effd,128119,龙大转债,bond_code,128119,128119,TRUE,,data/pdf/09d83a9026b8effd.pdf,债券代码正确。
+8,09d83a9026b8effd,128119,龙大转债,date_fields,publish_date=2026-05-06; effective_date=2026-02-12,publish_date=2026-05-06; effective_date=null for current proposal,PARTIAL,historical_event_mixed,data/pdf/09d83a9026b8effd.pdf,2026-02-12是历史下修生效日，不是本次提议的生效日。
+8,09d83a9026b8effd,128119,龙大转债,price_fields,original_conv_price=9.3; new_conv_price=4.2,current_conv_price=4.20; new_conv_price=null for current proposal,FALSE,historical_event_mixed,data/pdf/09d83a9026b8effd.pdf,模型混入历史转股价调整记录；本次仅提议，尚无修正后价格。
+8,09d83a9026b8effd,128119,龙大转债,evidence_text,2026年5月6日...提议向下修正...将转股价格由9.30元/股向下修正为4.20元/股,当前提议证据与历史调整价格混在一起,PARTIAL,evidence_mixed,data/pdf/09d83a9026b8effd.pdf,证据包含当前提议，但价格片段来自历史调整说明。
+9,0e101c21c63c1568,127024,盈峰转债,sample_scope,included_in_sample,convertible_bond,TRUE,,data/pdf/0e101c21c63c1568.pdf,盈峰转债为可转债。
+9,0e101c21c63c1568,127024,盈峰转债,ann_type,强赎类公告,可转债提前赎回实施提示,TRUE,,data/pdf/0e101c21c63c1568.pdf,强赎类分类正确。
+9,0e101c21c63c1568,127024,盈峰转债,stock_code,000967,000967,TRUE,,data/pdf/0e101c21c63c1568.pdf,证券代码正确。
+9,0e101c21c63c1568,127024,盈峰转债,bond_code,127024,127024,TRUE,,data/pdf/0e101c21c63c1568.pdf,债券代码正确。
+9,0e101c21c63c1568,127024,盈峰转债,date_fields,record_date=2026-05-28; last_convert_date=2026-05-28; delisting_date=2026-05-29,record_date=2026-05-28; last_convert_date=2026-05-28; redemption/delist_date=2026-05-29,TRUE,,data/pdf/0e101c21c63c1568.pdf,关键日期正确。
+9,0e101c21c63c1568,127024,盈峰转债,price_fields,redemption_price=101.13; premium_rate=1.13,redemption_price=101.129; premium_rate=1.129 if simplified by face value,PARTIAL,precision_loss,data/pdf/0e101c21c63c1568.pdf,赎回价主值正确但保留精度不足。
+9,0e101c21c63c1568,127024,盈峰转债,evidence_text,2026年5月25日为“盈峰转债”最后一个交易日...,包含最后交易日、最后转股日、停止转股和赎回价格,TRUE,,data/pdf/0e101c21c63c1568.pdf,证据完整相关。
+10,0e492db366e04dd2,123104,卫宁转债,sample_scope,included_in_sample,convertible_bond,TRUE,,data/pdf/0e492db366e04dd2.pdf,卫宁转债为可转债。
+10,0e492db366e04dd2,123104,卫宁转债,ann_type,下修类公告,董事会提议向下修正公告,TRUE,,data/pdf/0e492db366e04dd2.pdf,下修类分类正确。
+10,0e492db366e04dd2,123104,卫宁转债,stock_code,300253,300253,TRUE,,data/pdf/0e492db366e04dd2.pdf,证券代码正确。
+10,0e492db366e04dd2,123104,卫宁转债,bond_code,123104,123104,TRUE,,data/pdf/0e492db366e04dd2.pdf,债券代码正确。
+10,0e492db366e04dd2,123104,卫宁转债,date_fields,publish_date=2026-03-11,publish_date=2026-03-11,TRUE,,data/pdf/0e492db366e04dd2.pdf,发布日期正确。
+10,0e492db366e04dd2,123104,卫宁转债,price_fields,original_conv_price=17.31,current_conv_price=17.31; new_conv_price=null,TRUE,,data/pdf/0e492db366e04dd2.pdf,当前转股价17.31元/股正确。
+10,0e492db366e04dd2,123104,卫宁转债,evidence_text,截至2026年3月11日...当期转股价格17.31元/股的85%,包含触发事实和当前转股价,TRUE,,data/pdf/0e492db366e04dd2.pdf,证据相关。
+11,0fb9af5c0fca7685,149539,21建房01,sample_scope,included_in_sample,out_of_scope_company_bond,FALSE,scope_mismatch,data/pdf/0fb9af5c0fca7685.pdf,公司债发行人赎回选择权，不属于可转债强赎样本。
+11,0fb9af5c0fca7685,149539,21建房01,ann_type,强赎类公告,强赎类公司债赎回公告,TRUE,,data/pdf/0fb9af5c0fca7685.pdf,大类为赎回公告，但不是可转债。
+11,0fb9af5c0fca7685,149539,21建房01,stock_code,149539,null,FALSE,bond_code_as_stock_code,data/pdf/0fb9af5c0fca7685.pdf,公告无股票代码，模型误将债券代码149539填入stock_code。
+11,0fb9af5c0fca7685,149539,21建房01,bond_code,149539,149539,TRUE,,data/pdf/0fb9af5c0fca7685.pdf,债券代码正确。
+11,0fb9af5c0fca7685,149539,21建房01,date_fields,record_date=2026-07-10; delisting_date=2026-07-13,record_date=2026-07-10; delisting_date=2026-07-13,TRUE,,data/pdf/0fb9af5c0fca7685.pdf,赎回登记日和摘牌日正确。
+11,0fb9af5c0fca7685,149539,21建房01,price_fields,redemption_price=104.38; premium_rate=4.38,redemption_price=104.38; premium_rate=null/not_applicable,PARTIAL,not_applicable_metric,data/pdf/0fb9af5c0fca7685.pdf,赎回价正确；公司债不适用可转债赎回溢价率。
+11,0fb9af5c0fca7685,149539,21建房01,evidence_text,赎回价格：人民币104.38元/张...赎回登记日：2026年7月10日...,包含赎回价、登记日、摘牌日,TRUE,,data/pdf/0fb9af5c0fca7685.pdf,证据相关。
+12,0d4491c8a504ab4a,128141,旺能转债,sample_scope,included_in_sample,convertible_bond,TRUE,,data/pdf/0d4491c8a504ab4a.pdf,旺能转债为可转债。
+12,0d4491c8a504ab4a,128141,旺能转债,ann_type,强赎类公告,可转债强赎实施提示,TRUE,,data/pdf/0d4491c8a504ab4a.pdf,强赎类分类正确。
+12,0d4491c8a504ab4a,128141,旺能转债,stock_code,002034,002034,TRUE,,data/pdf/0d4491c8a504ab4a.pdf,证券代码正确。
+12,0d4491c8a504ab4a,128141,旺能转债,bond_code,128141,128141,TRUE,,data/pdf/0d4491c8a504ab4a.pdf,债券代码正确。
+12,0d4491c8a504ab4a,128141,旺能转债,date_fields,record_date=2026-05-19; last_convert_date=2026-05-19; delisting_date=2026-05-20,record_date=2026-05-19; last_convert_date=2026-05-19; redemption/delist_date=2026-05-20,TRUE,,data/pdf/0d4491c8a504ab4a.pdf,关键日期正确。
+12,0d4491c8a504ab4a,128141,旺能转债,price_fields,redemption_price=100.84; premium_rate=0.84,redemption_price=100.844; premium_rate=0.844 if simplified by face value,PARTIAL,precision_loss,data/pdf/0d4491c8a504ab4a.pdf,赎回价主值正确但保留精度不足。
+12,0d4491c8a504ab4a,128141,旺能转债,evidence_text,证券代码：002034...剩余可转债将按照100.844元/张...,包含代码、最后转股日和赎回价,TRUE,,data/pdf/0d4491c8a504ab4a.pdf,证据相关。
+13,15c8db470b26e087,118024,冠宇转债,sample_scope,included_in_sample,convertible_bond,TRUE,,data/pdf/15c8db470b26e087.pdf,冠宇转债为可转债。
+13,15c8db470b26e087,118024,冠宇转债,ann_type,下修类公告,不向下修正转股价格公告,TRUE,,data/pdf/15c8db470b26e087.pdf,下修类分类正确。
+13,15c8db470b26e087,118024,冠宇转债,stock_code,688772,688772,TRUE,,data/pdf/15c8db470b26e087.pdf,证券代码正确。
+13,15c8db470b26e087,118024,冠宇转债,bond_code,118024,118024,TRUE,,data/pdf/15c8db470b26e087.pdf,转债代码正确。
+13,15c8db470b26e087,118024,冠宇转债,date_fields,publish_date=2026-03-21,publish_date=2026-03-21,TRUE,,data/pdf/15c8db470b26e087.pdf,发布日期正确。
+13,15c8db470b26e087,118024,冠宇转债,price_fields,original_conv_price=22.89,current_conv_price=22.89; new_conv_price=null,TRUE,,data/pdf/15c8db470b26e087.pdf,当前转股价22.89元/股正确。
+13,15c8db470b26e087,118024,冠宇转债,evidence_text,证券代码：688772...截至2026年3月20日...,包含代码、触发事实和不下修决议,TRUE,,data/pdf/15c8db470b26e087.pdf,证据完整相关。
+14,16c456fa50fe3336,111013,新港转债,sample_scope,included_in_sample,convertible_bond,TRUE,,data/pdf/16c456fa50fe3336.pdf,新港转债为可转债。
+14,16c456fa50fe3336,111013,新港转债,ann_type,强赎类公告,可转债强赎实施/摘牌提示,TRUE,,data/pdf/16c456fa50fe3336.pdf,强赎类分类正确。
+14,16c456fa50fe3336,111013,新港转债,stock_code,605162,605162,TRUE,,data/pdf/16c456fa50fe3336.pdf,证券代码正确。
+14,16c456fa50fe3336,111013,新港转债,bond_code,111013,111013,TRUE,,data/pdf/16c456fa50fe3336.pdf,债券代码正确。
+14,16c456fa50fe3336,111013,新港转债,date_fields,record_date=2026-06-01; last_convert_date=2026-06-01; delisting_date=2026-06-02,record_date=2026-06-01; last_convert_date=2026-06-01; delisting_date=2026-06-02,TRUE,,data/pdf/16c456fa50fe3336.pdf,关键日期正确。
+14,16c456fa50fe3336,111013,新港转债,price_fields,redemption_price=100.35; premium_rate=0.35,redemption_price=100.3534; premium_rate=0.3534 if simplified by face value,PARTIAL,precision_loss,data/pdf/16c456fa50fe3336.pdf,赎回价主值正确但保留精度不足。
+14,16c456fa50fe3336,111013,新港转债,evidence_text,股票自2026年3月31日至2026年4月21日...赎回价格为100.3534元/张...,包含触发事实、赎回价、日期和摘牌日,TRUE,,data/pdf/16c456fa50fe3336.pdf,证据完整相关。
+15,1b9272a66b161a74,118027,宏图转债,sample_scope,included_in_sample,convertible_bond,TRUE,,data/pdf/1b9272a66b161a74.pdf,宏图转债为可转债。
+15,1b9272a66b161a74,118027,宏图转债,ann_type,下修类公告,向下修正实施公告,TRUE,,data/pdf/1b9272a66b161a74.pdf,下修类分类正确。
+15,1b9272a66b161a74,118027,宏图转债,stock_code,688066,688066,TRUE,,data/pdf/1b9272a66b161a74.pdf,证券代码正确。
+15,1b9272a66b161a74,118027,宏图转债,bond_code,118027,118027,TRUE,,data/pdf/1b9272a66b161a74.pdf,债券代码正确。
+15,1b9272a66b161a74,118027,宏图转债,date_fields,publish_date=2026-03-19; effective_date=2026-03-20,publish_date=2026-03-19; effective_date=2026-03-20,TRUE,,data/pdf/1b9272a66b161a74.pdf,关键日期正确。
+15,1b9272a66b161a74,118027,宏图转债,price_fields,original_conv_price=40.94; new_conv_price=24.55; adjustment_ratio=40.07,original_conv_price=40.94; new_conv_price=24.55; adjustment_ratio=40.03 by formula,TRUE,,data/pdf/1b9272a66b161a74.pdf,修正前后转股价正确；下修幅度因四舍五入差异很小。
+15,1b9272a66b161a74,118027,宏图转债,evidence_text,公告标题片段,应包含修正前40.94、修正后24.55、生效日2026-03-20,PARTIAL,evidence_incomplete,data/pdf/1b9272a66b161a74.pdf,结构化值正确，但evidence_text只给标题，关键数字证据不完整。
+16,1e021a56c77c5d43,123180,浙矿转债,sample_scope,included_in_sample,convertible_bond,TRUE,,data/pdf/1e021a56c77c5d43.pdf,浙矿转债为可转债。
+16,1e021a56c77c5d43,123180,浙矿转债,ann_type,下修类公告,预计触发下修条件提示,TRUE,,data/pdf/1e021a56c77c5d43.pdf,下修类分类正确。
+16,1e021a56c77c5d43,123180,浙矿转债,stock_code,300837,300837,TRUE,,data/pdf/1e021a56c77c5d43.pdf,证券代码正确。
+16,1e021a56c77c5d43,123180,浙矿转债,bond_code,123180,123180,TRUE,,data/pdf/1e021a56c77c5d43.pdf,债券代码正确。
+16,1e021a56c77c5d43,123180,浙矿转债,date_fields,publish_date=2026-03-25,publish_date=2026-03-25,TRUE,,data/pdf/1e021a56c77c5d43.pdf,发布日期正确。
+16,1e021a56c77c5d43,123180,浙矿转债,price_fields,original_conv_price=47.89,current_conv_price=47.89; new_conv_price=null,TRUE,,data/pdf/1e021a56c77c5d43.pdf,当前转股价47.89元/股正确。
+16,1e021a56c77c5d43,123180,浙矿转债,evidence_text,2026年3月12日至2026年3月25日...转股价格：人民币47.89元/股,包含触发事实和当前转股价,TRUE,,data/pdf/1e021a56c77c5d43.pdf,证据相关。
+17,1f12792e645893ca,148300,23广资01,sample_scope,included_in_sample,out_of_scope_company_bond,FALSE,scope_mismatch,data/pdf/1f12792e645893ca.pdf,公司债发行人赎回选择权，不属于可转债强赎样本。
+17,1f12792e645893ca,148300,23广资01,ann_type,强赎类公告,强赎类公司债赎回公告,TRUE,,data/pdf/1f12792e645893ca.pdf,大类为赎回公告，但不是可转债。
+17,1f12792e645893ca,148300,23广资01,stock_code,,null,TRUE,,data/pdf/1f12792e645893ca.pdf,公告未披露股票代码，留空合理。
+17,1f12792e645893ca,148300,23广资01,bond_code,148300,148300,TRUE,,data/pdf/1f12792e645893ca.pdf,债券代码正确。
+17,1f12792e645893ca,148300,23广资01,date_fields,record_date=2026-05-22; delisting_date=2026-05-25,record_date=2026-05-22; delisting_date=2026-05-25,TRUE,,data/pdf/1f12792e645893ca.pdf,赎回登记日和摘牌日正确。
+17,1f12792e645893ca,148300,23广资01,price_fields,redemption_price=103.18; premium_rate=,redemption_price=103.18; premium_rate=null/not_applicable,TRUE,,data/pdf/1f12792e645893ca.pdf,赎回价格正确，且未填不适用的premium_rate。
+17,1f12792e645893ca,148300,23广资01,evidence_text,赎回登记日：2026年5月22日。赎回价格：人民币103.18元/张...,包含赎回登记日和赎回价,TRUE,,data/pdf/1f12792e645893ca.pdf,证据相关。
+18,1fb17fd4938c055a,118053,正帆转债,sample_scope,included_in_sample,convertible_bond,TRUE,,data/pdf/1fb17fd4938c055a.pdf,正帆转债为可转债。
+18,1fb17fd4938c055a,118053,正帆转债,ann_type,下修类公告,不向下修正转股价格公告,TRUE,,data/pdf/1fb17fd4938c055a.pdf,下修类分类正确。
+18,1fb17fd4938c055a,118053,正帆转债,stock_code,688596,688596,TRUE,,data/pdf/1fb17fd4938c055a.pdf,证券代码正确。
+18,1fb17fd4938c055a,118053,正帆转债,bond_code,118053,118053,TRUE,,data/pdf/1fb17fd4938c055a.pdf,转债代码正确。
+18,1fb17fd4938c055a,118053,正帆转债,date_fields,publish_date=2026-03-24,publish_date=2026-03-24,TRUE,,data/pdf/1fb17fd4938c055a.pdf,发布日期正确。
+18,1fb17fd4938c055a,118053,正帆转债,price_fields,original_conv_price=38.45,current_conv_price=38.45; new_conv_price=null,TRUE,,data/pdf/1fb17fd4938c055a.pdf,当前转股价38.45元/股正确。
+18,1fb17fd4938c055a,118053,正帆转债,evidence_text,截至2026年3月23日...审议通过了《关于不向下修正“正帆转债”转股价格的议案》,包含触发事实和不下修决议,TRUE,,data/pdf/1fb17fd4938c055a.pdf,证据相关。
+19,20c3a35eac0b5974,111023,利柏转债,sample_scope,included_in_sample,convertible_bond,TRUE,,data/pdf/20c3a35eac0b5974.pdf,利柏转债为可转债。
+19,20c3a35eac0b5974,111023,利柏转债,ann_type,强赎类公告,预计满足赎回条件提示,TRUE,,data/pdf/20c3a35eac0b5974.pdf,强赎类分类正确。
+19,20c3a35eac0b5974,111023,利柏转债,stock_code,605167,605167,TRUE,,data/pdf/20c3a35eac0b5974.pdf,证券代码正确。
+19,20c3a35eac0b5974,111023,利柏转债,bond_code,111023,111023,TRUE,,data/pdf/20c3a35eac0b5974.pdf,债券代码正确；Markdown OCR曾误读，PDF文本为111023。
+19,20c3a35eac0b5974,111023,利柏转债,date_fields,publish_date=2026-05-20,publish_date=2026-05-20; no_record_or_delist_date_yet,TRUE,,data/pdf/20c3a35eac0b5974.pdf,发布日期正确；预计触发阶段无赎回登记/摘牌日。
+19,20c3a35eac0b5974,111023,利柏转债,price_fields,redemption_price=null,redemption_price=null for forecast notice,TRUE,,data/pdf/20c3a35eac0b5974.pdf,预计触发提示尚未披露赎回价格，留空合理。
+19,20c3a35eac0b5974,111023,利柏转债,evidence_text,2026年5月20日,应包含预计触发赎回条件的正文片段,FALSE,evidence_too_short,data/pdf/20c3a35eac0b5974.pdf,证据文本只有日期，不能支撑强赎触发判断。
+20,1f0b8841d52d4d13,110076,华海转债,sample_scope,included_in_sample,convertible_bond,TRUE,,data/pdf/1f0b8841d52d4d13.pdf,华海转债为可转债。
+20,1f0b8841d52d4d13,110076,华海转债,ann_type,下修类公告,向下修正实施公告,TRUE,,data/pdf/1f0b8841d52d4d13.pdf,下修类分类正确。
+20,1f0b8841d52d4d13,110076,华海转债,stock_code,600521,600521,TRUE,,data/pdf/1f0b8841d52d4d13.pdf,证券代码正确。
+20,1f0b8841d52d4d13,110076,华海转债,bond_code,110076,110076,TRUE,,data/pdf/1f0b8841d52d4d13.pdf,债券代码正确。
+20,1f0b8841d52d4d13,110076,华海转债,date_fields,publish_date=2026-05-21; effective_date=2026-05-25,publish_date=2026-05-21; effective_date=2026-05-25,TRUE,,data/pdf/1f0b8841d52d4d13.pdf,关键日期正确。
+20,1f0b8841d52d4d13,110076,华海转债,price_fields,original_conv_price=33.06; new_conv_price=16.6; adjustment_ratio=49.77,original_conv_price=33.06; new_conv_price=16.60; adjustment_ratio=49.79 by formula,TRUE,,data/pdf/1f0b8841d52d4d13.pdf,修正前后转股价正确；下修幅度仅四舍五入差异。
+20,1f0b8841d52d4d13,110076,华海转债,evidence_text,自2026年3月27日至2026年4月17日期间...,包含触发事实、定价基准和生效日,TRUE,,data/pdf/1f0b8841d52d4d13.pdf,证据相关。

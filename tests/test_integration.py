@@ -61,7 +61,8 @@ class TestPipelineIntegration(unittest.TestCase):
                 'total_days': '30'
             })
         
-        indicators = calculate_indicators(event_chain_path)
+        indicator_path = os.path.join(self.temp_dir, 'outputs', 'indicators', 'quantitative_indicators.csv')
+        indicators = calculate_indicators(event_chain_path, indicator_path)
         self.assertEqual(len(indicators), 1)
         self.assertEqual(indicators[0]['adjustment_ratio_calc'], 20.02)
     
@@ -140,7 +141,8 @@ class TestPipelineIntegration(unittest.TestCase):
         from src.indicator.calc_indicators import calculate_indicators
         from src.extract.validate_results import validate_record
         
-        result = calculate_indicators('nonexistent_file.csv')
+        indicator_path = os.path.join(self.temp_dir, 'outputs', 'indicators', 'empty.csv')
+        result = calculate_indicators('nonexistent_file.csv', indicator_path)
         self.assertEqual(result, [])
         
         empty_record = {}

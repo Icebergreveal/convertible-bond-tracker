@@ -1,4 +1,3 @@
-import requests
 import json
 import time
 import hashlib
@@ -7,7 +6,13 @@ import os
 import random
 from datetime import datetime, timedelta
 from typing import List, Dict, Any
-from bs4 import BeautifulSoup
+from .real_data_guard import assert_real_metadata_records, read_metadata_csv
+
+METADATA_FIELDNAMES = [
+    'doc_id', 'stock_code', 'stock_name', 'bond_code', 'bond_name', 'title',
+    'ann_type', 'event_stage', 'publish_date', 'announcement_url', 'pdf_url',
+    'download_status', 'crawl_time', 'data_source', 'notes'
+]
 
 USER_AGENTS = [
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
@@ -114,12 +119,10 @@ def load_existing_doc_ids(metadata_path: str) -> set:
     existing_ids = set()
     if os.path.exists(metadata_path):
         try:
-            with open(metadata_path, 'r', encoding='utf-8') as f:
-                reader = csv.DictReader(f)
-                for row in reader:
-                    doc_id = row.get('doc_id')
-                    if doc_id:
-                        existing_ids.add(doc_id)
+            for row in read_metadata_csv(metadata_path):
+                doc_id = row.get('doc_id')
+                if doc_id:
+                    existing_ids.add(doc_id)
         except Exception as e:
             print(f"Warning: Failed to load existing metadata: {e}")
     return existing_ids
@@ -127,11 +130,9 @@ def load_existing_doc_ids(metadata_path: str) -> set:
 def get_last_crawl_time(metadata_path: str) -> str:
     if os.path.exists(metadata_path):
         try:
-            with open(metadata_path, 'r', encoding='utf-8') as f:
-                reader = csv.DictReader(f)
-                crawl_times = [row.get('crawl_time', '') for row in reader if row.get('crawl_time')]
-                if crawl_times:
-                    return max(crawl_times)[:10]
+            crawl_times = [row.get('crawl_time', '') for row in read_metadata_csv(metadata_path) if row.get('crawl_time')]
+            if crawl_times:
+                return max(crawl_times)[:10]
         except Exception as e:
             pass
     return (datetime.now() - timedelta(days=365)).strftime('%Y-%m-%d')
@@ -141,6 +142,8 @@ def search_announcements(
     limit: int = None,
     incremental: bool = True
 ) -> List[Dict[str, Any]]:
+    import requests
+
     base_url = "https://www.cninfo.com.cn/new/hisAnnouncement/query"
     
     results = []
@@ -251,6 +254,7 @@ def search_announcements(
                             'stock_name': stock_name,
                             'bond_code': bond_code,
                             'bond_name': bond_name,
+                            'title': title,
                             'ann_type': ann_type,
                             'event_stage': stage,
                             'publish_date': publish_date,
@@ -258,7 +262,8 @@ def search_announcements(
                             'pdf_url': pdf_url,
                             'download_status': 'pending',
                             'crawl_time': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-                            'notes': ''
+                            'data_source': 'cninfo',
+                            'notes': 'Real data from CNINFO'
                         }
                         
                         results.append(record)
@@ -298,7 +303,8 @@ def search_announcements(
     print(f"[Crawl] Found {len(results)} new announcements")
     return results
 
-def generate_sample_data(limit: int = None):
+def generate_sample_data_for_tests(limit: int = None):
+    """Generate demo-only records. Never save these as formal project metadata."""
     bond_companies = [
         {'stock_code': '000723', 'stock_name': '美锦能源', 'bond_code': '127061', 'bond_name': '美锦转债'},
         {'stock_code': '002726', 'stock_name': '龙大美食', 'bond_code': '128152', 'bond_name': '龙大转债'},
@@ -343,6 +349,7 @@ def generate_sample_data(limit: int = None):
                     'pdf_url': f"http://static.cninfo.com.cn/finalpage/{publish_date}/1225{company_idx}{ann_idx}{event_round}.PDF",
                     'download_status': 'pending',
                     'crawl_time': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                    'data_source': 'sample',
                     'notes': f'示例数据-事件{event_round}'
                 }
                 results.append(record)
@@ -352,15 +359,14 @@ def generate_sample_data(limit: int = None):
     
     return results
 
-def save_metadata(records: List[Dict[str, Any]], output_path: str):
+def save_metadata(records: List[Dict[str, Any]], output_path: str, allow_non_cninfo: bool = False):
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     
-    fieldnames = ['doc_id', 'stock_code', 'stock_name', 'bond_code', 'bond_name', 
-                  'ann_type', 'event_stage', 'publish_date', 'announcement_url', 'pdf_url', 
-                  'download_status', 'crawl_time', 'notes']
+    if not allow_non_cninfo:
+        assert_real_metadata_records(records)
     
     with open(output_path, 'w', encoding='utf-8', newline='') as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer = csv.DictWriter(f, fieldnames=METADATA_FIELDNAMES, extrasaction='ignore')
         writer.writeheader()
         writer.writerows(records)
     

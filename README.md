@@ -100,9 +100,9 @@
 
 ├── data/                       # 数据目录
 │   ├── bonds/                  # 可转债基础信息
-│   │   └── bond_list.csv       # 可转债清单（145条真实数据）
+│   │   └── bond_list.csv       # 可转债清单（144条真实数据）
 │   ├── metadata/               # 元数据目录
-│   │   └── metadata.csv        # 公告元数据清单（442条真实数据）
+│   │   └── metadata.csv        # 公告元数据清单（1171条真实数据）
 │   ├── pdf/                    # PDF文件存储（不上传GitHub）
 │   └── parsed/                 # MinerU解析结果（不上传GitHub）
 
@@ -159,15 +159,18 @@
     │   ├── records_validated.csv
     │   └── 最终抽取结果_清洗后.csv
     ├── event_chain/            # 事件链匹配结果
-    │   └── event_chains.csv    # 147条事件链记录
+    │   └── event_chains.csv    # 169条事件链记录
     ├── indicators/             # 量化指标计算结果
-    │   └── quantitative_indicators.csv # 147条指标记录
+    │   └── quantitative_indicators.csv # 169条指标记录
     ├── sample_outputs/         # 样本数据（用于演示）
     │   ├── records_validated_sample.csv
     │   ├── event_chains_sample.csv
     │   └── quantitative_indicators_sample.csv
     └── eval/                   # 评估数据
         ├── eval_manual_sample.csv
+        ├── manual_sample_review.csv
+        ├── manual_sample_review_summary.csv
+        ├── manual_error_cases.md
         └── auto_eval_report.json
 ```
 
@@ -412,15 +415,18 @@ outputs/
 │   ├── 最终抽取结果.csv                   # 中文命名版本
 │   └── 最终抽取结果_清洗后.csv             # 清洗后的最终结果
 ├── event_chain/                          # 事件链匹配结果
-│   └── event_chains.csv                  # 下修/强赎事件链（144条）
+│   └── event_chains.csv                  # 下修/强赎事件链（169条）
 ├── indicators/                           # 量化指标计算结果
-│   └── quantitative_indicators.csv       # 下修幅度、赎回溢价率（144条）
+│   └── quantitative_indicators.csv       # 下修幅度、赎回溢价率（169条）
 ├── sample_outputs/                       # 样本数据（用于演示）
 │   ├── records_validated_sample.csv      # 抽取结果样本
 │   ├── event_chains_sample.csv           # 事件链样本
 │   └── quantitative_indicators_sample.csv # 指标样本
 ├── eval/                                # 评估数据
-│   ├── eval_manual_sample.csv            # 人工评估模板
+│   ├── eval_manual_sample.csv            # 人工评估样本与样本级结论
+│   ├── manual_sample_review.csv          # 字段级人工复核记录
+│   ├── manual_sample_review_summary.csv  # 人工复核维度汇总
+│   ├── manual_error_cases.md             # 人工复核错误案例
 │   └── auto_eval_report.json             # 自动评估报告
 └── logs/                                 # 运行日志（运行时生成）
     ├── crawl_download.log                # 爬虫下载日志
@@ -433,14 +439,17 @@ outputs/
 | 文件路径 | 说明 | 格式 |
 |---|---|---|
 | `data/bonds/bond_list.csv` | 可转债基础信息清单（144条真实数据） | CSV |
-| `data/metadata/metadata.csv` | 公告元数据清单（442条真实数据） | CSV |
+| `data/metadata/metadata.csv` | 公告元数据清单（1171条真实数据） | CSV |
 | `data/pdf/*.pdf` | 下载的公告PDF（不上传GitHub） | PDF |
 | `data/parsed/*.md` | MinerU解析结果（不上传GitHub） | MD |
 | `outputs/extract_results/structured_data_merged_final.json` | 最终合并的真实抽取数据 | JSON |
 | `outputs/extract_results/records_validated.csv` | 通过校验的抽取记录（384条） | CSV |
-| `outputs/event_chain/event_chains.csv` | 事件链匹配结果（144条） | CSV |
-| `outputs/indicators/quantitative_indicators.csv` | 量化指标计算结果（144条） | CSV |
-| `outputs/eval/eval_manual_sample.csv` | 人工评估样本模板 | CSV |
+| `outputs/event_chain/event_chains.csv` | 事件链匹配结果（169条） | CSV |
+| `outputs/indicators/quantitative_indicators.csv` | 量化指标计算结果（169条） | CSV |
+| `outputs/eval/eval_manual_sample.csv` | 人工评估样本与样本级结论（20条） | CSV |
+| `outputs/eval/manual_sample_review.csv` | 字段级人工复核记录（140条） | CSV |
+| `outputs/eval/manual_sample_review_summary.csv` | 人工复核维度汇总（8条） | CSV |
+| `outputs/eval/manual_error_cases.md` | 人工复核错误案例 | MD |
 | `outputs/logs/*.log` | 各模块运行日志 | LOG |
 
 ---
@@ -490,20 +499,21 @@ outputs/
 
 ### 难度档位
 - **档位**：挑战档（1.1）
-- **公告类型**：8种（下修4类+强赎4类）✅ 完整覆盖
+- **公告类型**：目标覆盖8种细分阶段；当前已校验结果按下修类/强赎类两个大类统计
 - **字段数量**：25个结构化字段（公共10个+下修9个+强赎6个）
 
-### 实际数据统计（2026-06-09）
+### 实际数据统计（2026-06-11）
 | 数据项 | 数量 | 说明 |
 |---|---|---|
-| 元数据记录 | 442条 | 100%真实数据（来自巨潮资讯网） |
+| 元数据记录 | 1171条 | 100%真实数据（来自巨潮资讯网） |
 | 有效抽取记录 | 384条 | 包含完整bond_code和ann_type |
-| 下修类公告 | 195条 | 触发/提议/决议/实施各阶段 |
-| 强赎类公告 | 189条 | 触发/决议/实施/摘牌各阶段 |
-| 公告类型覆盖 | 8/8 | 完整覆盖所有类型 |
-| 唯一转债代码 | 144个 | 真实存在的可转债 |
-| 事件链记录 | 144条 | 下修/强赎事件链匹配 |
-| 量化指标记录 | 144条 | 下修幅度、赎回溢价率计算 |
+| 下修类公告 | 203条 | 来自已校验抽取记录 |
+| 强赎类公告 | 181条 | 来自已校验抽取记录 |
+| 公告类型覆盖 | 2个大类 | 下修类公告、强赎类公告 |
+| 唯一转债代码 | 142个 | 来自已校验抽取记录 |
+| 事件链记录 | 169条 | 下修/强赎事件链匹配 |
+| 四节点覆盖链 | 27条 | 需人工复核是否同一事件周期 |
+| 量化指标记录 | 169条 | 下修幅度、赎回溢价率计算 |
 
 ### 评估指标
 | 指标 | 目标值 |
@@ -517,6 +527,8 @@ outputs/
 ---
 
 ## 合规说明
+
+详细数据来源口径见 [`DATA_PROVENANCE.md`](DATA_PROVENANCE.md)。正式数据仅认定为来自巨潮资讯网公开公告，任何由解析文本推断、人工待复核或示例生成的数据不得直接写入正式 metadata。
 
 ### 数据爬取合规性
 1. **数据来源**：仅使用巨潮资讯网（www.cninfo.com.cn）公开可访问的信息披露数据
@@ -556,9 +568,9 @@ MIT License
 
 #### 1. 数据质量提升
 - ✅ 修正爬虫关键词：将错误的"下修实施"改为正确的"向下修正转债转股价格"
-- ✅ 补充下修实施公告：从0条增加到246条真实公告
+- ✅ 补充实施阶段公告：当前 metadata 中 `stage_4_implementation` 为246条
 - ✅ 清理合成数据：移除所有虚构数据，100%使用真实爬取数据
-- ✅ 公告类型覆盖：从7/8提升到8/8（完整覆盖）
+- ✅ 公告大类覆盖：已覆盖下修类公告、强赎类公告
 
 #### 2. 公式准确性优化
 - ✅ 赎回溢价率公式优化：从简化计算(假设转股价值=100)改为精确计算
@@ -579,9 +591,9 @@ MIT License
 ### 改进效果
 | 指标 | 改进前 | 改进后 | 提升幅度 |
 |---|---|---|---|
-| 公告类型覆盖 | 7/8 | 8/8 | +12.5% |
-| 下修实施公告 | 0条 | 246条 | +∞ |
-| 总数据量 | 925条 | 1171条 | +26.6% |
+| 公告大类覆盖 | 待统一口径 | 2个核心大类 | 已覆盖下修/强赎 |
+| 实施阶段公告 | 待统一旧口径 | 246条 | 当前metadata统计 |
+| 正式metadata规模 | 待统一旧口径 | 1171条 | 当前真实口径 |
 | 数据真实性 | 混有合成 | 100%真实 | +100% |
 | 赎回溢价率计算 | 简化假设 | 精确计算 | 大幅提升 |
 

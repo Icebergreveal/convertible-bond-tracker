@@ -41,7 +41,7 @@ class TestCalculateIndicators(unittest.TestCase):
             'total_days': '30'
         }])
         
-        result = calculate_indicators(self.input_path)
+        result = calculate_indicators(self.input_path, self.output_path)
         
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0]['adjustment_ratio_calc'], 20.02)
@@ -61,7 +61,7 @@ class TestCalculateIndicators(unittest.TestCase):
             'adjustment_ratio': '20.02'
         }])
         
-        result = calculate_indicators(self.input_path)
+        result = calculate_indicators(self.input_path, self.output_path)
         
         self.assertEqual(result[0]['adjustment_ratio_check'], 'OK')
     
@@ -79,7 +79,7 @@ class TestCalculateIndicators(unittest.TestCase):
             'adjustment_ratio': '15.00'
         }])
         
-        result = calculate_indicators(self.input_path)
+        result = calculate_indicators(self.input_path, self.output_path)
         
         self.assertEqual(result[0]['adjustment_ratio_check'], 'MISMATCH')
     
@@ -96,7 +96,7 @@ class TestCalculateIndicators(unittest.TestCase):
             'total_days': '20'
         }])
         
-        result = calculate_indicators(self.input_path)
+        result = calculate_indicators(self.input_path, self.output_path)
         
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0]['premium_rate_calc'], 3.5)
@@ -115,7 +115,7 @@ class TestCalculateIndicators(unittest.TestCase):
             'total_days': '60'
         }])
         
-        result = calculate_indicators(self.input_path)
+        result = calculate_indicators(self.input_path, self.output_path)
         
         self.assertEqual(result[0]['cycle_check'], 'NORMAL')
     
@@ -132,7 +132,7 @@ class TestCalculateIndicators(unittest.TestCase):
             'total_days': '100'
         }])
         
-        result = calculate_indicators(self.input_path)
+        result = calculate_indicators(self.input_path, self.output_path)
         
         self.assertEqual(result[0]['cycle_check'], 'LONG')
     
@@ -149,7 +149,7 @@ class TestCalculateIndicators(unittest.TestCase):
             'total_days': '45'
         }])
         
-        result = calculate_indicators(self.input_path)
+        result = calculate_indicators(self.input_path, self.output_path)
         
         self.assertEqual(result[0]['cycle_check'], 'NORMAL')
     
@@ -166,7 +166,7 @@ class TestCalculateIndicators(unittest.TestCase):
             'total_days': '70'
         }])
         
-        result = calculate_indicators(self.input_path)
+        result = calculate_indicators(self.input_path, self.output_path)
         
         self.assertEqual(result[0]['cycle_check'], 'LONG')
     
@@ -183,7 +183,7 @@ class TestCalculateIndicators(unittest.TestCase):
             'total_days': ''
         }])
         
-        result = calculate_indicators(self.input_path)
+        result = calculate_indicators(self.input_path, self.output_path)
         
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0]['adjustment_ratio_calc'], '')
@@ -203,13 +203,13 @@ class TestCalculateIndicators(unittest.TestCase):
             'total_days': '30'
         }])
         
-        result = calculate_indicators(self.input_path)
+        result = calculate_indicators(self.input_path, self.output_path)
         
         self.assertEqual(result[0]['adjustment_ratio_calc'], '')
     
     def test_empty_input(self):
         """测试空输入"""
-        result = calculate_indicators(os.path.join(self.temp_dir, 'nonexistent.csv'))
+        result = calculate_indicators(os.path.join(self.temp_dir, 'nonexistent.csv'), self.output_path)
         
         self.assertEqual(result, [])
     
@@ -238,7 +238,7 @@ class TestCalculateIndicators(unittest.TestCase):
             }
         ])
         
-        result = calculate_indicators(self.input_path)
+        result = calculate_indicators(self.input_path, self.output_path)
         
         self.assertEqual(len(result), 2)
         self.assertEqual(result[0]['adjustment_ratio_calc'], 20.02)

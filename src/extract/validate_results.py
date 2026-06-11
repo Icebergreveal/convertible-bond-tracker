@@ -106,10 +106,10 @@ def validate_record(record: Dict) -> dict:
     try:
         if '下修' in ann_type:
             parsed = ConversionPriceAdjustment(**cleaned_record)
-            result['parsed'] = parsed.dict()
+            result['parsed'] = parsed.model_dump()
         elif '强赎' in ann_type or '赎回' in ann_type:
             parsed = EarlyRedemption(**cleaned_record)
-            result['parsed'] = parsed.dict()
+            result['parsed'] = parsed.model_dump()
         else:
             result['warnings'].append(f"未知公告类型: {ann_type}，未进行Pydantic校验")
             result['parsed'] = cleaned_record
@@ -127,10 +127,12 @@ def validate_record(record: Dict) -> dict:
     
     return result
 
-def validate_results(input_path: str = "outputs/extract_results/structured_data.json"):
-    output_path = "outputs/extract_results/records_validated.csv"
-    error_path = "outputs/logs/validation_errors.jsonl"
-    warning_path = "outputs/logs/validation_warnings.jsonl"
+def validate_results(
+    input_path: str = "outputs/extract_results/structured_data.json",
+    output_path: str = "outputs/extract_results/records_validated.csv",
+    error_path: str = "outputs/logs/validation_errors.jsonl",
+    warning_path: str = "outputs/logs/validation_warnings.jsonl"
+):
     
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     os.makedirs(os.path.dirname(error_path), exist_ok=True)

@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, field_validator, ValidationInfo
 from typing import Optional, Literal, List, Union
 from datetime import date
 
@@ -41,10 +41,10 @@ class ConversionPriceAdjustment(BaseModel):
 
     @field_validator('new_conv_price')
     @classmethod
-    def validate_price_limit(cls, v, values):
+    def validate_price_limit(cls, v: Optional[float], info: ValidationInfo) -> Optional[float]:
         if v is not None:
-            avg_20d = values.data.get('avg_price_20d')
-            avg_1d = values.data.get('avg_price_1d')
+            avg_20d = info.data.get('avg_price_20d')
+            avg_1d = info.data.get('avg_price_1d')
             if avg_20d and v < avg_20d:
                 raise ValueError(f"新转股价({v})低于前20日均价({avg_20d})")
             if avg_1d and v < avg_1d:

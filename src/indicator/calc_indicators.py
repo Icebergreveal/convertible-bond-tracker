@@ -2,14 +2,17 @@ import os
 import csv
 from typing import List, Dict
 
-def calculate_indicators(input_path: str = "outputs/event_chain/event_chains.csv"):
-    output_path = "outputs/indicators/quantitative_indicators.csv"
-    
-    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+def calculate_indicators(
+    input_path: str = "outputs/event_chain/event_chains.csv",
+    output_path: str = "outputs/indicators/quantitative_indicators.csv"
+):
+    output_dir = os.path.dirname(output_path)
+    if output_dir:
+        os.makedirs(output_dir, exist_ok=True)
     
     records = []
     if os.path.exists(input_path):
-        with open(input_path, 'r', encoding='utf-8') as f:
+        with open(input_path, 'r', encoding='utf-8-sig') as f:
             reader = csv.DictReader(f)
             records = list(reader)
     
@@ -104,7 +107,7 @@ def calculate_indicators(input_path: str = "outputs/event_chain/event_chains.csv
     
     fieldnames = list(results[0].keys()) if results else []
     
-    with open(output_path, 'w', encoding='utf-8', newline='') as f:
+    with open(output_path, 'w', encoding='utf-8-sig', newline='') as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerows(results)

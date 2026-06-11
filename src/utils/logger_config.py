@@ -1,14 +1,21 @@
 import os
-from loguru import logger
+import logging
 from datetime import datetime
 from typing import Optional
+
+try:
+    from loguru import logger
+    LOGURU_AVAILABLE = True
+except ImportError:
+    logger = logging.getLogger("convertible_bond_events")
+    LOGURU_AVAILABLE = False
 
 def setup_logger(
     log_dir: str = "logs",
     log_level: str = "INFO",
     rotation: str = "100 MB",
     retention: str = "30 days"
-) -> logger:
+) -> object:
     """
     配置日志系统
     
@@ -25,24 +32,35 @@ def setup_logger(
     
     current_date = datetime.now().strftime("%Y%m%d")
     log_file = os.path.join(log_dir, f"app_{current_date}.log")
-    
-    logger.remove()
-    
-    logger.add(
-        log_file,
-        level=log_level,
-        format="{time:YYYY-MM-DD HH:mm:ss.SSS} | {level: <8} | {name}:{function}:{line} | {message}",
-        rotation=rotation,
-        retention=retention,
-        compression="zip",
-        encoding="utf-8"
-    )
-    
-    logger.add(
-        lambda msg: print(msg),
-        level=log_level,
-        format="{time:YYYY-MM-DD HH:mm:ss} | {level: <8} | {message}"
-    )
+
+    if LOGURU_AVAILABLE:
+        logger.remove()
+        logger.add(
+            log_file,
+            level=log_level,
+            format="{time:YYYY-MM-DD HH:mm:ss.SSS} | {level: <8} | {name}:{function}:{line} | {message}",
+            rotation=rotation,
+            retention=retention,
+            compression="zip",
+            encoding="utf-8"
+        )
+        logger.add(
+            lambda msg: print(msg),
+            level=log_level,
+            format="{time:YYYY-MM-DD HH:mm:ss} | {level: <8} | {message}"
+        )
+    else:
+        logger.setLevel(getattr(logging, log_level))
+        logger.handlers.clear()
+        formatter = logging.Formatter(
+            "%(asctime)s | %(levelname)-8s | %(name)s:%(funcName)s:%(lineno)d | %(message)s"
+        )
+        file_handler = logging.FileHandler(log_file, encoding="utf-8")
+        file_handler.setFormatter(formatter)
+        stream_handler = logging.StreamHandler()
+        stream_handler.setFormatter(formatter)
+        logger.addHandler(file_handler)
+        logger.addHandler(stream_handler)
     
     logger.info("日志系统初始化完成")
     logger.info(f"日志文件路径: {log_file}")

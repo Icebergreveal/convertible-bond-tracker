@@ -6,14 +6,11 @@ from datetime import datetime
 from typing import List, Dict
 import argparse
 from .load_config import load_config, parse_args
+from .real_data_guard import assert_real_metadata_records, read_metadata_csv
+from .search_announcements import METADATA_FIELDNAMES
 
 def load_metadata(input_path: str) -> List[Dict[str, str]]:
-    records = []
-    with open(input_path, 'r', encoding='utf-8') as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            records.append(row)
-    return records
+    return read_metadata_csv(input_path)
 
 def download_pdf(url: str, save_path: str, retries: int = 3) -> bool:
     headers = {
@@ -100,11 +97,10 @@ def download_pdfs(config: Dict, limit: int = None):
         log_file.write(f"Skipped: {skipped}\n")
         log_file.write(f"Failed: {failed}\n")
     
+    assert_real_metadata_records(records)
+    extra_fields = [field for field in records[0].keys() if field not in METADATA_FIELDNAMES] if records else []
     with open(metadata_path, 'w', encoding='utf-8', newline='') as f:
-        fieldnames = ['doc_id', 'stock_code', 'stock_name', 'bond_code', 'bond_name', 
-                      'ann_type', 'event_stage', 'publish_date', 'announcement_url', 'pdf_url', 
-                      'download_status', 'crawl_time', 'notes']
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer = csv.DictWriter(f, fieldnames=METADATA_FIELDNAMES + extra_fields, extrasaction='ignore')
         writer.writeheader()
         writer.writerows(records)
     

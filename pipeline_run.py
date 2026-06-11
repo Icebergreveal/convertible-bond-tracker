@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 import argparse
-import yaml
-import json
 import time
 from datetime import datetime
 from src.crawl import load_config, search_announcements, download_pdfs, check_dataset
@@ -13,7 +11,53 @@ from src.indicator import calculate_indicators
 from src.eval import generate_eval_template
 from src.utils.logger_config import setup_logger, log_step_start, log_step_complete, log_step_error, log_data_quality
 
-logger = setup_logger()
+logger = None
+
+
+def output_dir(config, key, default):
+    output = config.get('output', {})
+    value = output.get(key)
+    if value:
+        return str(value).rstrip('/\\')
+    return default
+
+
+def output_file(config, key, filename, default):
+    directory = output_dir(config, key, None)
+    return f"{directory}/{filename}" if directory else default
+
+
+def validation_paths(config):
+    return {
+        'input_path': output_file(config, 'extract_results', 'structured_data.json',
+                                  'outputs/extract_results/structured_data.json'),
+        'output_path': output_file(config, 'extract_results', 'records_validated.csv',
+                                   'outputs/extract_results/records_validated.csv'),
+        'error_path': output_file(config, 'logs', 'validation_errors.jsonl',
+                                  'outputs/logs/validation_errors.jsonl'),
+        'warning_path': output_file(config, 'logs', 'validation_warnings.jsonl',
+                                    'outputs/logs/validation_warnings.jsonl'),
+    }
+
+
+def process_paths(config):
+    return {
+        'raw_extract': output_file(config, 'extract_results', 'structured_data.json',
+                                   'outputs/extract_results/structured_data.json'),
+        'standardized_extract': output_file(config, 'extract_results', 'structured_data_standardized.json',
+                                            'outputs/extract_results/structured_data_standardized.json'),
+        'event_chain': output_file(config, 'event_chain', 'event_chains.csv',
+                                   'outputs/event_chain/event_chains.csv'),
+    }
+
+
+def indicator_paths(config):
+    return {
+        'input_path': output_file(config, 'event_chain', 'event_chains.csv',
+                                  'outputs/event_chain/event_chains.csv'),
+        'output_path': output_file(config, 'indicators', 'quantitative_indicators.csv',
+                                   'outputs/indicators/quantitative_indicators.csv'),
+    }
 
 def run_crawl(config, args):
     start_time = time.time()
@@ -37,6 +81,22 @@ def run_crawl(config, args):
         
     except Exception as e:
         log_step_error("crawl", e)
+        raise
+
+def run_download(config, args):
+    start_time = time.time()
+    log_step_start("download", limit=args.limit)
+
+    try:
+        download_pdfs(config, limit=args.limit)
+        log_step_complete("download", duration=time.time() - start_time)
+
+        log_step_start("check_dataset")
+        check_dataset(config)
+        log_step_complete("check_dataset", duration=time.time() - start_time)
+
+    except Exception as e:
+        log_step_error("download", e)
         raise
 
 def run_parse(config, args):
@@ -78,7 +138,7 @@ def run_extract(config, args):
         log_step_complete("extract", duration=duration)
         
         log_step_start("validate")
-        result = validate_results()
+        result = validate_results(**validation_paths(config))
         log_step_complete("validate", duration=time.time() - start_time, **result)
         log_data_quality("validate", result['total'], result['valid'], result['errors'])
         
@@ -86,17 +146,30 @@ def run_extract(config, args):
         log_step_error("extract", e)
         raise
 
+def run_validate(config, args):
+    start_time = time.time()
+    log_step_start("validate")
+
+    try:
+        result = validate_results(**validation_paths(config))
+        log_step_complete("validate", duration=time.time() - start_time, **result)
+        log_data_quality("validate", result['total'], result['valid'], result['errors'])
+    except Exception as e:
+        log_step_error("validate", e)
+        raise
+
 def run_process(config, args):
     start_time = time.time()
     log_step_start("standardize")
     
     try:
-        standardize_data()
+        paths = process_paths(config)
+        standardize_data(paths['raw_extract'], paths['standardized_extract'])
         duration = time.time() - start_time
         log_step_complete("standardize", duration=duration)
         
         log_step_start("match_events")
-        match_events()
+        match_events(config['output']['metadata'], paths['standardized_extract'], paths['event_chain'])
         log_step_complete("match_events", duration=time.time() - start_time)
         
     except Exception as e:
@@ -108,7 +181,7 @@ def run_indicator(config, args):
     log_step_start("calculate_indicators")
     
     try:
-        calculate_indicators()
+        calculate_indicators(**indicator_paths(config))
         duration = time.time() - start_time
         log_step_complete("calculate_indicators", duration=duration)
     except Exception as e:
@@ -120,7 +193,12 @@ def run_eval(config, args):
     log_step_start("generate_eval")
     
     try:
-        generate_eval_template()
+        generate_eval_template(
+            input_path=output_file(config, 'extract_results', 'structured_data.json',
+                                   'outputs/extract_results/structured_data.json'),
+            output_path=output_file(config, 'eval', 'eval_manual_sample.csv',
+                                    'outputs/eval/eval_manual_sample.csv')
+        )
         duration = time.time() - start_time
         log_step_complete("generate_eval", duration=duration)
     except Exception as e:
@@ -145,7 +223,10 @@ def main():
     parser = argparse.ArgumentParser(description='Convertible Bond Event Analysis Pipeline')
     parser.add_argument('--config', type=str, default='configs/crawl.yaml', help='Config file path')
     parser.add_argument('--step', type=str, required=True, 
-                        choices=['crawl', 'parse', 'section', 'extract', 'process', 'indicator', 'eval', 'all'],
+                        choices=[
+                            'crawl', 'download', 'parse', 'section', 'extract',
+                            'validate', 'process', 'indicator', 'eval', 'all'
+                        ],
                         help='Step to run')
     parser.add_argument('--limit', type=int, default=None, help='Limit number of records')
     parser.add_argument('--log-level', type=str, default='INFO', 
@@ -153,6 +234,9 @@ def main():
                         help='Logging level')
     
     args = parser.parse_args()
+
+    global logger
+    logger = setup_logger(log_level=args.log_level)
     config = load_config(args.config)
     
     logger.info("=" * 60)
@@ -165,12 +249,16 @@ def main():
     try:
         if args.step == 'crawl':
             run_crawl(config, args)
+        elif args.step == 'download':
+            run_download(config, args)
         elif args.step == 'parse':
             run_parse(config, args)
         elif args.step == 'section':
             run_section(config, args)
         elif args.step == 'extract':
             run_extract(config, args)
+        elif args.step == 'validate':
+            run_validate(config, args)
         elif args.step == 'process':
             run_process(config, args)
         elif args.step == 'indicator':

@@ -4,6 +4,7 @@ from collections import Counter
 from typing import Dict, List
 import argparse
 from .load_config import load_config, parse_args
+from .real_data_guard import read_metadata_csv, validate_real_metadata_record
 
 def check_dataset(config: Dict):
     metadata_path = config['output']['metadata']
@@ -12,10 +13,7 @@ def check_dataset(config: Dict):
     
     os.makedirs(os.path.dirname(report_path), exist_ok=True)
     
-    records = []
-    with open(metadata_path, 'r', encoding='utf-8') as f:
-        reader = csv.DictReader(f)
-        records = list(reader)
+    records = read_metadata_csv(metadata_path)
     
     total_records = len(records)
     
@@ -24,6 +22,7 @@ def check_dataset(config: Dict):
     download_status_counts = Counter()
     missing_pdf = []
     duplicate_docs = []
+    real_data_errors = []
     
     seen_docs = set()
     for record in records:
@@ -34,6 +33,10 @@ def check_dataset(config: Dict):
         if record['doc_id'] in seen_docs:
             duplicate_docs.append(record['doc_id'])
         seen_docs.add(record['doc_id'])
+
+        row_errors = validate_real_metadata_record(record)
+        if row_errors:
+            real_data_errors.append((record.get('doc_id', ''), row_errors))
         
         if record['download_status'] == 'success':
             pdf_path = os.path.join(pdf_dir, f"{record['doc_id']}.pdf")
@@ -80,6 +83,13 @@ def check_dataset(config: Dict):
                 f.write(f"- {doc_id}\n")
             if len(duplicate_docs) > 10:
                 f.write(f"- ... and {len(duplicate_docs) - 10} more\n")
+
+        if real_data_errors:
+            f.write(f"\n## Real Data Rule Violations ({len(real_data_errors)})\n")
+            for doc_id, errors in real_data_errors[:20]:
+                f.write(f"- {doc_id}: {', '.join(errors)}\n")
+            if len(real_data_errors) > 20:
+                f.write(f"- ... and {len(real_data_errors) - 20} more\n")
         
         f.write("\n## Quality Assessment\n")
         issues = []
@@ -106,11 +116,20 @@ def check_dataset(config: Dict):
             issues.append(f"WARNING: Found {len(duplicate_docs)} duplicate records")
         else:
             issues.append(f"PASS: No duplicates found")
+
+        if real_data_errors:
+            issues.append(f"FAIL: Found {len(real_data_errors)} real-data rule violations")
+        else:
+            issues.append("PASS: All metadata records satisfy real-data source rules")
         
         for issue in issues:
             f.write(f"- {issue}\n")
     
     print(f"Dataset quality report saved to {report_path}")
+    if real_data_errors:
+        preview = "; ".join(f"{doc_id}: {', '.join(errors)}" for doc_id, errors in real_data_errors[:5])
+        raise ValueError(f"Real-data rule violations found: {preview}")
+
     return {
         'total_records': total_records,
         'success_count': success_count,
