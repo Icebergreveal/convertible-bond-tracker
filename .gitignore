@@ -13,10 +13,14 @@ __pycache__/
 # 数据文件（大文件不提交）
 data/pdf/
 data/parsed/
+data/*.zip
 
 # 日志文件
 logs/
 *.log
+
+# 运行备份
+outputs/backups/
 
 # 操作系统文件
 .DS_Store

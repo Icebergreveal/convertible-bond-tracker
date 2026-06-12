@@ -52,7 +52,7 @@ class TestCrawlFunctions(unittest.TestCase):
     def test_classify_announcement_lower_repair_implementation(self):
         """测试下修实施分类"""
         titles = [
-            '关于"茅台转债"转股价格向下修正实施的公告',
+            '关于"美锦转债"转股价格向下修正实施的公告',
             '转股价格向下修正实施公告',
             '实施转股价格修正公告'
         ]
@@ -118,7 +118,7 @@ class TestCrawlFunctions(unittest.TestCase):
         """测试可转债信息提取"""
         test_cases = [
             ('关于128152龙大转债转股价格调整公告', ('128152', '龙大转债')),
-            ('关于"110061茅台转债"赎回公告', ('110061', '茅台转债')),
+            ('关于"127061美锦转债"赎回公告', ('127061', '美锦转债')),
             ('美锦转债公告', (None, '美锦转债')),
             ('127061公告', ('127061', None)),
             ('普通公告', (None, None))

@@ -415,7 +415,7 @@
 
     <section class="container chart-section" id="data">
         <h2 class="section-title">当前数据概览</h2>
-        <p class="section-subtitle">以下数据来自当前仓库的正式输出文件：metadata 1171条、已校验抽取记录384条、事件链169条。人工准确率尚未填入，因为还缺少可复核的人工标注表。</p>
+        <p class="section-subtitle">以下数据来自当前仓库的正式输出文件：metadata 1171条、已校验抽取记录384条、事件链169条；人工抽样复核已完成20条公告级样本、140条字段级记录。</p>
         <div class="chart-grid">
             <div class="chart-card fade-in"><h4>已校验记录分布</h4><div id="pieChart" class="chart"></div></div>
             <div class="chart-card fade-in"><h4>事件链类型分布</h4><div id="barChart" class="chart"></div></div>
@@ -442,7 +442,7 @@
             <div class="chart-card fade-in">
                 <h4>当前仍需补充</h4>
                 <ul style="list-style:none;line-height:2;color:rgba(255,255,255,0.82);">
-                    <li><i class="fas fa-exclamation-circle" style="color:var(--warning);"></i> 人工准确率需要补 `manual_sample_review.csv` 后再统计</li>
+                    <li><i class="fas fa-exclamation-circle" style="color:var(--warning);"></i> 人工复核显示价格精度、事件阶段和普通公司债过滤仍需优化</li>
                     <li><i class="fas fa-exclamation-circle" style="color:var(--warning);"></i> 事件链按转债代码聚合，四节点覆盖链仍需人工确认是否同一事件周期</li>
                     <li><i class="fas fa-exclamation-circle" style="color:var(--warning);"></i> evidence_page 填充率偏低，需要继续提升页码追溯</li>
                     <li><i class="fas fa-check-circle" style="color:var(--success);"></i> metadata 来源校验通过，未发现样例/合成标记</li>
@@ -1015,7 +1015,7 @@
 
         function renderEventChains() {
             const container = document.getElementById('eventChainsContent');
-            let html = '<p style="grid-column:1/-1;color:rgba(255,255,255,0.7);margin-bottom:0.5rem;">当前共有169条事件链，其中27条达到四节点覆盖。这里展示完整链与缺节点链的代表样例；完整链仍需人工确认是否属于同一事件周期。</p>';
+            let html = '<p style="grid-column:1/-1;color:rgba(255,255,255,0.7);margin-bottom:0.5rem;">当前共有169条事件链，其中27条达到四节点覆盖。这里展示四节点覆盖链与缺节点链的代表样例；四节点覆盖链仍需人工确认是否属于同一事件周期。</p>';
             eventChainsData.forEach(chain => {
                 const isDown = chain.eventType === '下修';
                 html += `<div class="chain-card"><div class="bond-name">${chain.bondName} (${chain.bondCode})</div><div class="event-type">${chain.eventType}事件 · ${chain.complete ? '四节点覆盖' : '缺节点'}</div><div class="chain-nodes">`;

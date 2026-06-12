@@ -303,62 +303,6 @@ def search_announcements(
     print(f"[Crawl] Found {len(results)} new announcements")
     return results
 
-def generate_sample_data_for_tests(limit: int = None):
-    """Generate demo-only records. Never save these as formal project metadata."""
-    bond_companies = [
-        {'stock_code': '000723', 'stock_name': '美锦能源', 'bond_code': '127061', 'bond_name': '美锦转债'},
-        {'stock_code': '002726', 'stock_name': '龙大美食', 'bond_code': '128152', 'bond_name': '龙大转债'},
-        {'stock_code': '000895', 'stock_name': '双汇发展', 'bond_code': '128147', 'bond_name': '双汇转债'},
-        {'stock_code': '600519', 'stock_name': '贵州茅台', 'bond_code': '110061', 'bond_name': '茅台转债'},
-        {'stock_code': '002594', 'stock_name': '比亚迪', 'bond_code': '128115', 'bond_name': '亚迪转债'},
-    ]
-    
-    announcement_templates = [
-        {'type': '下修触发提示', 'stage': 'stage_1_trigger', 'title_pattern': '关于{bond_name}预计触发转股价格向下修正条件的提示性公告'},
-        {'type': '下修提议', 'stage': 'stage_2_proposal', 'title_pattern': '关于董事会提议向下修正"{bond_name}"转股价格的公告'},
-        {'type': '下修决议', 'stage': 'stage_3_resolution', 'title_pattern': '关于"{bond_name}"转股价格向下修正的股东大会决议公告'},
-        {'type': '下修实施', 'stage': 'stage_4_implementation', 'title_pattern': '关于"{bond_name}"转股价格向下修正实施的公告'},
-        {'type': '强赎触发提示', 'stage': 'stage_1_trigger', 'title_pattern': '关于"{bond_name}"满足提前赎回条件的提示性公告'},
-        {'type': '强赎决议', 'stage': 'stage_2_resolution', 'title_pattern': '关于行使"{bond_name}"提前赎回权的决议公告'},
-        {'type': '强赎实施', 'stage': 'stage_3_implementation', 'title_pattern': '关于"{bond_name}"提前赎回实施的提示性公告'},
-        {'type': '强赎结果', 'stage': 'stage_4_result', 'title_pattern': '关于"{bond_name}"提前赎回结果暨摘牌公告'},
-    ]
-    
-    results = []
-    today = datetime.now()
-    
-    for company_idx, company in enumerate(bond_companies):
-        for ann_idx, template in enumerate(announcement_templates):
-            for event_round in range(1, 3):
-                days_ago = (company_idx * 60 + ann_idx * 10 + event_round * 15) % 365
-                publish_date = (today - timedelta(days=days_ago)).strftime('%Y-%m-%d')
-                
-                title = template['title_pattern'].format(bond_name=company['bond_name'])
-                doc_id = generate_doc_id(company['stock_code'], publish_date, title)
-                
-                record = {
-                    'doc_id': doc_id,
-                    'stock_code': company['stock_code'],
-                    'stock_name': company['stock_name'],
-                    'bond_code': company['bond_code'],
-                    'bond_name': company['bond_name'],
-                    'ann_type': template['type'],
-                    'event_stage': template['stage'],
-                    'publish_date': publish_date,
-                    'announcement_url': f"https://www.cninfo.com.cn/new/disclosure/detail?orgId=gssz{company['stock_code']}&announcementId=1225{company_idx}{ann_idx}{event_round}&announcementTime={publish_date}",
-                    'pdf_url': f"http://static.cninfo.com.cn/finalpage/{publish_date}/1225{company_idx}{ann_idx}{event_round}.PDF",
-                    'download_status': 'pending',
-                    'crawl_time': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-                    'data_source': 'sample',
-                    'notes': f'示例数据-事件{event_round}'
-                }
-                results.append(record)
-    
-    if limit:
-        results = results[:limit]
-    
-    return results
-
 def save_metadata(records: List[Dict[str, Any]], output_path: str, allow_non_cninfo: bool = False):
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     

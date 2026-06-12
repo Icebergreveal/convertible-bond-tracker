@@ -1,93 +1,96 @@
 {
-  "report_time": "2026-05-25T16:26:45.533708",
+  "report_time": "2026-06-13T19:27:40.859335",
   "summary": {
-    "total_records": 3,
+    "total_records": 384,
     "total_errors": 0,
     "error_rate": 0.0,
     "data_source": "outputs/extract_results/structured_data.json"
   },
   "field_completeness": {
     "doc_id": {
-      "filled": 3,
-      "total": 3,
+      "filled": 384,
+      "total": 384,
       "rate": 100.0
     },
     "stock_code": {
-      "filled": 3,
-      "total": 3,
-      "rate": 100.0
+      "filled": 352,
+      "total": 384,
+      "rate": 91.66666666666666
     },
     "stock_name": {
-      "filled": 3,
-      "total": 3,
-      "rate": 100.0
+      "filled": 367,
+      "total": 384,
+      "rate": 95.57291666666666
     },
     "bond_code": {
-      "filled": 3,
-      "total": 3,
+      "filled": 384,
+      "total": 384,
       "rate": 100.0
     },
     "bond_name": {
-      "filled": 3,
-      "total": 3,
+      "filled": 384,
+      "total": 384,
       "rate": 100.0
     },
     "ann_type": {
-      "filled": 3,
-      "total": 3,
+      "filled": 384,
+      "total": 384,
       "rate": 100.0
     },
     "publish_date": {
-      "filled": 3,
-      "total": 3,
-      "rate": 100.0
+      "filled": 332,
+      "total": 384,
+      "rate": 86.45833333333334
     },
     "original_conv_price": {
-      "filled": 3,
-      "total": 3,
-      "rate": 100.0
+      "filled": 175,
+      "total": 384,
+      "rate": 45.57291666666667
     },
     "new_conv_price": {
-      "filled": 0,
-      "total": 3,
-      "rate": 0.0
+      "filled": 39,
+      "total": 384,
+      "rate": 10.15625
     },
     "redemption_price": {
-      "filled": 0,
-      "total": 3,
-      "rate": 0.0
+      "filled": 147,
+      "total": 384,
+      "rate": 38.28125
     },
     "effective_date": {
-      "filled": 0,
-      "total": 3,
-      "rate": 0.0
+      "filled": 37,
+      "total": 384,
+      "rate": 9.635416666666668
     },
     "evidence_page": {
-      "filled": 3,
-      "total": 3,
-      "rate": 100.0
+      "filled": 243,
+      "total": 384,
+      "rate": 63.28125
     },
     "evidence_text": {
-      "filled": 3,
-      "total": 3,
-      "rate": 100.0
+      "filled": 383,
+      "total": 384,
+      "rate": 99.73958333333334
     }
   },
   "data_quality": {
-    "valid_date_format": 3,
+    "valid_date_format": 332,
     "invalid_date_format": 0,
-    "valid_numeric": 3,
-    "invalid_numeric": 0,
+    "valid_numeric": 174,
+    "invalid_numeric": 1,
     "abnormal_prices": 0
   },
   "event_coverage": {
-    "董事会提议向下修正转股价格公告": 1,
-    "触发转股价格向下修正条件的提示性公告": 2
+    "强赎类公告": 181,
+    "下修类公告": 203
   },
   "validation_errors": [],
   "recommendations": [
-    "字段 new_conv_price 填充率仅 0.0%，建议优化抽取prompt或增加样本",
-    "字段 redemption_price 填充率仅 0.0%，建议优化抽取prompt或增加样本",
-    "字段 effective_date 填充率仅 0.0%，建议优化抽取prompt或增加样本"
+    "字段 original_conv_price 填充率仅 45.6%，建议优化抽取prompt或增加样本",
+    "字段 new_conv_price 填充率仅 10.2%，建议优化抽取prompt或增加样本",
+    "字段 redemption_price 填充率仅 38.3%，建议优化抽取prompt或增加样本",
+    "字段 effective_date 填充率仅 9.6%，建议优化抽取prompt或增加样本",
+    "字段 evidence_page 填充率仅 63.3%，建议优化抽取prompt或增加样本",
+    "发现 1 条数值格式错误记录，建议增强数值校验"
   ]
 }
