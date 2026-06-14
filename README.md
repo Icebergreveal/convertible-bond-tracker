@@ -170,6 +170,8 @@
         ├── eval_manual_sample.csv
         ├── manual_sample_review.csv
         ├── manual_sample_review_summary.csv
+        ├── stage_classification_summary.csv
+        ├── stage_classification_review_queue.csv
         ├── manual_error_cases.md
         └── auto_eval_report.json
 ```
@@ -426,6 +428,8 @@ outputs/
 │   ├── eval_manual_sample.csv            # 人工评估样本与样本级结论
 │   ├── manual_sample_review.csv          # 字段级人工复核记录
 │   ├── manual_sample_review_summary.csv  # 人工复核维度汇总
+│   ├── stage_classification_summary.csv  # 阶段分类扩展汇总
+│   ├── stage_classification_review_queue.csv # 阶段/范围复核队列
 │   ├── manual_error_cases.md             # 人工复核错误案例
 │   └── auto_eval_report.json             # 自动评估报告
 └── logs/                                 # 运行日志（运行时生成）
@@ -446,9 +450,11 @@ outputs/
 | `outputs/extract_results/records_validated.csv` | 通过校验的抽取记录（384条） | CSV |
 | `outputs/event_chain/event_chains.csv` | 事件链匹配结果（169条） | CSV |
 | `outputs/indicators/quantitative_indicators.csv` | 量化指标计算结果（169条） | CSV |
-| `outputs/eval/eval_manual_sample.csv` | 人工评估样本与样本级结论（20条） | CSV |
-| `outputs/eval/manual_sample_review.csv` | 字段级人工复核记录（140条） | CSV |
+| `outputs/eval/eval_manual_sample.csv` | 人工评估样本与样本级结论（50条） | CSV |
+| `outputs/eval/manual_sample_review.csv` | 字段级人工复核记录（350条） | CSV |
 | `outputs/eval/manual_sample_review_summary.csv` | 人工复核维度汇总（8条） | CSV |
+| `outputs/eval/stage_classification_summary.csv` | 阶段分类扩展汇总（10条） | CSV |
+| `outputs/eval/stage_classification_review_queue.csv` | 阶段/范围复核队列（948条） | CSV |
 | `outputs/eval/manual_error_cases.md` | 人工复核错误案例 | MD |
 | `outputs/logs/*.log` | 各模块运行日志 | LOG |
 
@@ -512,7 +518,7 @@ outputs/
 | 公告类型覆盖 | 2个大类 | 下修类公告、强赎类公告 |
 | 唯一转债代码 | 142个 | 来自已校验抽取记录 |
 | 事件链记录 | 169条 | 下修/强赎事件链匹配 |
-| 四节点覆盖链 | 27条 | 需人工复核是否同一事件周期 |
+| 四节点覆盖链 | 28条 | 需人工复核是否同一事件周期 |
 | 量化指标记录 | 169条 | 下修幅度、赎回溢价率计算 |
 
 ### 评估指标
@@ -568,7 +574,7 @@ MIT License
 
 #### 1. 数据质量提升
 - ✅ 修正爬虫关键词：将错误的"下修实施"改为正确的"向下修正转债转股价格"
-- ✅ 补充实施阶段公告：当前 metadata 中 `stage_4_implementation` 为246条
+- ✅ 补充分阶段公告：当前 metadata 中 `stage_unknown` 已由 700 条降为 0 条，`stage_4_implementation` 为 251 条
 - ✅ 清理合成数据：移除所有虚构数据，100%使用真实爬取数据
 - ✅ 公告大类覆盖：已覆盖下修类公告、强赎类公告
 
@@ -592,7 +598,8 @@ MIT License
 | 指标 | 改进前 | 改进后 | 提升幅度 |
 |---|---|---|---|
 | 公告大类覆盖 | 待统一口径 | 2个核心大类 | 已覆盖下修/强赎 |
-| 实施阶段公告 | 待统一旧口径 | 246条 | 当前metadata统计 |
+| 实施阶段公告 | 246条 | 251条 | 当前metadata统计 |
+| 未细分阶段公告 | 700条 | 0条 | 规则扩展后全部落入标准阶段 |
 | 正式metadata规模 | 待统一旧口径 | 1171条 | 当前真实口径 |
 | 数据真实性 | 混有合成 | 100%真实 | +100% |
 | 赎回溢价率计算 | 简化假设 | 精确计算 | 大幅提升 |

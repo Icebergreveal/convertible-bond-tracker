@@ -56,6 +56,7 @@
         .compare-table .check { color: var(--success); }
         .compare-table .cross { color: var(--danger); }
         .compare-table .partial { color: var(--warning); }
+        .compare-table .error { color: var(--danger); }
         .events-section { background: var(--primary); }
         .events-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(450px,1fr)); gap: 3rem; }
         .event-card { background: var(--card-bg); padding: 2rem; border-radius: 20px; }
@@ -170,7 +171,7 @@
             <div class="stat-card fade-in" id="pdfFilesCard"><i class="fas fa-file-pdf"></i><div class="number" data-target="456">0</div><div class="label">PDF文件</div><div class="hint">点击查看详情 →</div></div>
             <div class="stat-card fade-in"><i class="fas fa-check-circle"></i><div class="number" data-target="384">0</div><div class="label">已校验记录</div><div class="hint">Pydantic通过</div></div>
             <div class="stat-card fade-in" id="eventChainsCard"><i class="fas fa-link"></i><div class="number" data-target="169">0</div><div class="label">事件链</div><div class="hint">点击查看详情 →</div></div>
-            <div class="stat-card fade-in"><i class="fas fa-project-diagram"></i><div class="number" data-target="27">0</div><div class="label">四节点覆盖链</div><div class="hint">需人工复核</div></div>
+            <div class="stat-card fade-in"><i class="fas fa-project-diagram"></i><div class="number" data-target="28">0</div><div class="label">四节点覆盖链</div><div class="hint">需人工复核</div></div>
             <div class="stat-card fade-in" id="structuredFieldsCard"><i class="fas fa-database"></i><div class="number" data-target="25">0</div><div class="label">结构化字段</div><div class="hint">点击查看详情 →</div></div>
         </div>
     </section>
@@ -326,7 +327,7 @@
                             <div style="margin-top:0.8rem;display:flex;gap:1rem;flex-wrap:wrap;">
                                 <span style="background:rgba(255,167,38,0.2);padding:0.3rem 0.8rem;border-radius:15px;font-size:0.8rem;"><i class="fas fa-cog"></i> 规则匹配</span>
                                 <span style="background:rgba(102,126,234,0.2);padding:0.3rem 0.8rem;border-radius:15px;font-size:0.8rem;"><i class="fas fa-file-code"></i> YAML配置</span>
-                                <span style="background:rgba(255,167,38,0.2);padding:0.3rem 0.8rem;border-radius:15px;font-size:0.8rem;"><i class="fas fa-clipboard-check"></i> 待人工抽样复核</span>
+                                <span style="background:rgba(67,233,123,0.2);padding:0.3rem 0.8rem;border-radius:15px;font-size:0.8rem;"><i class="fas fa-clipboard-check"></i> 50条人工复核</span>
                             </div>
                         </div>
                     </div>
@@ -368,7 +369,7 @@
                             <div style="margin-top:0.8rem;display:flex;gap:1rem;flex-wrap:wrap;">
                                 <span style="background:rgba(67,233,123,0.2);padding:0.3rem 0.8rem;border-radius:15px;font-size:0.8rem;"><i class="fas fa-link"></i> 169条事件链</span>
                                 <span style="background:rgba(102,126,234,0.2);padding:0.3rem 0.8rem;border-radius:15px;font-size:0.8rem;"><i class="fas fa-calendar"></i> 30天窗口</span>
-                                <span style="background:rgba(255,167,38,0.2);padding:0.3rem 0.8rem;border-radius:15px;font-size:0.8rem;"><i class="fas fa-clock"></i> 四节点覆盖率16.0%</span>
+                                <span style="background:rgba(255,167,38,0.2);padding:0.3rem 0.8rem;border-radius:15px;font-size:0.8rem;"><i class="fas fa-clock"></i> 四节点覆盖率16.6%</span>
                             </div>
                         </div>
                     </div>
@@ -415,7 +416,7 @@
 
     <section class="container chart-section" id="data">
         <h2 class="section-title">当前数据概览</h2>
-        <p class="section-subtitle">以下数据来自当前仓库的正式输出文件：metadata 1171条、已校验抽取记录384条、事件链169条；人工抽样复核已完成20条公告级样本、140条字段级记录。</p>
+        <p class="section-subtitle">以下数据来自当前仓库的正式输出文件：metadata 1171条、已校验抽取记录384条、事件链169条；人工抽样复核已扩展至50条公告级样本、350条字段级记录，metadata阶段未知项已由700条补充分阶段至0条。</p>
         <div class="chart-grid">
             <div class="chart-card fade-in"><h4>已校验记录分布</h4><div id="pieChart" class="chart"></div></div>
             <div class="chart-card fade-in"><h4>事件链类型分布</h4><div id="barChart" class="chart"></div></div>
@@ -440,12 +441,46 @@
                 </div>
             </div>
             <div class="chart-card fade-in">
-                <h4>当前仍需补充</h4>
+                <h4>当前项目进度</h4>
                 <ul style="list-style:none;line-height:2;color:rgba(255,255,255,0.82);">
-                    <li><i class="fas fa-exclamation-circle" style="color:var(--warning);"></i> 人工复核显示价格精度、事件阶段和普通公司债过滤仍需优化</li>
-                    <li><i class="fas fa-exclamation-circle" style="color:var(--warning);"></i> 事件链按转债代码聚合，四节点覆盖链仍需人工确认是否同一事件周期</li>
-                    <li><i class="fas fa-exclamation-circle" style="color:var(--warning);"></i> evidence_page 填充率偏低，需要继续提升页码追溯</li>
-                    <li><i class="fas fa-check-circle" style="color:var(--success);"></i> metadata 来源校验通过，未发现样例/合成标记</li>
+                    <li><i class="fas fa-check-circle" style="color:var(--success);"></i> metadata 来源校验通过，1171条均为巨潮资讯网真实公告</li>
+                    <li><i class="fas fa-check-circle" style="color:var(--success);"></i> stage_unknown 已由700条补充至0条，同步生成948条阶段复核队列</li>
+                    <li><i class="fas fa-check-circle" style="color:var(--success);"></i> 人工抽样复核已完成50条公告级/350条字段级记录</li>
+                    <li><i class="fas fa-check-circle" style="color:var(--success);"></i> 事件链匹配完成169条，四节点覆盖链28条(覆盖率16.6%)</li>
+                    <li><i class="fas fa-exclamation-circle" style="color:var(--warning);"></i> 价格精度压缩、普通公司债过滤仍需继续优化</li>
+                    <li><i class="fas fa-exclamation-circle" style="color:var(--warning);"></i> 四节点覆盖链仍需人工确认是否属于同一事件周期</li>
+                    <li><i class="fas fa-exclamation-circle" style="color:var(--warning);"></i> evidence_page 填充率63.3%，需继续提升页码追溯能力</li>
+                </ul>
+            </div>
+        </div>
+        <div class="chart-grid" style="margin-top:2rem;">
+            <div class="chart-card fade-in">
+                <h4>人工抽样复核结果</h4>
+                <p style="color:rgba(255,255,255,0.72);line-height:1.7;margin-bottom:1rem;">
+                    人工复核使用50条公告级样本、350条字段级记录，逐条对照正式抽取结果和本地PDF/Markdown正文。以下为严格口径，PARTIAL不计入完全正确。
+                </p>
+                <div class="compare-table" style="margin-top:0;">
+                    <table>
+                        <tbody>
+                            <tr><td>转债/债券代码抽取</td><td>50/50</td><td><span class="check">100.0%</span></td></tr>
+                            <tr><td>股票代码抽取</td><td>48/50</td><td><span class="check">96.0%</span></td></tr>
+                            <tr><td>证据文本相关性</td><td>47/50</td><td><span class="check">94.0%</span></td></tr>
+                            <tr><td>日期字段内容准确性</td><td>44/50</td><td><span class="partial">88.0%</span></td></tr>
+                            <tr><td>样本范围匹配</td><td>43/50</td><td><span class="partial">86.0%</span></td></tr>
+                            <tr><td>公告类型分类</td><td>38/50</td><td><span class="partial">76.0%</span></td></tr>
+                            <tr><td>价格数值严格准确性</td><td>33/50</td><td><span class="error">66.0%</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="chart-card fade-in">
+                <h4>人工复核主要发现</h4>
+                <ul style="list-style:none;line-height:2;color:rgba(255,255,255,0.82);">
+                    <li><i class="fas fa-check-circle" style="color:var(--success);"></i> 转债/债券代码在50条样本中严格准确率为100.0%，股票代码和证据文本相关性分别为96.0%、94.0%</li>
+                    <li><i class="fas fa-check-circle" style="color:var(--success);"></i> metadata阶段分类已完成补充，stage_unknown由700条降至0条，并生成948条阶段复核队列</li>
+                    <li><i class="fas fa-exclamation-circle" style="color:var(--warning);"></i> 7条样本范围不匹配，主要来自普通公司债发行人赎回选择权等非目标可转债公告</li>
+                    <li><i class="fas fa-exclamation-circle" style="color:var(--warning);"></i> 公告类型分类严格准确率为76.0%，另有12条PARTIAL，阶段标签仍建议继续人工复核</li>
+                    <li><i class="fas fa-exclamation-circle" style="color:var(--warning);"></i> 价格严格准确率为66.0%，主要受赎回价小数精度压缩和历史价格混入影响</li>
                 </ul>
             </div>
         </div>
@@ -1015,7 +1050,7 @@
 
         function renderEventChains() {
             const container = document.getElementById('eventChainsContent');
-            let html = '<p style="grid-column:1/-1;color:rgba(255,255,255,0.7);margin-bottom:0.5rem;">当前共有169条事件链，其中27条达到四节点覆盖。这里展示四节点覆盖链与缺节点链的代表样例；四节点覆盖链仍需人工确认是否属于同一事件周期。</p>';
+            let html = '<p style="grid-column:1/-1;color:rgba(255,255,255,0.7);margin-bottom:0.5rem;">当前共有169条事件链，其中28条达到四节点覆盖。这里展示四节点覆盖链与缺节点链的代表样例；四节点覆盖链仍需人工确认是否属于同一事件周期。</p>';
             eventChainsData.forEach(chain => {
                 const isDown = chain.eventType === '下修';
                 html += `<div class="chain-card"><div class="bond-name">${chain.bondName} (${chain.bondCode})</div><div class="event-type">${chain.eventType}事件 · ${chain.complete ? '四节点覆盖' : '缺节点'}</div><div class="chain-nodes">`;
@@ -1079,21 +1114,12 @@
         });
 
         const noticesData = [
-            {
-                        "type": "stage_unknown",
-                        "count": 700,
-                        "desc": "metadata中尚未细分阶段的公告"
-            },
-            {
-                        "type": "stage_4_implementation",
-                        "count": 246,
-                        "desc": "实施阶段公告"
-            },
-            {
-                        "type": "stage_4_result",
-                        "count": 225,
-                        "desc": "结果阶段公告"
-            }
+            {"type": "stage_1_trigger", "count": 464, "desc": "触发提示阶段公告"},
+            {"type": "stage_2_proposal", "count": 12, "desc": "提议阶段公告"},
+            {"type": "stage_3_resolution", "count": 49, "desc": "决议阶段公告"},
+            {"type": "stage_4_implementation", "count": 251, "desc": "实施阶段公告"},
+            {"type": "stage_4_result", "count": 395, "desc": "结果阶段公告"},
+            {"type": "stage_unknown", "count": 0, "desc": "已由规则补充分阶段"}
 ];
 
         function renderTotalNotices() {
@@ -1194,7 +1220,7 @@
                 {label:'解析Markdown', value:'442份', color:'#667eea'},
                 {label:'已校验记录', value:'384条', color:'#ffa726'},
                 {label:'事件链', value:'169条', color:'#e94560'},
-                {label:'四节点覆盖链', value:'27条', color:'#764ba2'},
+                {label:'四节点覆盖链', value:'28条', color:'#764ba2'},
                 {label:'来源网站', value:'巨潮资讯网', color:'#4facfe'}
             ];
             qualityData.forEach(item => {
@@ -1210,7 +1236,11 @@
             html += '<ul style="list-style:none;padding:0;">';
             const processData = [
                 {label:'解析工具', value:'MinerU + PyMuPDF'},
-                {label:'人工解析准确率', value:'待标注'},
+                {label:'人工复核样本', value:'50条公告 / 350字段'},
+                {label:'公告类型分类', value:'76.0%'},
+                {label:'转债/债券代码抽取', value:'100.0%'},
+                {label:'价格严格准确率', value:'66.0%'},
+                {label:'阶段未知公告', value:'0条'},
                 {label:'evidence_text覆盖率', value:'99.7%'},
                 {label:'图片处理', value:'不作为抽取字段'},
                 {label:'编码格式', value:'UTF-8/GB18030兼容'},
@@ -1314,9 +1344,9 @@
                 series:[{type:'pie',radius:['60%','80%'],center:['50%','50%'],startAngle:200,
                     itemStyle:{borderRadius:10,borderColor:'#1a1a2e',borderWidth:2},
                     label:{show:false},labelLine:{show:false},
-                    data:[{value:16.0,name:'四节点覆盖链',itemStyle:{color:'#e94560'}},{value:84.0,name:'缺节点链',itemStyle:{color:'#1f1f3d'}}]
+                    data:[{value:16.6,name:'四节点覆盖链',itemStyle:{color:'#e94560'}},{value:83.4,name:'缺节点链',itemStyle:{color:'#1f1f3d'}}]
                 },{type:'pie',radius:['0%','50%'],center:['50%','50%'],
-                    label:{show:true,position:'center',color:'#e94560',fontSize:24,fontWeight:'bold',formatter:'16.0%'},
+                    label:{show:true,position:'center',color:'#e94560',fontSize:24,fontWeight:'bold',formatter:'16.6%'},
                     labelLine:{show:false},
                     data:[{value:1,itemStyle:{color:'transparent'}}]
                 }]
