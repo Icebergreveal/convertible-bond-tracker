@@ -91,7 +91,7 @@ metadata.csv    PDF文件      Markdown      sections.json   structured_data
 |---|---|
 | **输入** | sections.jsonl + src/extract/extract_prompt_optimized.txt |
 | **输出** | outputs/extract_results/structured_data.json |
-| **处理逻辑** | 1. 构建抽取提示词<br>2. 调用LLM API<br>3. 解析JSON结果<br>4. 提取17个核心字段 |
+| **处理逻辑** | 1. 构建抽取提示词<br>2. 调用LLM API<br>3. 解析JSON结果<br>4. 提取25个核心字段 |
 | **成功标准** | 字段抽取完整率≥90% |
 | **失败处理** | 重试3次，记录失败记录 |
 | **日志文件** | outputs/logs/extract_quality.log |
