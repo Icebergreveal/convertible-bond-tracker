@@ -1,0 +1,9 @@
+{
+  "doc_id": "43bb52461db6a3dd",
+  "pdf_path": "data/pdf\\43bb52461db6a3dd.pdf",
+  "md_path": "data/parsed\\43bb52461db6a3dd.md",
+  "parse_time": "2026-05-25T10:53:47.636664",
+  "status": "success",
+  "parser": "PyPDF2",
+  "pages": 3
+}

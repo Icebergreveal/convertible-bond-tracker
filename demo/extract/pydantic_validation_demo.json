@@ -1,0 +1,79 @@
+{
+  "source_records": "outputs/extract_results/records_validated.csv",
+  "validation_errors_file": "outputs/logs/validation_errors.jsonl",
+  "validation_warnings_file": "outputs/logs/validation_warnings.jsonl",
+  "demo_doc_ids": [
+    "43bb52461db6a3dd",
+    "6560c9ee54448a23",
+    "1f0b8841d52d4d13"
+  ],
+  "required_demo_records_found": 3,
+  "validation_status": "pass",
+  "validation_errors_bytes": 0,
+  "validation_warnings_bytes": 0,
+  "checks": [
+    {
+      "field": "bond_code",
+      "rule": "required string",
+      "demo_values": [
+        "110076",
+        "110076",
+        "110076"
+      ]
+    },
+    {
+      "field": "bond_name",
+      "rule": "required string",
+      "demo_values": [
+        "华海转债",
+        "华海转债",
+        "华海转债"
+      ]
+    },
+    {
+      "field": "ann_type",
+      "rule": "enum / known announcement type",
+      "demo_values": [
+        "下修类公告",
+        "下修类公告",
+        "下修类公告"
+      ]
+    },
+    {
+      "field": "date fields",
+      "rule": "YYYY-MM-DD or blank",
+      "demo_values": [
+        "2026-04-10",
+        "",
+        "2026-05-21"
+      ]
+    },
+    {
+      "field": "numeric fields",
+      "rule": "numeric string or blank",
+      "demo_values": [
+        {
+          "original_conv_price": "33.06",
+          "new_conv_price": ""
+        },
+        {
+          "original_conv_price": "",
+          "new_conv_price": ""
+        },
+        {
+          "original_conv_price": "33.06",
+          "new_conv_price": "16.6"
+        }
+      ]
+    },
+    {
+      "field": "evidence_text",
+      "rule": "required traceable text",
+      "demo_values": [
+        "filled",
+        "filled",
+        "filled"
+      ]
+    }
+  ]
+}
